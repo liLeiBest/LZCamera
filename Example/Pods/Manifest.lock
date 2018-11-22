@@ -1,0 +1,23 @@
+PODS:
+  - LZCamera (0.1.0):
+    - LZCamera/Capture (= 0.1.0)
+    - LZCamera/Code (= 0.1.0)
+    - LZCamera/Core (= 0.1.0)
+  - LZCamera/Capture (0.1.0):
+    - LZCamera/Core
+  - LZCamera/Code (0.1.0)
+  - LZCamera/Core (0.1.0)
+
+DEPENDENCIES:
+  - LZCamera (from `../`)
+
+EXTERNAL SOURCES:
+  LZCamera:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LZCamera: e198428f39bfe099649f4cf24da72624ccc891ad
+
+PODFILE CHECKSUM: e85e9c62dc98ca318a0ff4d066205209af06871d
+
+COCOAPODS: 1.5.3

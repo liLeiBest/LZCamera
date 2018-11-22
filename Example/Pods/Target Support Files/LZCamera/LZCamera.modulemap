@@ -1,0 +1,6 @@
+framework module LZCamera {
+  umbrella header "LZCamera-umbrella.h"
+
+  export *
+  module * { export * }
+}

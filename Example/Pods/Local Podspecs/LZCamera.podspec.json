@@ -1,0 +1,52 @@
+{
+  "name": "LZCamera",
+  "version": "0.1.0",
+  "summary": "A short description of LZCamera.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/liLeiBest/LZCamera",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "lilei_hapy@163.com": "lilei_hapy@163.com"
+  },
+  "source": {
+    "git": "git@github.com:liLeiBest/LZCamera.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "frameworks": [
+    "AVFoundation",
+    "Foundation",
+    "UIKit"
+  ],
+  "source_files": "LZCamera/Classes/LZCamera.h",
+  "public_header_files": "LZCamera/Classes/LZCamera.h",
+  "prefix_header_contents": "#if DEBUG\n#define LZCameraLog(fmt, ...) NSLog((@\"%s [Line %d] \" fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);\n#else\n#define LZCameraLogfmt, ...)\n#endif",
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "LZCamera/Classes/Core/**/*",
+      "public_header_files": "LZCamera/Classes/Core/**/*.h"
+    },
+    {
+      "name": "Capture",
+      "source_files": "LZCamera/Classes/Capture/**/*.{h,m}",
+      "public_header_files": "LZCamera/Classes/Capture/**/*.h",
+      "resources": "LZCamera/Classes/Capture/Resources/LZCameraCapture.bundle",
+      "dependencies": {
+        "LZCamera/Core": [
+
+        ]
+      }
+    },
+    {
+      "name": "Code",
+      "source_files": "LZCamera/Classes/Code/**/*",
+      "public_header_files": "LZCamera/Classes/Code/**/*.h"
+    }
+  ]
+}
