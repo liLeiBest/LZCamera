@@ -13,6 +13,7 @@
 #import "LZCamera.h"
 #import "LZCameraCapture.h"
 #import "LZCameraPreviewView.h"
+#import "LZCameraCode.h"
 #import "LZCameraConfig.h"
 #import "LZCameraController.h"
 #import "LZCameraControllerDelegate.h"

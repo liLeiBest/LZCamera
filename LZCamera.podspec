@@ -40,7 +40,7 @@ TODO: Add long description of the pod here.
   #if DEBUG
   #define LZCameraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
   #else
-  #define LZCameraLogfmt, ...)
+  #define LZCameraLog(fmt, ...)
   #endif
   EOS
   s.prefix_header_contents = pch_AF;

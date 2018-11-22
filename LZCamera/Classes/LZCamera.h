@@ -9,5 +9,6 @@
 #define LZCamera_h
 
 #import "LZCameraCapture.h"
+#import "LZCameraCode.h"
 
 #endif /* LZCamera_h */
