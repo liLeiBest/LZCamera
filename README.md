@@ -22,7 +22,7 @@ pod 'LZCamera'
 
 ## Author
 
-lilei_hapy@163.com, lilei_hapy@163.com
+lilei, lilei0502@139.com
 
 ## License
 
