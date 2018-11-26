@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol LZCameraControllerDelegate <NSObject>
 
-@optional
 /**
  摄像头配置失败回调
 

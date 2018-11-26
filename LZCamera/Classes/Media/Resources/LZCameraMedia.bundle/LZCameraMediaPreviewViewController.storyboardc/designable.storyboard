@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QCA-SG-j0Y">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Camera Media Preview View Controller-->
+        <scene sceneID="lc1-y4-xP3">
+            <objects>
+                <viewController id="QCA-SG-j0Y" customClass="LZCameraMediaPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LmQ-2h-uks"/>
+                        <viewControllerLayoutGuide type="bottom" id="i7g-4b-7nF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OFh-xw-Zxv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n12-Yc-cwG">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e89-Og-CsI">
+                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysw-pW-cCv">
+                                        <rect key="frame" x="77.5" y="30" width="60" height="60"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.13" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="cancelDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="gEp-aX-FGe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
+                                        <rect key="frame" x="157.5" y="30" width="60" height="60"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.13" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="Mbk-7N-gG1"/>
+                                            <constraint firstAttribute="width" secondItem="hwf-a2-DM8" secondAttribute="height" multiplier="1:1" id="Us2-Ae-3Yj"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="editDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="2dB-D7-55K"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXB-5V-OhZ">
+                                        <rect key="frame" x="237.5" y="30" width="60" height="60"/>
+                                        <connections>
+                                            <action selector="sureDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="smD-rI-nXP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="FXB-5V-OhZ" firstAttribute="leading" secondItem="hwf-a2-DM8" secondAttribute="trailing" constant="20" id="3zH-Jl-bVD"/>
+                                    <constraint firstItem="FXB-5V-OhZ" firstAttribute="centerY" secondItem="ysw-pW-cCv" secondAttribute="centerY" id="43p-Oe-bw2"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="centerX" secondItem="e89-Og-CsI" secondAttribute="centerX" id="Gap-9p-5ax"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="centerY" secondItem="e89-Og-CsI" secondAttribute="centerY" id="Gqa-MP-8ze"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="leading" secondItem="ysw-pW-cCv" secondAttribute="trailing" constant="20" id="MbL-Bn-ZPb"/>
+                                    <constraint firstAttribute="height" constant="120" id="W9h-Q9-ot3"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="width" secondItem="ysw-pW-cCv" secondAttribute="width" id="cSe-ff-4PU"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="centerY" secondItem="ysw-pW-cCv" secondAttribute="centerY" id="j0t-ET-lIA"/>
+                                    <constraint firstItem="hwf-a2-DM8" firstAttribute="height" secondItem="ysw-pW-cCv" secondAttribute="height" id="jg3-O3-9mZ"/>
+                                    <constraint firstItem="FXB-5V-OhZ" firstAttribute="height" secondItem="ysw-pW-cCv" secondAttribute="height" id="sjU-s8-x4k"/>
+                                    <constraint firstItem="FXB-5V-OhZ" firstAttribute="width" secondItem="ysw-pW-cCv" secondAttribute="width" id="up5-nW-oUp"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="n12-Yc-cwG" secondAttribute="trailing" id="3ww-8L-9SJ"/>
+                            <constraint firstItem="i7g-4b-7nF" firstAttribute="top" secondItem="n12-Yc-cwG" secondAttribute="bottom" id="Hlz-1P-NBX"/>
+                            <constraint firstItem="n12-Yc-cwG" firstAttribute="leading" secondItem="OFh-xw-Zxv" secondAttribute="leading" id="Kfg-Zs-b57"/>
+                            <constraint firstItem="n12-Yc-cwG" firstAttribute="top" secondItem="OFh-xw-Zxv" secondAttribute="top" id="NNo-2b-siO"/>
+                            <constraint firstItem="e89-Og-CsI" firstAttribute="leading" secondItem="OFh-xw-Zxv" secondAttribute="leading" id="hdZ-GH-9l4"/>
+                            <constraint firstItem="e89-Og-CsI" firstAttribute="bottom" secondItem="i7g-4b-7nF" secondAttribute="top" id="lsQ-hx-2qQ"/>
+                            <constraint firstAttribute="trailing" secondItem="e89-Og-CsI" secondAttribute="trailing" id="xi5-EN-Aw5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelBtn" destination="ysw-pW-cCv" id="Kdy-wj-ysz"/>
+                        <outlet property="editBtn" destination="hwf-a2-DM8" id="Hgb-UH-SW6"/>
+                        <outlet property="previewImgView" destination="n12-Yc-cwG" id="y4L-IN-NGS"/>
+                        <outlet property="sureBtn" destination="FXB-5V-OhZ" id="vdT-wx-t9L"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7h2-cv-Evz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-26.399999999999999" y="141.67916041979012"/>
+        </scene>
+    </scenes>
+</document>

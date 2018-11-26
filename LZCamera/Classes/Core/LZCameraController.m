@@ -249,25 +249,30 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
     AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
     if (videoDeviceInput) {
         
-        [self removeObserverForVideoZoom];
-        CGFloat zoomValue = [self currentVideoZoomValue];
+        LZCameraQueueBlock(^{
         
-        [self.captureSession beginConfiguration];
-        [self.captureSession removeInput:self.activeMediaInput];
-        if ([self.captureSession canAddInput:videoDeviceInput]) {
+            [self removeObserverForVideoZoom];
+            CGFloat zoomValue = [self currentVideoZoomValue];
             
-            [self.captureSession addInput:videoDeviceInput];
-            self.activeMediaInput = videoDeviceInput;
-        } else {
-            [self.captureSession addInput:self.activeMediaInput];
-        }
-        [self.captureSession commitConfiguration];
-        
-        [self regiesterObserverForVideoZoom];
-        [self setZoomValue:zoomValue];
-        if (self.captureMetaDataCompletionHandler) {
-            self.captureMetaDataCompletionHandler(nil, nil);
-        }
+            [self.captureSession beginConfiguration];
+            [self.captureSession removeInput:self.activeMediaInput];
+            if ([self.captureSession canAddInput:videoDeviceInput]) {
+                
+                [self.captureSession addInput:videoDeviceInput];
+                self.activeMediaInput = videoDeviceInput;
+            } else {
+                [self.captureSession addInput:self.activeMediaInput];
+            }
+            [self.captureSession commitConfiguration];
+            
+            [self regiesterObserverForVideoZoom];
+            [self setZoomValue:zoomValue];
+            LZMainQueueBlock(^{
+                if (self.captureMetaDataCompletionHandler) {
+                    self.captureMetaDataCompletionHandler(nil, nil);
+                }
+            })
+        })
     } else {
         
         [self.delegate cameraConfigurationFailWithError:error];
@@ -570,7 +575,9 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
     dispatch_source_set_event_handler(timer, ^{
         LZMainQueueBlock(^{
             if (progressHandler) {
-                progressHandler([self videoRecordedDuration]);
+                
+                CMTime duration = [self isVideoRecording] ? [self videoRecordedDuration] : kCMTimeZero;
+                progressHandler(duration);
             }
         })
     });
@@ -633,16 +640,24 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 // MARK: - Delegate
 // MARK: <AVCaptureFileOutputRecordingDelegate>
 - (void)captureOutput:(AVCaptureFileOutput *)output
+didStartRecordingToOutputFileAtURL:(NSURL *)fileURL
+      fromConnections:(NSArray<AVCaptureConnection *> *)connections {
+    LZCameraLog(@"Start record video.");
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)output
 didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
 	  fromConnections:(NSArray<AVCaptureConnection *> *)connections
 				error:(NSError *)error {
 	
+    LZCameraLog(@"Finish record video.");
     if (self.gcdSource) {
         dispatch_suspend(self.gcdSource);
     }
     
 	if (error) {
         
+        [self stopVideoRecording];
         if ((error.code == AVErrorMaximumFileSizeReached || error.code == AVErrorMaximumDurationReached)) {
             
             NSDictionary *userInfo = error.userInfo;
@@ -650,8 +665,6 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
             if ([allKeys containsObject:AVErrorRecordingSuccessfullyFinishedKey] ) {
                 
                 if ((BOOL)[[userInfo objectForKey:AVErrorRecordingSuccessfullyFinishedKey] boolValue]) {
-                    
-                    [self stopVideoRecording];
                     [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:nil];
                 }
             }
@@ -681,12 +694,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 // MARK: <AVCaptureMetadataOutputObjectsDelegate>
-- (void)captureOutput:(AVCaptureFileOutput *)output
-didStartRecordingToOutputFileAtURL:(NSURL *)fileURL
-      fromConnections:(NSArray<AVCaptureConnection *> *)connections {
-    LZCameraLog(@"Start record video.");
-}
-
 - (void)captureOutput:(AVCaptureOutput *)output
 didOutputMetadataObjects:(NSArray<__kindof AVMetadataObject *> *)metadataObjects
        fromConnection:(AVCaptureConnection *)connection {
@@ -888,8 +895,10 @@ didFinishSavingWithError:(NSError *)error
 	
     LZMainQueueBlock(^{
 		if (self.captureStillImageCompletionHandler) {
-			self.captureStillImageCompletionHandler(image, error);
-            LZCameraLog(@"%@", error);
+            if (error) {
+                LZCameraLog(@"%@", error);
+            }
+            self.captureStillImageCompletionHandler(image, error);
 		}
 	})
 }
@@ -981,8 +990,10 @@ didFinishSavingWithError:(NSError *)error
 		}
 		LZMainQueueBlock(^{
 			if (self.captureVideoCompletionHandler) {
-				self.captureVideoCompletionHandler(videoURL, thumbnail, error);
-                LZCameraLog(@"%@", error);
+                if (error) {
+                    LZCameraLog(@"%@", error);
+                }
+                self.captureVideoCompletionHandler(videoURL, thumbnail, error);
 			}
 		})
 	})
@@ -1062,8 +1073,10 @@ didFinishSavingWithError:(NSError *)error
                                          code:LZCameraErrorFailedToAddOutput
                                      userInfo:userInfo];
             if (self.captureMetaDataCompletionHandler) {
+                if (error) {
+                    LZCameraLog(@"%@", error);
+                }
                 self.captureMetaDataCompletionHandler(nil, error);
-                LZCameraLog(@"%@", error);
             }
         })
         return NO;

@@ -1,13 +1,13 @@
 //
-//  LZCameraPreviewView.m
+//  LZCameraMediaPreviewView.m
 //  LZCamera
 //
 //  Created by Dear.Q on 2018/11/19.
 //
 
-#import "LZCameraPreviewView.h"
+#import "LZCameraMediaPreviewView.h"
 
-@interface LZCameraPreviewView()
+@interface LZCameraMediaPreviewView()
 
 /** 聚集框 */
 @property (strong, nonatomic) UIView *focusBoxView;
@@ -19,22 +19,17 @@
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapSingleGestureRecognizer;
 /** 双指双击 */
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapDoubleGestureRecognizer;
-/** 捏合 */
-@property (strong, nonatomic) UIPinchGestureRecognizer *pinchGestureRecognizer;
+/** 双指捏合 */
+@property (strong, nonatomic) UIPinchGestureRecognizer *pinchTapDoubleGestureRecognizer;
 
 @property (strong, nonatomic) CALayer *overLayer;
 @property (strong, nonatomic) NSMutableDictionary *faceLayers;
-@property (strong, nonatomic, readonly) AVCaptureVideoPreviewLayer *previewLayer;
 
 @end
 
-@implementation LZCameraPreviewView
+@implementation LZCameraMediaPreviewView
 
 // MARK: - Initiazalition
-+ (Class)layerClass {
-    return [AVCaptureVideoPreviewLayer class];
-}
-
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
@@ -49,18 +44,6 @@
         [self setupView];
     }
     return self;
-}
-
-- (AVCaptureVideoPreviewLayer *)previewLayer {
-    return (AVCaptureVideoPreviewLayer *)self.layer;
-}
-
-- (AVCaptureSession *)captureSesstion {
-    return [self.previewLayer session];
-}
-
-- (void)setCaptureSesstion:(AVCaptureSession *)captureSesstion {
-    [self.previewLayer setSession:captureSesstion];
 }
 
 - (void)setSingleTapToFocusEnable:(BOOL)singleTapToFocusEnable {
@@ -78,7 +61,10 @@
 // MARK: - Public
 - (void)detectFaces:(NSArray<AVMetadataObject *> *)faces {
     
-    NSArray *transformFaces = [self transformedFacesFromFaces:faces];
+    NSArray *transformFaces = @[];
+    if (faces && faces.count) {
+        transformFaces = [self transformedFacesFromFaces:faces];
+    }
     
     NSMutableArray *lostFaces = [self.faceLayers.allKeys mutableCopy];
     for (AVMetadataFaceObject *face in transformFaces) {
@@ -127,8 +113,8 @@
     
     CGPoint point = [recognizer locationInView:self];
     [self runBoxAnimationOnView:self.focusBoxView point:point];
-    if (self.TappedToFocusAtPointHandler) {
-        self.TappedToFocusAtPointHandler([self changePointOfSelfTappedForCameraPoint:point]);
+    if (self.TapToFocusAtPointHandler) {
+        self.TapToFocusAtPointHandler([self changePointOfSelfTappedForCameraPoint:point]);
     }
 }
 
@@ -136,16 +122,24 @@
     
     CGPoint point = [recognizer locationInView:self];
     [self runBoxAnimationOnView:self.exposureBoxView point:point];
-    if (self.TappedToExposeAtPointHandler) {
-        self.TappedToExposeAtPointHandler([self changePointOfSelfTappedForCameraPoint:point]);
+    if (self.TapToExposeAtPointHandler) {
+        self.TapToExposeAtPointHandler([self changePointOfSelfTappedForCameraPoint:point]);
     }
 }
 
 - (void)handleDoubleTapForDoubleGeture:(UIGestureRecognizer *)recognizer {
     
     [self runResetAnimation];
-    if (self.TappedToResetFocusAndExposure) {
-        self.TappedToResetFocusAndExposure();
+    if (self.TapToResetFocusAndExposure) {
+        self.TapToResetFocusAndExposure();
+    }
+}
+
+- (void)handlePinchTapForDoubleGesture:(UIPinchGestureRecognizer *)recognizer {
+    
+    LZCameraLog(@"Pinch tap scale:%f velocity:%f", recognizer.scale, recognizer.velocity);
+    if (self.PinchToZoomHandler) {
+        self.PinchToZoomHandler(recognizer.state == UIGestureRecognizerStateEnded, recognizer.velocity >= 0, 1.0f);
     }
 }
 
@@ -175,7 +169,10 @@
     self.doubleTapDoubleGestureRecognizer.numberOfTouchesRequired = 2;
     [self addGestureRecognizer:self.doubleTapDoubleGestureRecognizer];
     
-//    self.pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] init];
+    self.pinchTapDoubleGestureRecognizer =
+    [[UIPinchGestureRecognizer alloc] initWithTarget:self
+                                              action:@selector(handlePinchTapForDoubleGesture:)];
+    [self addGestureRecognizer:self.pinchTapDoubleGestureRecognizer];
     
     self.focusBoxView = [self boxViewWithColor:[UIColor colorWithRed:254.0f/255.0f green:195.0f/255.0f blue:9.0f/255.0f alpha:1.0f]];
     [self addSubview:self.focusBoxView];
@@ -183,10 +180,9 @@
     self.exposureBoxView = [self boxViewWithColor:[UIColor colorWithRed:1.000 green:0.421 blue:0.054 alpha:1.000]];
     [self addSubview:self.exposureBoxView];
     
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     self.faceLayers = [NSMutableDictionary dictionary];
     self.overLayer = [CALayer layer];
-    self.overLayer.frame = self.bounds;
+    self.overLayer.frame = self.previewLayer.bounds;
     self.overLayer.sublayerTransform = CATransform3DMakePerspective(1000);
     [self.previewLayer addSublayer:self.overLayer];
 }
@@ -240,7 +236,7 @@
         return;
     }
     
-    AVCaptureVideoPreviewLayer *previewlayer = (AVCaptureVideoPreviewLayer *)self.layer;
+    AVCaptureVideoPreviewLayer *previewlayer = self.previewLayer;
     CGPoint centerPoint = [previewlayer pointForCaptureDevicePointOfInterest:CGPointMake(0.5f, 0.5f)];
     self.focusBoxView.center = centerPoint;
     self.exposureBoxView.center = centerPoint;
@@ -273,7 +269,7 @@
  */
 - (CGPoint)changePointOfSelfTappedForCameraPoint:(CGPoint)point {
     
-    AVCaptureVideoPreviewLayer *previewLayer = (AVCaptureVideoPreviewLayer *)self.layer;
+    AVCaptureVideoPreviewLayer *previewLayer = self.previewLayer;
     return [previewLayer captureDevicePointOfInterestForPoint:point];
 }
 

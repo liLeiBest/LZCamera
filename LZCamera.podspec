@@ -24,11 +24,11 @@ TODO: Add long description of the pod here.
     core.public_header_files = 'LZCamera/Classes/Core/**/*.h'
   end
 
-  s.subspec 'Capture' do |capture|
-    capture.source_files        = 'LZCamera/Classes/Capture/**/*.{h,m}'
-    capture.public_header_files = 'LZCamera/Classes/Capture/**/*.h'
-    capture.resource            = 'LZCamera/Classes/Capture/Resources/LZCameraCapture.bundle'
-    capture.dependency 'LZCamera/Core'
+  s.subspec 'Media' do |media|
+    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m,storyboard}'
+    media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
+    media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
+    media.dependency 'LZCamera/Core'
   end
 
   s.subspec 'Code' do |code|
@@ -38,10 +38,11 @@ TODO: Add long description of the pod here.
 
   pch_AF = <<-EOS
   #if DEBUG
-  #define LZCameraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+  #define LZCameraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
   #else
   #define LZCameraLog(fmt, ...)
   #endif
+  #define LZCameraNSBundle(bundleName) [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@"LZCameraController")] pathForResource:bundleName ofType:@"bundle"]]
   EOS
   s.prefix_header_contents = pch_AF;
   

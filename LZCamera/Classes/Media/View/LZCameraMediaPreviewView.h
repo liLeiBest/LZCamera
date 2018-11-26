@@ -1,28 +1,28 @@
 //
-//  LZCameraPreviewView.h
+//  LZCameraMediaPreviewView.h
 //  LZCamera
 //
 //  Created by Dear.Q on 2018/11/19.
 //
 
-#import <AVFoundation/AVFoundation.h>
+#import "LZCameraPreviewView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LZCameraPreviewView : UIView
-
-@property (strong, nonatomic) AVCaptureSession *captureSesstion;
+@interface LZCameraMediaPreviewView : LZCameraPreviewView
 
 /** 单指单击聚集是否可用 */
 @property (assign, nonatomic) BOOL singleTapToFocusEnable;
 /** 单指双击曝光是否可用 */
 @property (assign, nonatomic) BOOL doubleTapToExposeEnable;
 /** 单指单击聚集回调 */
-@property (copy, nonatomic) void(^TappedToFocusAtPointHandler)(CGPoint point);
+@property (copy, nonatomic) void(^TapToFocusAtPointHandler)(CGPoint point);
 /** 单指双击曝光回调 */
-@property (copy, nonatomic) void(^TappedToExposeAtPointHandler)(CGPoint point);
+@property (copy, nonatomic) void(^TapToExposeAtPointHandler)(CGPoint point);
 /** 双指双击重设聚集和曝光回调 */
-@property (copy, nonatomic) void(^TappedToResetFocusAndExposure)(void);
+@property (copy, nonatomic) void(^TapToResetFocusAndExposure)(void);
+/** 捏合缩放 */
+@property (copy, nonatomic) void(^PinchToZoomHandler)(BOOL complete, BOOL magnify, CGFloat rampZoomValue);
 
 
 /**
