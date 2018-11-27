@@ -10,6 +10,8 @@
 NSString * const LZCameraErrorDomain = @"com.lzcamera.LZCameraErrorDomain";
 #define LZMainQueueBlock(block) \
 dispatch_async(dispatch_get_main_queue(), block);
+#define LZGlobalQueueBlock(block) \
+dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), block);
 #define LZCameraQueueBlock(block) \
 dispatch_async(cameraQueue, block);
 
@@ -104,6 +106,32 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         LZCameraLog(@"%@", *error);
         return NO;
     }
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(interruptedStart:)
+     name:AVCaptureSessionWasInterruptedNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(interruptedEnd:)
+     name:AVCaptureSessionInterruptionEndedNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(runStart:)
+     name:AVCaptureSessionDidStartRunningNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(runStop:)
+     name:AVCaptureSessionDidStopRunningNotification
+     object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(runError:)
+     name:AVCaptureSessionRuntimeErrorNotification
+     object:nil];
     
     return YES;
 }
@@ -275,8 +303,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         })
     } else {
         
-        [self.delegate cameraConfigurationFailWithError:error];
-        LZCameraLog(@"%@", error);
+        [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                      withObject:error];
         return NO;
     }
     
@@ -302,8 +330,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             camera.torchMode = torchMode;
             [camera unlockForConfiguration];
         } else {
-            [self.delegate cameraConfigurationFailWithError:error];
-            LZCameraLog(@"%@", error);
+            [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                          withObject:error];
         }
     }
 }
@@ -319,8 +347,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             camera.flashMode = flashMode;
             [camera unlockForConfiguration];
         } else {
-            [self.delegate cameraConfigurationFailWithError:error];
-            LZCameraLog(@"%@", error);
+            [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                          withObject:error];
         }
     }
 }
@@ -349,8 +377,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             camera.focusMode = AVCaptureFocusModeAutoFocus;
             [camera unlockForConfiguration];
         } else {
-            [self.delegate cameraConfigurationFailWithError:error];
-            LZCameraLog(@"%@", error);
+            [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                          withObject:error];
         }
     }
 }
@@ -374,8 +402,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             }
             [camera unlockForConfiguration];
         } else {
-            [self.delegate cameraConfigurationFailWithError:error];
-            LZCameraLog(@"%@", error);
+            [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                          withObject:error];
         }
     }
 }
@@ -405,8 +433,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         }
         [camera unlockForConfiguration];
     } else {
-        [self.delegate cameraConfigurationFailWithError:error];
-        LZCameraLog(@"%@", error);
+        [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                      withObject:error];
     }
 }
 
@@ -422,8 +450,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             camera.videoZoomFactor = zoomFactor;
             [camera unlockForConfiguration];
         } else {
-            [self.delegate cameraConfigurationFailWithError:error];
-            LZCameraLog(@"%@", error);
+            [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                          withObject:error];
         }
     }
 }
@@ -438,8 +466,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         [camera rampToVideoZoomFactor:zoomfactor withRate:self.cameraConfig.cameraZoomRate];
         [camera unlockForConfiguration];
     } else {
-        [self.delegate cameraConfigurationFailWithError:error];
-        LZCameraLog(@"%@", error);
+        [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                      withObject:error];
     }
 }
 
@@ -452,14 +480,14 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         [camera cancelVideoZoomRamp];
         [camera unlockForConfiguration];
     } else {
-        [self.delegate cameraConfigurationFailWithError:error];
-        LZCameraLog(@"%@", error);
+        [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                      withObject:error];
     }
 }
 
 - (void)captureStillImage:(LZCameraCaptureStillImageCompletionHandler)completionHandler {
 	
-    LZCameraQueueBlock(^{
+    LZGlobalQueueBlock(^{
         
         self.captureStillImageCompletionHandler = completionHandler;
         AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
@@ -486,10 +514,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
                      [self writeImageToPhotosAlbum:image];
                  }
              } else {
-                 LZMainQueueBlock(^{
-                     [self.delegate photosAlbumWriteFailedWithError:error];
-                     LZCameraLog(@"%@", error);
-                 })
+                 [self callBackStillImageOnMainQueue:nil error:error];
              }
          }];
     })
@@ -497,8 +522,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)startVideoRecording:(LZCameraCaptureVideoCompletionHandler)completionHandler {
 	
-    LZCameraQueueBlock((^{
-    
+    LZGlobalQueueBlock(^{
+        
         if (![self isVideoRecording]) {
             
             self.captureVideoCompletionHandler = completionHandler;
@@ -511,16 +536,16 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
                 connection.videoMirrored = device.position == AVCaptureDevicePositionFront || device.position == AVCaptureDevicePositionUnspecified;
             }
             if (device.isSmoothAutoFocusSupported) {
-
+                
                 NSError *error;
                 if ([device lockForConfiguration:&error]) {
-
+                    
                     device.smoothAutoFocusEnabled = YES;
                     [device unlockForConfiguration];
                 } else {
                     LZMainQueueBlock(^{
-                        [self.delegate cameraCaptureFailedWithError:error];
-                        LZCameraLog(@"%@", error);
+                        [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                                      withObject:error];
                     })
                 }
             }
@@ -535,23 +560,22 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             } else {
                 
                 NSString *errorDescription = @"Failed to invalide output url";
-                NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey : NSInvalidArgumentException,
-                                           NSLocalizedDescriptionKey : errorDescription};
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errorDescription};
                 NSError *error = [NSError errorWithDomain:LZCameraErrorDomain
                                                      code:LZCameraErrorInvalideFileOutputURL
                                                  userInfo:userInfo];
                 LZMainQueueBlock(^{
-                    [self.delegate cameraCaptureFailedWithError:error];
-                    LZCameraLog(@"%@", error);
+                    [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                                  withObject:error];
                 })
             }
         }
-    }))
+    })
 }
 
 - (void)stopVideoRecording {
 	
-    LZCameraQueueBlock(^{
+    LZGlobalQueueBlock(^{
         
         if ([self isVideoRecording]) {
             [self.videoFileOutput stopRecording];
@@ -569,17 +593,15 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)videoRecordedDurationWithProgress:(LZCameraRecordedDurationProgressHandler)progressHandler {
     
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, cameraQueue);
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     self.gcdSource = timer;
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC, 0.0f * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
-        LZMainQueueBlock(^{
-            if (progressHandler) {
-                
-                CMTime duration = [self isVideoRecording] ? [self videoRecordedDuration] : kCMTimeZero;
-                progressHandler(duration);
-            }
-        })
+        if (progressHandler) {
+            
+            CMTime duration = [self isVideoRecording] ? [self videoRecordedDuration] : kCMTimeZero;
+            progressHandler(duration);
+        }
     });
 }
 
@@ -620,8 +642,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
                     camera.exposureMode = AVCaptureExposureModeLocked;
                     [camera unlockForConfiguration];
                 } else {
-                    [self.delegate cameraConfigurationFailWithError:error];
-                    LZCameraLog(@"%@", error);
+                    [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
+                                                  withObject:error];
                 }
             })
         }
@@ -635,6 +657,26 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+- (void)interruptedStart:(NSNotificationCenter *)notification {
+    LZCameraLog(@"中断开始:%@", notification);
+}
+
+- (void)interruptedEnd:(NSNotificationCenter *)notification {
+   LZCameraLog(@"中断结束:%@", notification);
+}
+
+- (void)runStart:(NSNotificationCenter *)notification {
+    LZCameraLog(@"启动会话:%@", notification);
+}
+
+- (void)runStop:(NSNotificationCenter *)notification {
+    LZCameraLog(@"终止会话:%@", notification);
+}
+
+- (void)runError:(NSNotificationCenter *)notification {
+    LZCameraLog(@"会话出错:%@", notification);
 }
 
 // MARK: - Delegate
@@ -676,9 +718,13 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                 error = [NSError errorWithDomain:LZCameraErrorDomain
                                             code:LZCameraErrorDiskFull
                                         userInfo:userInfo];
-                [self.delegate cameraCaptureFailedWithError:error];
-                LZCameraLog(@"%@", error);
+            } else if (error.code == AVErrorSessionWasInterrupted) {
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Session was interrupted."};
+                error = [NSError errorWithDomain:LZCameraErrorDomain
+                                            code:LZCameraErrorSessionInterrupted
+                                        userInfo:userInfo];
             }
+            [self callBackVideoOnMainQueue:[self.videoFileOutputURL copy] error:error];
         }
 	} else {
         [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:error];
@@ -706,6 +752,26 @@ didOutputMetadataObjects:(NSArray<__kindof AVMetadataObject *> *)metadataObjects
 }
 
 // MARK: - Private
+/**
+ 执行代理方法
+
+ @param selector SEL
+ @param error NSError
+ */
+- (void)performDelegateSelectorIfSupported:(SEL)selector withObject:(NSError *)error {
+    
+    if ([self.delegate respondsToSelector:selector]) {
+        
+        if (error) {
+            LZCameraLog(@"%@ %@", NSStringFromSelector(selector), error);
+        }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [self.delegate performSelector:selector withObject:error];
+#pragma clang diagnostic pop
+    }
+}
+
 /**
  注册视频缩放监听
  */
@@ -878,8 +944,8 @@ didFinishSavingWithError:(NSError *)error
   contextInfo:(void *)contextInfo {
 	
 	if (error) {
-		[self.delegate photosAlbumWriteFailedWithError:error];
-        LZCameraLog(@"%@", error);
+		[self performDelegateSelectorIfSupported:@selector(photosAlbumWriteFailedWithError:)
+                                      withObject:error];
 	} else {
 		[self callBackStillImageOnMainQueue:image error:nil];
 	}
@@ -953,8 +1019,8 @@ didFinishSavingWithError:(NSError *)error
   contextInfo:(void *)contextInfo {
 	
 	if (error) {
-		[self.delegate photosAlbumWriteFailedWithError:error];
-        LZCameraLog(@"%@", error);
+        [self performDelegateSelectorIfSupported:@selector(photosAlbumWriteFailedWithError:)
+                                      withObject:error];
 	} else {
 		[self callBackVideoOnMainQueue:[NSURL fileURLWithPath:videoPath] error:error];
 	}

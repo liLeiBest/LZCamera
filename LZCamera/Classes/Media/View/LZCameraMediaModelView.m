@@ -10,12 +10,16 @@
 
 @implementation LZCameraMediaModelView {
     IBOutlet UIButton *cancleCaptureBtn;
-    IBOutlet LZCameraCaptureProgressView *captureContainerView;
+    IBOutlet UIView *captureContainerView;
+    IBOutlet LZCameraCaptureProgressView *captureProgressView;
     IBOutlet UIImageView *captureImgView;
-    IBOutlet UIButton *captureBtn;
+    IBOutlet UIView *captureLongVideoContainerView;
+    IBOutlet UIButton *captureLongVideoBtn;
     
     UITapGestureRecognizer *singleTap;
     UILongPressGestureRecognizer *longTap;
+    
+    BOOL canAction;
 }
 
 // MARK: - Initialization
@@ -38,7 +42,8 @@
     [captureContainerView addGestureRecognizer:longTap];
     [singleTap requireGestureRecognizerToFail:longTap];
     
-    captureBtn.hidden = YES;
+    captureLongVideoContainerView.layer.cornerRadius = 40.0f;
+    canAction = YES;
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
@@ -49,28 +54,32 @@
             
             singleTap.enabled = YES;
             longTap.enabled = NO;
-            captureBtn.hidden = YES;
+            captureContainerView.hidden = NO;
+            captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelShortVideo: {
             
             singleTap.enabled = NO;
             longTap.enabled = YES;
-            captureBtn.hidden = YES;
+            captureContainerView.hidden = NO;
+            captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelStillImageAndShortVideo: {
             
             singleTap.enabled = YES;
             longTap.enabled = YES;
-            captureBtn.hidden = YES;
+            captureContainerView.hidden = NO;
+            captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelLongVideo: {
             
             singleTap.enabled = NO;
             longTap.enabled = NO;
-            captureBtn.hidden = NO;
+            captureContainerView.hidden = YES;
+            captureLongVideoContainerView.hidden = NO;
         }
             break;
         default:
@@ -81,8 +90,10 @@
 - (void)setMaxDuration:(NSInteger)maxDuration {
     _maxDuration = maxDuration;
     
-    captureContainerView.timeMax = 10;
+    captureProgressView.timeMax = maxDuration;
 }
+
+// MARK: - Public
 
 // MARK: - UI Action
 - (IBAction)cancelDidTap:(UIButton *)sender {
@@ -95,7 +106,9 @@
     
     BOOL selected = sender.selected;
     if (self.TapToCaptureVideoHandler) {
-        self.TapToCaptureVideoHandler(!selected, selected, ^{});
+        self.TapToCaptureVideoHandler(!selected, selected, ^{
+            sender.selected = NO;
+        });
     }
     sender.selected = !sender.selected;
 }
@@ -115,8 +128,13 @@
 - (void)captureVideoDidTap:(UILongPressGestureRecognizer *)gestureRecognizer {
     
     if (self.TapToCaptureVideoHandler) {
+        
+        captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        __weak typeof(captureProgressView) weakCaptureProgressView = captureProgressView;
+        __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
         self.TapToCaptureVideoHandler(gestureRecognizer.state == UIGestureRecognizerStateBegan, gestureRecognizer.state == UIGestureRecognizerStateEnded, ^{
-            
+            [weakCaptureProgressView clearProgress];
+            weakCaptureImgView.transform = CGAffineTransformIdentity;
         });
     }
 }

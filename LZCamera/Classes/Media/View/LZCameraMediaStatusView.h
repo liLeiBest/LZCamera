@@ -9,11 +9,6 @@
 #import <coremedia/CMTime.h>
 #import "LZCameraMediaDefine.h"
 
-typedef NS_ENUM(NSUInteger, LZFlashVisualState) {
-    LZFlashVisualStateOn,
-    LZFlashVisualStateOff,
-};
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaStatusView : UIView
@@ -37,9 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
  更新时间进度
 
  @param durationTime CMTime
- @param show 是否显示
  */
-- (void)updateDurationTime:(CMTime)durationTime show:(BOOL)show;
+- (void)updateDurationTime:(CMTime)durationTime;
 
 @end
 

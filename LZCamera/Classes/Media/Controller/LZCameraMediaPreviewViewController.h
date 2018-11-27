@@ -11,7 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaPreviewViewController : UIViewController
 
-@property (strong, nonatomic) id previewObject;
+@property (strong, nonatomic) UIImage *previewImage;
+@property (strong, nonatomic) NSURL *videoURL;
+
 
 @end
 

@@ -22,6 +22,8 @@
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraMediaViewController.h"
 #import "LZCameraMedia.h"
+#import "LZCameraCaptureFlashControl.h"
+#import "LZCameraCaptureLongVideoButton.h"
 #import "LZCameraCaptureProgressView.h"
 #import "LZCameraMediaModelView.h"
 #import "LZCameraMediaPreviewView.h"

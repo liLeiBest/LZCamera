@@ -6,10 +6,10 @@
 //
 
 #import "LZCameraMediaStatusView.h"
-
+#import "LZCameraCaptureFlashControl.h"
 
 @implementation LZCameraMediaStatusView {
-    IBOutlet UIButton *flashlightBtn;
+    IBOutlet LZCameraCaptureFlashControl *flashlightControl;
     IBOutlet UIButton *switchCameraBtn;
     IBOutlet UILabel *durationTimeLab;
 }
@@ -18,13 +18,33 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    flashlightBtn.backgroundColor = [UIColor clearColor];
     switchCameraBtn.backgroundColor = [UIColor clearColor];
-    UIImage *flashlightImg = [self imageInBundle:@"media_flashlight_auto"];
-    [flashlightBtn setImage:flashlightImg forState:UIControlStateNormal];
     UIImage *switchCameraImg = [self imageInBundle:@"media_camera_switch"];
     [switchCameraBtn setImage:switchCameraImg forState:UIControlStateNormal];
-    [self updateDurationTime:kCMTimeZero show:NO];
+}
+
+- (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
+    _captureModel = captureModel;
+    
+    durationTimeLab.hidden = captureModel != LZCameraCaptureModelLongVideo;
+}
+
+// MARK: - Public
+- (void)updateFlashVisualState:(LZFlashVisualState)state {
+    flashlightControl.hidden = state == LZFlashVisualStateOff;
+}
+
+- (void)updateDurationTime:(CMTime)durationTime {
+    
+    durationTimeLab.hidden = self.captureModel == LZCameraCaptureModelLongVideo ? NO : YES;
+    NSUInteger time = (NSUInteger)CMTimeGetSeconds(durationTime);
+    NSInteger hours = (time / 3600);
+    NSInteger minutes = (time / 60) % 60;
+    NSInteger seconds = time % 60;
+    
+    NSString *format = @"%02i:%02i:%02i";
+    NSString *timeString = [NSString stringWithFormat:format, hours, minutes, seconds];
+    durationTimeLab.text = timeString;
 }
 
 // MARK: - UI Action
@@ -38,24 +58,6 @@
     if (self.TapToSwitchCameraHandler) {
         self.TapToSwitchCameraHandler();
     }
-}
-
-// MARK: - Public
-- (void)updateFlashVisualState:(LZFlashVisualState)state {
-    flashlightBtn.hidden = state == LZFlashVisualStateOff;
-}
-
-- (void)updateDurationTime:(CMTime)durationTime show:(BOOL)show {
-    
-    durationTimeLab.hidden = show ? NO : YES;
-    NSUInteger time = (NSUInteger)CMTimeGetSeconds(durationTime);
-    NSInteger hours = (time / 3600);
-    NSInteger minutes = (time / 60) % 60;
-    NSInteger seconds = time % 60;
-    
-    NSString *format = @"%02i:%02i:%02i";
-    NSString *timeString = [NSString stringWithFormat:format, hours, minutes, seconds];
-    durationTimeLab.text = timeString;
 }
 
 // MARK: - Private

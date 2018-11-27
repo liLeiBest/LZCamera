@@ -19,13 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cameraConfigurationFailWithError:(NSError *)error;
 
 /**
- 摄像头捕捉失败回调
-
- @param error NSError
- */
-- (void)cameraCaptureFailedWithError:(NSError *)error;
-
-/**
  相册写入失败回调
 
  @param error NSError

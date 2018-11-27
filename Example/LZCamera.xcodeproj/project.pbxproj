@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		284CA8A621A69FB300738014 /* press.wav in Resources */ = {isa = PBXBuildFile; fileRef = 284CA8A421A69FB200738014 /* press.wav */; };
 		284CA8A721A69FB300738014 /* camera.wav in Resources */ = {isa = PBXBuildFile; fileRef = 284CA8A521A69FB300738014 /* camera.wav */; };
-		284F80BB21A27FFF00454BAD /* LZPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 284F80BA21A27FFF00454BAD /* LZPreviewViewController.m */; };
 		474FB4855EDACE6BFC432B82 /* Pods_LZCamera_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A1F62E87E74F39C2B31F2C4 /* Pods_LZCamera_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -42,8 +41,6 @@
 /* Begin PBXFileReference section */
 		284CA8A421A69FB200738014 /* press.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = press.wav; sourceTree = "<group>"; };
 		284CA8A521A69FB300738014 /* camera.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = camera.wav; sourceTree = "<group>"; };
-		284F80B921A27FFF00454BAD /* LZPreviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LZPreviewViewController.h; sourceTree = "<group>"; };
-		284F80BA21A27FFF00454BAD /* LZPreviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LZPreviewViewController.m; sourceTree = "<group>"; };
 		564C07786D8F7172CC616F4C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* LZCamera_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LZCamera_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -144,8 +141,6 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* LZViewController.h */,
 				6003F5A6195388D20070C39A /* LZViewController.m */,
-				284F80B921A27FFF00454BAD /* LZPreviewViewController.h */,
-				284F80BA21A27FFF00454BAD /* LZPreviewViewController.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -374,7 +369,6 @@
 				6003F59E195388D20070C39A /* LZAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LZViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				284F80BB21A27FFF00454BAD /* LZPreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

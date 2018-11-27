@@ -36,27 +36,22 @@
     UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
     [self.sureBtn setImage:surelImg forState:UIControlStateNormal];
     
-    if (self.previewObject) {
+    self.previewImgView.image = self.previewImage;
+    if (self.videoURL) {
         
-        if ([self.previewObject isKindOfClass:[UIImage class]]) {
-            
-            self.previewImgView.image = self.previewObject;
-        } else {
-            
-            AVAsset *asset = [AVAsset assetWithURL:self.previewObject];
-            self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-            self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-            self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-            self.playerLayer.frame = self.view.layer.bounds;
-            [self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
-            [self.player play];
-            
-            [[NSNotificationCenter defaultCenter]
-             addObserver:self
-             selector:@selector(playerItemDidPlayToEnd:)
-             name:AVPlayerItemDidPlayToEndTimeNotification
-             object:nil];
-        }
+        AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+        self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+        self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
+        self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+        self.playerLayer.frame = self.view.layer.bounds;
+        [self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
+        [self.player play];
+        
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(playerItemDidPlayToEnd:)
+         name:AVPlayerItemDidPlayToEndTimeNotification
+         object:nil];
     }
 }
 

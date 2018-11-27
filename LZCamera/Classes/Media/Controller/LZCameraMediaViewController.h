@@ -14,8 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 捕捉模式，默认是 LZCameraCaptureModelStillImageAndShortVideo */
 @property (assign, nonatomic) LZCameraCaptureModel captureModel;
-/** 短时间持续时间 */
-@property (assign, nonatomic) NSInteger maxDuration;
+/** 短视频持续时间，单位：秒，默认 10 秒 */
+@property (assign, nonatomic) NSInteger maxShortVideoDuration;
+/** 是否检测人脸，默认 NO */
+@property (assign, nonatomic) BOOL detectFaces;
 
 
 /**

@@ -12,6 +12,22 @@
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
 
+/**
+ 播放声音
+ 
+ @param soundName 声音名称
+ */
+void lzPlaySound(NSString *soundName) {
+    
+    NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:soundName ofType:nil];
+    NSURL *pathURL = [NSURL URLWithString:path];
+    CFURLRef cfURL = CFBridgingRetain(pathURL);
+    static SystemSoundID camera_sound = 0;
+    AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
+    AudioServicesPlaySystemSound(camera_sound);
+    AudioServicesDisposeSystemSoundID(camera_sound);
+}
+
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet LZCameraMediaPreviewView *mediaPreviewView;
@@ -20,18 +36,41 @@
 @property (weak, nonatomic) IBOutlet UILabel *captureTipLabel;
 
 @property (strong, nonatomic) LZCameraController *cameraController;
+@property (strong, nonatomic) UIImage *previewImage;
+@property (strong, nonatomic) NSURL *videoURL;
 
 @end
 
 @implementation LZCameraMediaViewController
 
 // MARK: - Initialization
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    
+    if (self = [super initWithCoder:aDecoder]) {
+        
+        self.captureModel = LZCameraCaptureModelStillImageAndShortVideo;
+        self.maxShortVideoDuration = 10.0f;
+        self.detectFaces = NO;
+    }
+    return self;
+}
+
+- (void)loadView {
+    [super loadView];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.captureModel = LZCameraCaptureModelStillImageAndShortVideo;
     [self configCameraController];
     [self setupView];
+    [self configCaptureTipView];
+}
+
+- (void)dealloc {
+    [self.cameraController stopSession];
+    LZCameraLog();
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -39,40 +78,17 @@
     if ([segue.identifier isEqualToString:@"LZCameraPreviewIdentifier"]) {
         
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
-        ctr.previewObject = sender;
-    }
-}
-
-- (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
-    _captureModel = captureModel;
-    
-    switch (captureModel) {
-        case LZCameraCaptureModeStillImage:
-            self.captureTipLabel.text = @"点击拍照";
-            break;
-        case LZCameraCaptureModelShortVideo:
-            self.captureTipLabel.text = @"长按录像";
-            break;
-        case LZCameraCaptureModelStillImageAndShortVideo:
-            self.captureTipLabel.text = @"点击拍照，长按录像";
-            break;
-        case LZCameraCaptureModelLongVideo:
-            self.captureTipLabel.text = nil;
-            break;
-        default:
-            break;
-    }
-    
-    if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
-        self.maxDuration = 10.0f;
+        ctr.previewImage = self.previewImage;
+        ctr.videoURL = self.videoURL;
     }
 }
 
 // MARK: - Public
 + (instancetype)instance {
     
+    NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController"
-                                                         bundle:LZCameraNSBundle(@"LZCameraMedia")];
+                                                         bundle:bundle];
     return storyboard.instantiateInitialViewController;
 }
 
@@ -82,9 +98,11 @@
  */
 - (void)configCameraController {
     
+    __weak typeof(self) weakSelf = self;
+    
     LZCameraConfig *cameraConfig = [[LZCameraConfig alloc] init];
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
-        cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxDuration, 1);
+        cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
     }
     self.cameraController = [LZCameraController cameraControllerWithConfig:cameraConfig];
     self.cameraController.delegate = self;
@@ -93,32 +111,34 @@
         
         self.cameraController.flashMode = AVCaptureFlashModeAuto;
         self.cameraController.torchMode = AVCaptureTorchModeAuto;
-        [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
         [self.cameraController startSession];
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
-    
     [self.cameraController videoRecordedDurationWithProgress:^(CMTime duration) {
-        [self.mediaStatusView updateDurationTime:duration show:YES];
+        [weakSelf.mediaStatusView updateDurationTime:duration];
     }];
     
-    [self.cameraController captureMetaDataObjectWithTypes:@[AVMetadataObjectTypeFace] completionHandler:^(NSArray<AVMetadataObject *> * _Nullable metadataObjects, NSError * _Nullable error) {
+    if (self.detectFaces) {
         
-        NSMutableArray *faces = [NSMutableArray array];
-        for (AVMetadataMachineReadableCodeObject *objct in metadataObjects) {
+        [self.cameraController captureMetaDataObjectWithTypes:@[AVMetadataObjectTypeFace] completionHandler:^(NSArray<AVMetadataObject *> * _Nullable metadataObjects, NSError * _Nullable error) {
             
-            if ([objct isKindOfClass:[AVMetadataFaceObject class]]) {
+            typeof(weakSelf) strongSelf = weakSelf;
+            NSMutableArray *faces = [NSMutableArray array];
+            for (AVMetadataMachineReadableCodeObject *objct in metadataObjects) {
                 
-                AVMetadataFaceObject *face = (AVMetadataFaceObject *)objct;
-                LZCameraLog(@"Face detected with ID: %li", (long)face.faceID);
-                LZCameraLog(@"Face bounds: %@", NSStringFromCGRect(face.bounds));
-                [faces addObject:objct];
+                if ([objct isKindOfClass:[AVMetadataFaceObject class]]) {
+                    
+                    AVMetadataFaceObject *face = (AVMetadataFaceObject *)objct;
+                    LZCameraLog(@"Face detected with ID: %li", (long)face.faceID);
+                    LZCameraLog(@"Face bounds: %@", NSStringFromCGRect(face.bounds));
+                    [faces addObject:objct];
+                }
             }
-        }
-        
-        [self.mediaPreviewView detectFaces:faces];
-    }];
+            
+            [strongSelf.mediaPreviewView detectFaces:faces];
+        }];
+    }
 }
 
 /**
@@ -126,90 +146,131 @@
  */
 - (void)setupView {
     
-    [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:1.0f];
+    __weak typeof(self) weakSelf = self;
+    [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
     self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
     self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
     self.mediaPreviewView.TapToFocusAtPointHandler = ^(CGPoint point) {
-        [self.cameraController focusAtPoint:point];
+        [weakSelf.cameraController focusAtPoint:point];
     };
     self.mediaPreviewView.TapToExposeAtPointHandler = ^(CGPoint point) {
-        [self.cameraController exposeAtPoint:point];
+        [weakSelf.cameraController exposeAtPoint:point];
     };
     self.mediaPreviewView.TapToResetFocusAndExposure = ^{
-        [self.cameraController resetFocusAndExposureMode];
+        [weakSelf.cameraController resetFocusAndExposureMode];
     };
     self.mediaPreviewView.PinchToZoomHandler = ^(BOOL complete, BOOL magnify, CGFloat rampZoomValue) {
         
+        typeof(weakSelf) strongSelf = weakSelf;
         if (magnify) {
-             [self.cameraController rampZoomValue:1.0f];
+             [strongSelf.cameraController rampZoomValue:1.0f];
         } else {
-            [self.cameraController rampZoomValue:0.0f];
+            [strongSelf.cameraController rampZoomValue:0.0f];
         }
         if (complete) {
-            [self.cameraController cancelRampingZoom];
+            [strongSelf.cameraController cancelRampingZoom];
         }
     };
     
     self.mediaStatusView.captureModel = self.captureModel;
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
-        self.cameraController.flashMode = AVCaptureFlashModeOn;
-        self.cameraController.torchMode = AVCaptureTorchModeOn;
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+//        strongSelf.cameraController.flashMode = AVCaptureFlashModeOn;
+//        strongSelf.cameraController.torchMode = AVCaptureTorchModeOn;
     };
     self.mediaStatusView.TapToSwitchCameraHandler = ^{
         
-        [self.cameraController switchCameras];
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf.cameraController switchCameras];
         LZFlashVisualState state = LZFlashVisualStateOn;
-        if (![self.cameraController cameraHasFlash] || ![self.cameraController cameraHasTorch]) {
+        if (![strongSelf.cameraController cameraHasFlash] || ![strongSelf.cameraController cameraHasTorch]) {
             state = LZFlashVisualStateOff;
         }
-        [self.mediaStatusView updateFlashVisualState:state];
+        [strongSelf.mediaStatusView updateFlashVisualState:state];
     };
     
     self.mediaModelView.captureModel = self.captureModel;
     self.mediaModelView.TapToCancelCaptureHandler = ^{
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
     };
     self.mediaModelView.TapToCaptureImageHandler = ^(void (^ _Nonnull ComplteHandler)(void)) {
         
-        [self.cameraController captureStillImage:^(UIImage * _Nonnull stillImage, NSError * _Nullable error) {
+        lzPlaySound(@"media_camera.wav");
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf.cameraController captureStillImage:^(UIImage * _Nonnull stillImage, NSError * _Nullable error) {
             
-            NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:@"media_camera.wav" ofType:nil];
-            NSURL *pathURL = [NSURL URLWithString:path];
-            CFURLRef cfURL = CFBridgingRetain(pathURL);
-            static SystemSoundID camera_sound = 0;
-            AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
-            AudioServicesPlaySystemSound(camera_sound);
-            AudioServicesDisposeSystemSoundID(camera_sound);
-            [self performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
+            strongSelf.previewImage = stillImage;
+            strongSelf.videoURL = nil;
+            [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
             ComplteHandler();
         }];
     };
     self.mediaModelView.TapToCaptureVideoHandler = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
         
+        typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
             
-            NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:@"media_press.wav" ofType:nil];
-            NSURL *pathURL = [NSURL URLWithString:path];
-            CFURLRef cfURL = CFBridgingRetain(pathURL);
-            static SystemSoundID camera_sound = 0;
-            AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
-            AudioServicesPlaySystemSound(camera_sound);
-            AudioServicesDisposeSystemSoundID(camera_sound);
-            if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
-                self.mediaModelView.maxDuration = self.maxDuration;
+            if (strongSelf.captureModel == LZCameraCaptureModelShortVideo || strongSelf.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
+                strongSelf.mediaModelView.maxDuration = strongSelf.maxShortVideoDuration;
             }
-            [self.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
+            [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
                 
-                [self.mediaStatusView updateDurationTime:kCMTimeZero show:NO];
-                [self performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+                [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
+                if (!error) {
+                    
+                    strongSelf.previewImage = thumbnail;
+                    strongSelf.videoURL = videoURL;
+                    [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+                } else {
+                    
+                    NSError *error;
+                    NSFileManager *fileM = [NSFileManager defaultManager];
+                    [fileM removeItemAtURL:videoURL error:&error];
+                    if (error) {
+                        LZCameraLog(@"删除文件失败:%@", error);
+                    }
+                }
                 ComplteHandler();
             }];
         } else if (end) {
             
-            [self.cameraController stopVideoRecording];
+            [strongSelf.cameraController stopVideoRecording];
             ComplteHandler();
         }
     };
+}
+
+/**
+ 配置捕捉提示
+ */
+- (void)configCaptureTipView {
+    
+    switch (self.captureModel) {
+        case LZCameraCaptureModeStillImage:
+            self.captureTipLabel.text = @"轻触拍照";
+            break;
+        case LZCameraCaptureModelShortVideo:
+            self.captureTipLabel.text = @"按住录像";
+            break;
+        case LZCameraCaptureModelStillImageAndShortVideo:
+            self.captureTipLabel.text = @"轻触拍照，按住录像";
+            break;
+        case LZCameraCaptureModelLongVideo:
+            self.captureTipLabel.text = nil;
+            break;
+        default:
+            break;
+    }
+    
+    [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:1.0f];
+}
+
+/**
+ 隐藏捕捉提示
+ */
+- (void)hideCaptureTip {
+    self.captureTipLabel.hidden = YES;
 }
 
 // 压缩视频
@@ -255,13 +316,6 @@
 }
 
 /**
- 隐藏捕捉提示
- */
-- (void)hideCaptureTip {
-    self.captureTipLabel.hidden = YES;
-}
-
-/**
  提示错误
 
  @param error NSError
@@ -281,13 +335,6 @@
 
 // MARK: - Delegate
 // MARK: <LZCameraControllerDelegate>
-- (void)cameraCaptureFailedWithError:(NSError *)error {
-    if ([self.cameraController isVideoRecording]) {
-        [self.cameraController stopVideoRecording];
-    }
-    [self alertError:error];
-}
-
 - (void)cameraConfigurationFailWithError:(NSError *)error {
     [self alertError:error];
 }

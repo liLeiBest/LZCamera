@@ -10,7 +10,7 @@ TODO: Add long description of the pod here.
   s.homepage         = 'https://github.com/liLeiBest/LZCamera'
   # s.screenshots    = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'lilei_hapy@163.com' => 'lilei_hapy@163.com' }
+  s.author           = { 'lilei' => 'lilei0502@139.com' }
   s.source           = { :git => 'git@github.com:liLeiBest/LZCamera.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
@@ -20,19 +20,19 @@ TODO: Add long description of the pod here.
   s.public_header_files = 'LZCamera/Classes/LZCamera.h'
 
   s.subspec 'Core' do |core|
-    core.source_files        = 'LZCamera/Classes/Core/**/*'
+    core.source_files        = 'LZCamera/Classes/Core/**/*.{h,m}'
     core.public_header_files = 'LZCamera/Classes/Core/**/*.h'
   end
 
   s.subspec 'Media' do |media|
-    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m,storyboard}'
+    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}'
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
   end
 
   s.subspec 'Code' do |code|
-     code.source_files        = 'LZCamera/Classes/Code/**/*'
+     code.source_files        = 'LZCamera/Classes/Code/**/*.{h,m}'
      code.public_header_files = 'LZCamera/Classes/Code/**/*.h'
   end
 

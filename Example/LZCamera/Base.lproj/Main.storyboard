@@ -23,57 +23,16 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="YLb-M2-bYg">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="zkv-Fq-pJa">
+                        <barButtonItem key="rightBarButtonItem" title="相机" id="zkv-Fq-pJa">
                             <connections>
                                 <action selector="testDidClick:" destination="whP-gf-Uak" id="gsF-rn-qij"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="pichGestureRecognizer" destination="Le7-fy-JUX" id="c3p-lB-zSp"/>
-                        <segue destination="mnx-MF-RFY" kind="show" identifier="ShowStillImage" id="avt-y3-Ee2"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pinchGestureRecognizer id="Le7-fy-JUX">
-                    <connections>
-                        <action selector="pichDidTap:" destination="whP-gf-Uak" id="a0t-SB-Utl"/>
-                    </connections>
-                </pinchGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1036" y="402.54872563718146"/>
-        </scene>
-        <!--Preview View Controller-->
-        <scene sceneID="9PK-VX-gnk">
-            <objects>
-                <viewController id="mnx-MF-RFY" customClass="LZPreviewViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="TrW-Bl-aBa"/>
-                        <viewControllerLayoutGuide type="bottom" id="Uwh-l8-8tD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4JA-Oj-Mvz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DIm-x9-4Ii">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Uwh-l8-8tD" firstAttribute="top" secondItem="DIm-x9-4Ii" secondAttribute="bottom" id="2MK-ak-tcq"/>
-                            <constraint firstItem="DIm-x9-4Ii" firstAttribute="leading" secondItem="4JA-Oj-Mvz" secondAttribute="leading" id="2xE-UW-pkO"/>
-                            <constraint firstItem="DIm-x9-4Ii" firstAttribute="top" secondItem="TrW-Bl-aBa" secondAttribute="bottom" id="YCa-6s-UoW"/>
-                            <constraint firstAttribute="trailing" secondItem="DIm-x9-4Ii" secondAttribute="trailing" id="ztT-lx-U6X"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="DIm-x9-4Ii" id="bvg-rl-cBx"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n4e-HY-wAn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1828" y="403"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IT8-4U-nsh">

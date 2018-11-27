@@ -34,7 +34,7 @@
                                             <action selector="cancelDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="gEp-aX-FGe"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
+                                    <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
                                         <rect key="frame" x="157.5" y="30" width="60" height="60"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.13" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>

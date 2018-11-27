@@ -9,7 +9,7 @@
     "file": "LICENSE"
   },
   "authors": {
-    "lilei_hapy@163.com": "lilei_hapy@163.com"
+    "lilei": "lilei0502@139.com"
   },
   "source": {
     "git": "git@github.com:liLeiBest/LZCamera.git",
@@ -29,12 +29,12 @@
   "subspecs": [
     {
       "name": "Core",
-      "source_files": "LZCamera/Classes/Core/**/*",
+      "source_files": "LZCamera/Classes/Core/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Core/**/*.h"
     },
     {
       "name": "Media",
-      "source_files": "LZCamera/Classes/Media/**/*.{h,m,storyboard}",
+      "source_files": "LZCamera/Classes/Media/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Media/**/*.h",
       "resources": "LZCamera/Classes/Media/Resources/LZCameraMedia.bundle",
       "dependencies": {
@@ -45,7 +45,7 @@
     },
     {
       "name": "Code",
-      "source_files": "LZCamera/Classes/Code/**/*",
+      "source_files": "LZCamera/Classes/Code/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Code/**/*.h"
     }
   ]
