@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) UIImage *previewImage;
 @property (strong, nonatomic) NSURL *videoURL;
-
+@property (copy, nonatomic) void(^TapToSureHandler)(void);
+@property (strong, nonatomic) UIViewController *target;
 
 @end
 

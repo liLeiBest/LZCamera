@@ -35,6 +35,7 @@
     self.editBtn.layer.cornerRadius = 30.0f;
     UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
     [self.sureBtn setImage:surelImg forState:UIControlStateNormal];
+    self.sureBtn.backgroundColor = [UIColor clearColor];
     
     self.previewImgView.image = self.previewImage;
     if (self.videoURL) {
@@ -55,6 +56,10 @@
     }
 }
 
+- (void)dealloc {
+    LZCameraLog();
+}
+
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
@@ -66,6 +71,10 @@
 
 - (IBAction)sureDidClick:(id)sender {
     
+    if (self.TapToSureHandler) {
+        self.TapToSureHandler();
+    }
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 }
 
 // MARK: - Observer

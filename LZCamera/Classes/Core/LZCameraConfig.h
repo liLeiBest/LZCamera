@@ -5,6 +5,7 @@
 //  Created by Dear.Q on 2018/11/21.
 //
 
+#import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

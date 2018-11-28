@@ -11,8 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraCaptureProgressView : UIView
 
-@property (assign, nonatomic) NSInteger timeMax;
+/** 进度 */
+@property (assign, nonatomic) CGFloat progressValue;
 
+/**
+ 清除进度
+ */
 - (void)clearProgress;
 
 @end

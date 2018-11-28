@@ -217,6 +217,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)captureMetaDataObjectWithTypes:(NSArray<AVMetadataObjectType> *)metaObjectTypes
                      completionHandler:(LZCameraCaptureMetaDataCompletionHandler)completionHandler;
 
+// MARK: - 权限
+/**
+ 是否有摄像头权限
+
+ @return BOOL
+ */
+- (BOOL)grantCameraAuthority;
+
 @end
 
 NS_ASSUME_NONNULL_END

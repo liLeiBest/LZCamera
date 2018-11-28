@@ -21,7 +21,6 @@
     switchCameraBtn.backgroundColor = [UIColor clearColor];
     UIImage *switchCameraImg = [self imageInBundle:@"media_camera_switch"];
     [switchCameraBtn setImage:switchCameraImg forState:UIControlStateNormal];
-	
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
@@ -33,12 +32,17 @@
 - (void)setTapToFlashModelHandler:(void (^)(LZCameraFlashMode))TapToFlashModelHandler {
 	_TapToFlashModelHandler = TapToFlashModelHandler;
 	
+    flashlightControl.selectedMode = LZCameraFlashModeAuto;
 	flashlightControl.TapToFlashModeHandler = TapToFlashModelHandler;
 }
 
 // MARK: - Public
-- (void)updateFlashVisualState:(LZFlashVisualState)state {
-    flashlightControl.hidden = state == LZFlashVisualStateOff;
+- (void)updateFlashVisualState:(LZControlVisualState)state {
+    flashlightControl.hidden = state == LZControlVisualStateOff;
+}
+
+- (void)updateSwitchCameraVisualState:(LZControlVisualState)state {
+    switchCameraBtn.hidden = state == LZControlVisualStateOff;
 }
 
 - (void)updateDurationTime:(CMTime)durationTime {

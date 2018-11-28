@@ -33,7 +33,7 @@
       "public_header_files": "LZCamera/Classes/Core/**/*.h"
     },
     {
-      "name": "Media",
+      "name": "MediaCapture",
       "source_files": "LZCamera/Classes/Media/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Media/**/*.h",
       "resources": "LZCamera/Classes/Media/Resources/LZCameraMedia.bundle",
@@ -44,7 +44,7 @@
       }
     },
     {
-      "name": "Code",
+      "name": "CodeCapture",
       "source_files": "LZCamera/Classes/Code/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Code/**/*.h"
     }

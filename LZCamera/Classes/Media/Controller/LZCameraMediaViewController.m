@@ -38,6 +38,7 @@ void lzPlaySound(NSString *soundName) {
 @property (strong, nonatomic) LZCameraController *cameraController;
 @property (strong, nonatomic) UIImage *previewImage;
 @property (strong, nonatomic) NSURL *videoURL;
+@property (assign, nonatomic) CMTime videoDuration;
 
 @end
 
@@ -48,16 +49,16 @@ void lzPlaySound(NSString *soundName) {
     
     if (self = [super initWithCoder:aDecoder]) {
         
+        self.showStatusBar = YES;
+        self.showFlashModeInStatusBar = YES;
+        self.showSwitchCameraInStatusBar = YES;
         self.captureModel = LZCameraCaptureModelStillImageAndShortVideo;
         self.maxShortVideoDuration = 10.0f;
+        self.minShortVideoDuration = 3.0f;
         self.detectFaces = NO;
+        self.videoDuration = kCMTimeZero;
     }
     return self;
-}
-
-- (void)loadView {
-    [super loadView];
-    
 }
 
 - (void)viewDidLoad {
@@ -66,6 +67,19 @@ void lzPlaySound(NSString *soundName) {
     [self configCameraController];
     [self setupView];
     [self configCaptureTipView];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (![self.cameraController grantCameraAuthority]) {
+        
+        NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+        NSString *message = [NSString stringWithFormat:@"请在iPhone的“设置-隐私”选项中，允许%@访问您的摄像头和麦克风。", appName];
+        [self alertMessage:message handler:^(UIAlertAction *action) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+    }
 }
 
 - (void)dealloc {
@@ -80,6 +94,21 @@ void lzPlaySound(NSString *soundName) {
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
         ctr.previewImage = self.previewImage;
         ctr.videoURL = self.videoURL;
+        ctr.target = self;
+        __weak typeof(self) weakSelf = self;
+        ctr.TapToSureHandler = ^{
+            
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf.videoURL) {
+                if (strongSelf.CameraVideoCompletionHandler) {
+                    strongSelf.CameraVideoCompletionHandler(strongSelf.previewImage, strongSelf.videoURL);
+                }
+            } else {
+                if (strongSelf.CameraImageCompletionHandler) {
+                    strongSelf.CameraImageCompletionHandler(strongSelf.previewImage);
+                }
+            }
+        };
     }
 }
 
@@ -111,12 +140,20 @@ void lzPlaySound(NSString *soundName) {
         
         self.cameraController.flashMode = AVCaptureFlashModeAuto;
         self.cameraController.torchMode = AVCaptureTorchModeAuto;
+        [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
+        self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
+        self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
         [self.cameraController startSession];
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
     [self.cameraController videoRecordedDurationWithProgress:^(CMTime duration) {
-        [weakSelf.mediaStatusView updateDurationTime:duration];
+        
+        LZCameraLog(@"11111111111更新时间");
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.videoDuration = duration;
+        [strongSelf.mediaStatusView updateDurationTime:duration];
+        [strongSelf.mediaModelView updateDurationTime:duration];
     }];
     
     if (self.detectFaces) {
@@ -147,9 +184,8 @@ void lzPlaySound(NSString *soundName) {
 - (void)setupView {
     
     __weak typeof(self) weakSelf = self;
-    [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
-    self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
-    self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
+    
+    // 预览视图
     self.mediaPreviewView.TapToFocusAtPointHandler = ^(CGPoint point) {
         [weakSelf.cameraController focusAtPoint:point];
     };
@@ -171,7 +207,11 @@ void lzPlaySound(NSString *soundName) {
             [strongSelf.cameraController cancelRampingZoom];
         }
     };
-    
+
+    // 状态视图
+    self.mediaStatusView.hidden = !self.showStatusBar;
+    [self.mediaStatusView updateFlashVisualState:self.showFlashModeInStatusBar ? LZControlVisualStateOn : LZControlVisualStateOff];
+    [self.mediaStatusView updateSwitchCameraVisualState:self.showSwitchCameraInStatusBar ? LZControlVisualStateOn : LZControlVisualStateOff];
     self.mediaStatusView.captureModel = self.captureModel;
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
         
@@ -183,13 +223,17 @@ void lzPlaySound(NSString *soundName) {
         
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController switchCameras];
-        LZFlashVisualState state = LZFlashVisualStateOn;
-        if (![strongSelf.cameraController cameraHasFlash] || ![strongSelf.cameraController cameraHasTorch]) {
-            state = LZFlashVisualStateOff;
+        if (strongSelf.showFlashModeInStatusBar) {
+            
+            LZControlVisualState state = LZControlVisualStateOn;
+            if (![strongSelf.cameraController cameraHasFlash] || ![strongSelf.cameraController cameraHasTorch]) {
+                state = LZControlVisualStateOff;
+            }
+            [strongSelf.mediaStatusView updateFlashVisualState:state];
         }
-        [strongSelf.mediaStatusView updateFlashVisualState:state];
     };
     
+    // 拍照视图
     self.mediaModelView.captureModel = self.captureModel;
     self.mediaModelView.TapToCancelCaptureHandler = ^{
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
@@ -211,13 +255,14 @@ void lzPlaySound(NSString *soundName) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
             
-            if (strongSelf.captureModel == LZCameraCaptureModelShortVideo || strongSelf.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
-                strongSelf.mediaModelView.maxDuration = strongSelf.maxShortVideoDuration;
-            }
+            strongSelf.mediaModelView.maxDuration = strongSelf.maxShortVideoDuration;
             [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
                 
+                LZCameraLog(@"11111111111停止了");
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
-                if (!error) {
+                CMTime minTime = CMTimeMake(strongSelf.minShortVideoDuration, 1);
+                int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
+                if (compareResult >= 0) {
                     
                     strongSelf.previewImage = thumbnail;
                     strongSelf.videoURL = videoURL;
@@ -234,9 +279,7 @@ void lzPlaySound(NSString *soundName) {
                 ComplteHandler();
             }];
         } else if (end) {
-            
             [strongSelf.cameraController stopVideoRecording];
-            ComplteHandler();
         }
     };
 }
@@ -318,17 +361,17 @@ void lzPlaySound(NSString *soundName) {
 /**
  提示错误
 
- @param error NSError
+ @param message NSString
  */
-- (void)alertError:(NSError *)error {
+- (void)alertMessage:(NSString *)message handler:(void (^)(UIAlertAction *action))handler {
     
     UIAlertController *alertCtr =
-    [UIAlertController alertControllerWithTitle:@"ERROR"
-                                        message:error.localizedDescription
+    [UIAlertController alertControllerWithTitle:@"提示"
+                                        message:message
                                  preferredStyle:UIAlertControllerStyleAlert];
-    [alertCtr addAction:[UIAlertAction actionWithTitle:@"OK"
+    [alertCtr addAction:[UIAlertAction actionWithTitle:@"确定"
                                                  style:UIAlertActionStyleDefault
-                                               handler:nil]];
+                                               handler:handler]];
     [self presentViewController:alertCtr animated:YES completion:nil];
 }
 
@@ -336,11 +379,11 @@ void lzPlaySound(NSString *soundName) {
 // MARK: - Delegate
 // MARK: <LZCameraControllerDelegate>
 - (void)cameraConfigurationFailWithError:(NSError *)error {
-    [self alertError:error];
+    [self alertMessage:error.localizedDescription handler:nil];
 }
 
 - (void)photosAlbumWriteFailedWithError:(NSError *)error {
-    [self alertError:error];
+    [self alertMessage:error.localizedDescription handler:nil];
 }
 
 @end

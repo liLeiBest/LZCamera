@@ -12,12 +12,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaViewController : UIViewController
 
+/** 是否显示状态栏，默认 YES */
+@property (assign, nonatomic) BOOL showStatusBar;
+/** 是否显示状态栏里的闪光灯模式，默认 YES */
+@property (assign, nonatomic) BOOL showFlashModeInStatusBar;
+/** 是否显示状态栏里的摄像头切换，默认 YES */
+@property (assign, nonatomic) BOOL showSwitchCameraInStatusBar;
+
 /** 捕捉模式，默认是 LZCameraCaptureModelStillImageAndShortVideo */
 @property (assign, nonatomic) LZCameraCaptureModel captureModel;
-/** 短视频持续时间，单位：秒，默认 10 秒 */
-@property (assign, nonatomic) NSInteger maxShortVideoDuration;
+/** 短视频最长持续时间，单位：秒，默认 10 秒 */
+@property (assign, nonatomic) CGFloat maxShortVideoDuration;
+/** 短视频最短持续时间，单位：秒，默认 3 秒 */
+@property (assign, nonatomic) CGFloat minShortVideoDuration;
 /** 是否检测人脸，默认 NO */
 @property (assign, nonatomic) BOOL detectFaces;
+
+/** 拍摄图片完成回调 */
+@property (copy, nonatomic) void(^CameraImageCompletionHandler)(UIImage *stillImage);
+/** 拍摄视频完成回调 */
+@property (copy, nonatomic) void(^CameraVideoCompletionHandler)(UIImage *thumbnailImage, NSURL *videoURL);
 
 
 /**

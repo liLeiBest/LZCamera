@@ -29,14 +29,14 @@
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysw-pW-cCv">
                                         <rect key="frame" x="77.5" y="30" width="60" height="60"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.13" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="cancelDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="gEp-aX-FGe"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
                                         <rect key="frame" x="157.5" y="30" width="60" height="60"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.13" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="Mbk-7N-gG1"/>
                                             <constraint firstAttribute="width" secondItem="hwf-a2-DM8" secondAttribute="height" multiplier="1:1" id="Us2-Ae-3Yj"/>
@@ -47,6 +47,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXB-5V-OhZ">
                                         <rect key="frame" x="237.5" y="30" width="60" height="60"/>
+                                        <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sureDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="smD-rI-nXP"/>
                                         </connections>

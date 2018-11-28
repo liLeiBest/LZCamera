@@ -552,11 +552,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             
             self.videoFileOutputURL = [self generateUniqueMovieFileURL];
             if (self.videoFileOutputURL) {
-                
                 [self.videoFileOutput startRecordingToOutputFileURL:self.videoFileOutputURL recordingDelegate:self];
-                if (self.gcdSource) {
-                    dispatch_resume(self.gcdSource);
-                }
             } else {
                 
                 NSString *errorDescription = @"Failed to invalide output url";
@@ -595,7 +591,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
     
     dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     self.gcdSource = timer;
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC, 0.0f * NSEC_PER_SEC);
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC, 0.0f * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
         if (progressHandler) {
             
@@ -619,6 +615,27 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         [self configMetaDataOutputWith:metaObjectTypes error:NULL];
         [self.captureSession commitConfiguration];
     })
+}
+
+- (BOOL)grantCameraAuthority {
+    
+    BOOL grantVideo = YES;
+    BOOL grantAudio = YES;
+    AVAuthorizationStatus authorizationStatusForVideo = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authorizationStatusForVideo == AVAuthorizationStatusRestricted || authorizationStatusForVideo == AVAuthorizationStatusDenied) {
+        grantVideo = NO;
+    }
+    
+    AVAuthorizationStatus authorizationStatusForAudio = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    if (authorizationStatusForAudio == AVAuthorizationStatusRestricted || authorizationStatusForAudio == AVAuthorizationStatusDenied) {
+        grantAudio = NO;
+    }
+    
+    if (grantVideo && grantAudio) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 // MARK: - Observer
@@ -684,7 +701,11 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 - (void)captureOutput:(AVCaptureFileOutput *)output
 didStartRecordingToOutputFileAtURL:(NSURL *)fileURL
       fromConnections:(NSArray<AVCaptureConnection *> *)connections {
+    
     LZCameraLog(@"Start record video.");
+    if (self.gcdSource) {
+        dispatch_resume(self.gcdSource);
+    }
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)output

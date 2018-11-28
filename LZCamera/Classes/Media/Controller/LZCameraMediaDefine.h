@@ -26,14 +26,14 @@ typedef NS_ENUM(NSUInteger, LZCameraCaptureModel) {
 };
 
 /**
- 闪光灯的可视状态
+ 控件的可视状态
 
- - LZFlashVisualStateOn: 开
- - LZFlashVisualStateOff: 关
+ - LZControlVisualStateOn: 开
+ - LZControlVisualStateOff: 关
  */
-typedef NS_ENUM(NSUInteger, LZFlashVisualState) {
-    LZFlashVisualStateOn,
-    LZFlashVisualStateOff,
+typedef NS_ENUM(NSUInteger, LZControlVisualState) {
+    LZControlVisualStateOn,
+    LZControlVisualStateOff,
 };
 
 /**

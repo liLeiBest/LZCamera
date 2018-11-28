@@ -36,14 +36,26 @@ static const CGFloat FONT_SIZE      = 17.0f;
     [super awakeFromNib];
     
     [self setupView];
-	self.selectedIndex = 0;
 }
 
 - (void)setSelectedMode:(LZCameraFlashMode)selectedMode {
     
     if (_selectedMode != selectedMode) {
+        
         _selectedMode = selectedMode;
-        [self sendActionsForControlEvents:UIControlEventValueChanged];
+        switch (selectedMode) {
+            case LZCameraFlashModeOff:
+                self.selectedIndex = 2;
+                break;
+            case LZCameraFlashModeOn:
+                self.selectedIndex = 1;
+                break;
+            case LZCameraFlashModeAuto:
+                self.selectedIndex = 0;
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -54,16 +66,15 @@ static const CGFloat FONT_SIZE      = 17.0f;
         [self animationToExpand:YES];
     } else {
         
-        UILabel *label = nil;
-        CGPoint touchPoint = CGPointZero;
         UITouch *touch = [[event allTouches] anyObject];
         for (NSUInteger i = 0; i < self.labels.count; i++) {
             
-            label = self.labels[i];
-            touchPoint = [touch locationInView:label];
+            UILabel *label = self.labels[i];
+            CGPoint touchPoint = [touch locationInView:label];
             if ([label pointInside:touchPoint withEvent:event]) {
                 
                 self.selectedIndex = i;
+                label.textColor = [UIColor orangeColor];
                 break;
             }
         }
@@ -93,9 +104,12 @@ static const CGFloat FONT_SIZE      = 17.0f;
     return image;
 }
 
+/**
+ 设置视图
+ */
 - (void)setupView {
     
-    self.backgroundColor = [UIColor redColor];
+    self.backgroundColor = [UIColor clearColor];
     self.clipsToBounds = YES;
     
     UIImageView *imageView = [[UIImageView alloc] init];
@@ -113,6 +127,12 @@ static const CGFloat FONT_SIZE      = 17.0f;
     [self addTarget:self action:@selector(selectMode:forEvent:) forControlEvents:UIControlEventTouchDown];
 }
 
+/**
+ 创建标签
+
+ @param labelStrings NSArray
+ @return NSArray
+ */
 - (NSArray *)buildLabels:(NSArray *)labelStrings {
     
     CGFloat x = BUTTON_SIZE;
@@ -211,6 +231,7 @@ static const CGFloat FONT_SIZE      = 17.0f;
             for (NSUInteger i = 0; i < self.labels.count; i++) {
                 
                 UILabel *label = self.labels[i];
+                label.textColor = (i == self.selectedIndex) ? [UIColor orangeColor] : [UIColor whiteColor];
                 label.font = (i == self.selectedIndex) ? BOLD_FONT : NORMAL_FONT;
                 label.frame = CGRectMake(BUTTON_SIZE + (i * BUTTON_SIZE), self.midY, BUTTON_SIZE, BUTTON_SIZE);
             }

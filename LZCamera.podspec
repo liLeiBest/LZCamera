@@ -24,14 +24,14 @@ TODO: Add long description of the pod here.
     core.public_header_files = 'LZCamera/Classes/Core/**/*.h'
   end
 
-  s.subspec 'Media' do |media|
+  s.subspec 'MediaCapture' do |media|
     media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}'
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
   end
 
-  s.subspec 'Code' do |code|
+  s.subspec 'CodeCapture' do |code|
      code.source_files        = 'LZCamera/Classes/Code/**/*.{h,m}'
      code.public_header_files = 'LZCamera/Classes/Code/**/*.h'
   end

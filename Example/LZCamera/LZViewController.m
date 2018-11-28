@@ -7,10 +7,11 @@
 //
 
 #import "LZViewController.h"
+#import "LZTestViewController.h"
 #import <LZCamera/LZCameraMedia.h>
 
 @interface LZViewController ()
-
+@property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @end
 
 @implementation LZViewController
@@ -22,11 +23,21 @@
 }
 
 // MARK: - UI Action
-- (IBAction)testDidClick:(id)sender {
+- (IBAction)leftDidClick:(id)sender {
+    
+}
+
+- (IBAction)rightDidClick:(id)sender {
     
     LZCameraMediaViewController *ctr = [LZCameraMediaViewController instance];
     ctr.captureModel = LZCameraCaptureModelStillImageAndShortVideo;
-    ctr.detectFaces = YES;
+//    ctr.showStatusBar = NO;
+    ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage) {
+        self.previewImgView.image = stillImage;
+    };
+    ctr.CameraVideoCompletionHandler = ^(UIImage * _Nonnull thumbnailImage, NSURL * _Nonnull videoURL) {
+        self.previewImgView.image = thumbnailImage;
+    };
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
 }
 

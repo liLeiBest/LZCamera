@@ -18,8 +18,6 @@
     
     UITapGestureRecognizer *singleTap;
     UILongPressGestureRecognizer *longTap;
-    
-    BOOL canAction;
 }
 
 // MARK: - Initialization
@@ -30,6 +28,7 @@
     UIImage *cancelImg = [self imageInBundle:@"media_capture_cancel"];
     [cancleCaptureBtn setImage:cancelImg forState:UIControlStateNormal];
     
+    captureContainerView.backgroundColor = captureProgressView.backgroundColor;
     UIImage *captureImg = [self imageInBundle:@"media_capture_normal"];
     [captureImgView setImage:captureImg];
     captureContainerView.layer.cornerRadius = 40.0f;
@@ -43,7 +42,6 @@
     [singleTap requireGestureRecognizerToFail:longTap];
     
     captureLongVideoContainerView.layer.cornerRadius = 40.0f;
-    canAction = YES;
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
@@ -87,13 +85,12 @@
     }
 }
 
-- (void)setMaxDuration:(NSInteger)maxDuration {
-    _maxDuration = maxDuration;
-    
-    captureProgressView.timeMax = maxDuration;
-}
-
 // MARK: - Public
+- (void)updateDurationTime:(CMTime)durationTime {
+    
+    Float64 curSeconds = CMTimeGetSeconds(durationTime);
+    captureProgressView.progressValue = curSeconds / self.maxDuration;
+}
 
 // MARK: - UI Action
 - (IBAction)cancelDidTap:(UIButton *)sender {
@@ -118,9 +115,12 @@
     if (self.TapToCaptureImageHandler) {
         
         captureContainerView.userInteractionEnabled = NO;
+        captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
         __weak typeof(captureContainerView) weakCaptureContainerView = captureContainerView;
         self.TapToCaptureImageHandler(^{
             weakCaptureContainerView.userInteractionEnabled = YES;
+            weakCaptureImgView.transform = CGAffineTransformIdentity;
         });
     }
 }

@@ -24,9 +24,16 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  更新闪光灯可视状态
 
- @param state LZFlashVisualState
+ @param state LZControlVisualState
  */
-- (void)updateFlashVisualState:(LZFlashVisualState)state;
+- (void)updateFlashVisualState:(LZControlVisualState)state;
+
+/**
+ 更新摄像头切换可视状态
+ 
+ @param state LZControlVisualState
+ */
+- (void)updateSwitchCameraVisualState:(LZControlVisualState)state;
 
 /**
  更新时间进度
