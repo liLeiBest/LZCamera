@@ -19,6 +19,7 @@ static const CGFloat FONT_SIZE      = 17.0f;
 
 @interface LZCameraCaptureFlashControl()
 
+@property (weak, nonatomic) UIImageView *imgView;
 @property (nonatomic) BOOL expanded;
 @property (nonatomic) CGFloat defaultWidth;
 @property (nonatomic) CGFloat expandedWidth;
@@ -35,9 +36,10 @@ static const CGFloat FONT_SIZE      = 17.0f;
     [super awakeFromNib];
     
     [self setupView];
+	self.selectedIndex = 0;
 }
 
-- (void)setSelectedMode:(NSInteger)selectedMode {
+- (void)setSelectedMode:(LZCameraFlashMode)selectedMode {
     
     if (_selectedMode != selectedMode) {
         _selectedMode = selectedMode;
@@ -96,16 +98,17 @@ static const CGFloat FONT_SIZE      = 17.0f;
     self.backgroundColor = [UIColor redColor];
     self.clipsToBounds = YES;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[self imageInBundle:@"media_flashlight_auto"]];
+    UIImageView *imageView = [[UIImageView alloc] init];
     imageView.contentMode = UIViewContentModeCenter;
     imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self addSubview:imageView];
+	self.imgView = imageView;
     
-    _midY = floorf(self.frame.size.width - BUTTON_SIZE) / 2.0f;
-    _labels = [self buildLabels:@[@"自动", @"打开", @"关闭"]];
+    self.midY = floorf(self.frame.size.width - BUTTON_SIZE) / 2.0f;
+    self.labels = [self buildLabels:@[@"自动", @"打开", @"关闭"]];
     
-    _defaultWidth = self.frame.size.width;
-    _expandedWidth = [UIScreen mainScreen].bounds.size.width - self.frame.origin.x;
+    self.defaultWidth = self.frame.size.width;
+    self.expandedWidth = [UIScreen mainScreen].bounds.size.width - self.frame.origin.x;
     
     [self addTarget:self action:@selector(selectMode:forEvent:) forControlEvents:UIControlEventTouchDown];
 }
@@ -130,16 +133,46 @@ static const CGFloat FONT_SIZE      = 17.0f;
     return labels;
 }
 
+/**
+ Setter
+
+ @param selectedIndex NSUInteger
+ */
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
+	
+	BOOL change = _selectedMode != selectedIndex;
     _selectedIndex = selectedIndex;
     
-    NSInteger mode = selectedIndex;
-    if (selectedIndex == 0) {
-        mode = 2;
-    } else if (selectedIndex == 2) {
-        mode = 0;
-    }
+    LZCameraFlashMode mode = LZCameraFlashModeAuto;
+	NSString *imageName = @"media_flashlight_auto";
+	switch (selectedIndex) {
+		case 0: {
+			imageName = @"media_flashlight_auto";
+			mode = LZCameraFlashModeAuto;
+		}
+			break;
+		case 1: {
+			imageName = @"media_flashlight_on";
+			mode = LZCameraFlashModeOn;
+		}
+			break;
+		case 2: {
+			imageName = @"media_flashlight_off";
+			mode = LZCameraFlashModeOff;
+		}
+			break;
+		default:
+			break;
+	}
+	self.imgView.image = [self imageInBundle:imageName];
     self.selectedMode = mode;
+	
+	if (change) {
+		
+		if (self.TapToFlashModeHandler) {
+			self.TapToFlashModeHandler(self.selectedMode);
+		}
+	}
 }
 
 

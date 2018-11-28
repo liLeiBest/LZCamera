@@ -176,8 +176,8 @@ void lzPlaySound(NSString *soundName) {
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
         
         typeof(weakSelf) strongSelf = weakSelf;
-//        strongSelf.cameraController.flashMode = AVCaptureFlashModeOn;
-//        strongSelf.cameraController.torchMode = AVCaptureTorchModeOn;
+        strongSelf.cameraController.flashMode = model;
+        strongSelf.cameraController.torchMode = model;
     };
     self.mediaStatusView.TapToSwitchCameraHandler = ^{
         

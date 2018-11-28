@@ -36,4 +36,17 @@ typedef NS_ENUM(NSUInteger, LZFlashVisualState) {
     LZFlashVisualStateOff,
 };
 
+/**
+ 闪光灯模式
+
+ - LZCameraFlashModeOff: 开
+ - LZCameraFlashModeOn: 关
+ - LZCameraFlashModeAutu: 自动
+ */
+typedef NS_ENUM(NSUInteger, LZCameraFlashMode) {
+	LZCameraFlashModeOff  = 0,
+	LZCameraFlashModeOn   = 1,
+	LZCameraFlashModeAuto = 2,
+};
+
 #endif /* LZCameraMediaDefine_h */

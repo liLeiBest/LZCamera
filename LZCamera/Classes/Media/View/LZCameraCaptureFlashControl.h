@@ -6,12 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LZCameraMediaDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraCaptureFlashControl : UIControl
 
-@property (assign, nonatomic) NSInteger selectedMode;
+/** 点击闪光模式回调 */
+@property (copy, nonatomic) void(^TapToFlashModeHandler)(LZCameraFlashMode flashMode);
+@property (assign, nonatomic) LZCameraFlashMode selectedMode;
 
 @end
 
