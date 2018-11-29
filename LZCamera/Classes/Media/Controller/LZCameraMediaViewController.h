@@ -23,8 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) LZCameraCaptureModel captureModel;
 /** 短视频最长持续时间，单位：秒，默认 10 秒 */
 @property (assign, nonatomic) CGFloat maxShortVideoDuration;
-/** 短视频最短持续时间，单位：秒，默认 3 秒 */
-@property (assign, nonatomic) CGFloat minShortVideoDuration;
+/** 短视频/长视频最短持续时间，单位：秒，默认 3 秒 */
+@property (assign, nonatomic) CGFloat minVideoDuration;
 /** 是否检测人脸，默认 NO */
 @property (assign, nonatomic) BOOL detectFaces;
 

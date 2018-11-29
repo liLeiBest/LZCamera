@@ -54,7 +54,7 @@ void lzPlaySound(NSString *soundName) {
         self.showSwitchCameraInStatusBar = YES;
         self.captureModel = LZCameraCaptureModelStillImageAndShortVideo;
         self.maxShortVideoDuration = 10.0f;
-        self.minShortVideoDuration = 3.0f;
+        self.minVideoDuration = 3.0f;
         self.detectFaces = NO;
         self.videoDuration = kCMTimeZero;
     }
@@ -150,7 +150,9 @@ void lzPlaySound(NSString *soundName) {
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.videoDuration = duration;
         [strongSelf.mediaStatusView updateDurationTime:duration];
-        [strongSelf.mediaModelView updateDurationTime:duration];
+        if (strongSelf.captureModel != LZCameraCaptureModelLongVideo) {
+            [strongSelf.mediaModelView updateDurationTime:duration];
+        }
     }];
     
     if (self.detectFaces) {
@@ -258,7 +260,7 @@ void lzPlaySound(NSString *soundName) {
                 [strongSelf controlFlashModelVisulState];
                 [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
-                CMTime minTime = CMTimeMake(strongSelf.minShortVideoDuration, 1);
+                CMTime minTime = CMTimeMake(strongSelf.minVideoDuration, 1);
                 int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
                 if (compareResult >= 0) {
                     
