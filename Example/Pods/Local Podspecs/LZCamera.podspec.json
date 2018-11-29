@@ -1,6 +1,6 @@
 {
   "name": "LZCamera",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "summary": "A short description of LZCamera.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/liLeiBest/LZCamera",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@github.com:liLeiBest/LZCamera.git",
-    "tag": "0.2.0"
+    "tag": "0.2.1"
   },
   "platforms": {
     "ios": "8.0"

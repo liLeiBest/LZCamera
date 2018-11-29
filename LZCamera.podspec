@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LZCamera'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'A short description of LZCamera.'
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
