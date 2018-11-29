@@ -27,24 +27,39 @@
                                     <constraint firstAttribute="width" secondItem="8aF-pB-xtz" secondAttribute="height" multiplier="1:1" id="odZ-Xd-yNG"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agE-PC-tcb">
+                                <rect key="frame" x="0.0" y="439" width="375" height="228"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="agE-PC-tcb" secondAttribute="trailing" id="BhL-S4-aMP"/>
+                            <constraint firstItem="Mvr-aV-6Um" firstAttribute="top" secondItem="agE-PC-tcb" secondAttribute="bottom" id="G8l-pt-i7k"/>
                             <constraint firstAttribute="trailing" secondItem="8aF-pB-xtz" secondAttribute="trailing" id="Ra9-bk-ZaP"/>
+                            <constraint firstItem="agE-PC-tcb" firstAttribute="top" secondItem="8aF-pB-xtz" secondAttribute="bottom" id="lPB-gn-hLl"/>
                             <constraint firstItem="8aF-pB-xtz" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leading" id="oIw-Jz-FPw"/>
+                            <constraint firstItem="agE-PC-tcb" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leading" id="qop-8z-tg6"/>
                             <constraint firstItem="8aF-pB-xtz" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" id="qwC-t6-WjZ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YLb-M2-bYg">
-                        <barButtonItem key="leftBarButtonItem" title="拍摄和录像" id="IWW-Tq-dt4">
+                        <barButtonItem key="leftBarButtonItem" title="扫码" id="aYm-uT-XXG">
                             <connections>
-                                <action selector="rightCaptureStillImageAndShortVideoDidClick:" destination="whP-gf-Uak" id="WR8-Wr-U3I"/>
+                                <action selector="scanCodeDidClick:" destination="whP-gf-Uak" id="pdv-rW-5U7"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem title="长视频" id="zkv-Fq-pJa">
                                 <connections>
                                     <action selector="rightCaptureLongVideoDidClick:" destination="whP-gf-Uak" id="tCh-1z-RYx"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="拍摄和录像" id="IWW-Tq-dt4">
+                                <connections>
+                                    <action selector="rightCaptureStillImageAndShortVideoDidClick:" destination="whP-gf-Uak" id="WR8-Wr-U3I"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem title="短视频" id="o6S-Rc-nEF">
@@ -60,6 +75,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="messageLabel" destination="agE-PC-tcb" id="H8Z-Sa-8OU"/>
                         <outlet property="previewImgView" destination="8aF-pB-xtz" id="Ndu-7C-u45"/>
                     </connections>
                 </viewController>

@@ -94,7 +94,6 @@ void lzPlaySound(NSString *soundName) {
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
         ctr.previewImage = self.previewImage;
         ctr.videoURL = self.videoURL;
-        ctr.target = self;
         __weak typeof(self) weakSelf = self;
         ctr.TapToSureHandler = ^{
             
@@ -395,7 +394,6 @@ void lzPlaySound(NSString *soundName) {
                                                handler:handler]];
     [self presentViewController:alertCtr animated:YES completion:nil];
 }
-
 
 // MARK: - Delegate
 // MARK: <LZCameraControllerDelegate>

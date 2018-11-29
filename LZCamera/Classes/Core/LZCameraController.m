@@ -78,7 +78,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 // MARK: - Public
 + (instancetype)cameraController {
-    return [[LZCameraController alloc] init];
+    return [[self alloc] init];
 }
 
 + (instancetype)cameraControllerWithConfig:(LZCameraConfig *)config {
@@ -567,7 +567,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	
     if ([self isVideoRecording]) {
         [self.videoFileOutput stopRecording];
-    }    
+    }
 }
 
 - (BOOL)isVideoRecording {

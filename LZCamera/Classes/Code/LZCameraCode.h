@@ -8,5 +8,6 @@
 #ifndef LZCameraCode_h
 #define LZCameraCode_h
 
+#import "LZCameraCodeViewController.h"
 
 #endif /* LZCameraCode_h */

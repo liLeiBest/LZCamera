@@ -8,6 +8,7 @@
 #ifndef LZCamera_h
 #define LZCamera_h
 
+#import "LZCameraCore.h"
 #import "LZCameraMedia.h"
 #import "LZCameraCode.h"
 

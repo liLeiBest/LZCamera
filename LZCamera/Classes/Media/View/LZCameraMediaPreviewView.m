@@ -255,8 +255,8 @@
             
             self.focusBoxView.hidden = YES;
             self.exposureBoxView.hidden = YES;
-            self.focusBoxView.transform = CGAffineTransformIdentity;
-            self.exposureBoxView.transform = CGAffineTransformIdentity;
+            self.focusBoxView.layer.transform = CATransform3DIdentity;
+            self.exposureBoxView.layer.transform = CATransform3DIdentity;
         });
     }];
 }

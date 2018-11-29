@@ -8,10 +8,11 @@
 
 #import "LZViewController.h"
 #import "LZTestViewController.h"
-#import <LZCamera/LZCameraMedia.h>
+#import <LZCamera/LZCamera.h>
 
 @interface LZViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @end
 
 @implementation LZViewController
@@ -23,6 +24,28 @@
 }
 
 // MARK: - UI Action
+- (IBAction)scanCodeDidClick:(id)sender {
+    
+    LZCameraCodeViewController *ctr = [LZCameraCodeViewController instance];
+    NSArray *types = @[AVMetadataObjectTypeEAN13Code,
+                       AVMetadataObjectTypeEAN8Code,
+                       AVMetadataObjectTypeCode128Code,
+                       AVMetadataObjectTypeCode39Code,
+                       AVMetadataObjectTypeQRCode,
+                       AVMetadataObjectTypeAztecCode,
+                       AVMetadataObjectTypeUPCECode];
+    [ctr detectCodeTyps:types completionHandler:^(NSArray<NSString *> *codeArray, NSError *error, void (^CompleteHandler)(void)) {
+        
+        NSString *codeString = [codeArray componentsJoinedByString:@"/"];
+        NSLog(@"Code:%@", codeString);
+        self.messageLabel.text = codeString;
+        if (CompleteHandler) {
+//            CompleteHandler();
+        }
+    }];
+    [self.navigationController presentViewController:ctr animated:YES completion:nil];
+}
+
 - (IBAction)rightCaptureStillImageDidClick:(id)sender {
     [self presentCameraMediaViewControlWithCaputreModel:LZCameraCaptureModeStillImage];
 }
@@ -56,8 +79,7 @@
 
 - (void)compressVideo:(NSURL *)videoURL {
     
-    NSString *videoSize = [NSString stringWithFormat:@"%@",[self getFileSize:videoURL.relativePath]];
-    NSLog(@"视频压缩前文件大小:%@", videoSize);
+    NSString *videoSizeBefore = [NSString stringWithFormat:@"%@",[self getFileSize:videoURL.relativePath]];
     
     // 通过文件的 url 获取到这个文件的资源
     AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:videoURL options:nil];
@@ -86,8 +108,8 @@
             if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     // 更新一下显示包的大小
-                    NSString *videoSize = [NSString stringWithFormat:@"%@",[self getFileSize:outPutPath]];
-                    NSLog(@"视频压缩后文件大小:%@", videoSize);
+                    NSString *videoSizeAfter = [NSString stringWithFormat:@"%@",[self getFileSize:outPutPath]];
+                    self.messageLabel.text = [NSString stringWithFormat:@"视频压缩前文件大小:%@\n视频压缩后文件大小:%@", videoSizeBefore, videoSizeAfter];
                 });
             }
         }];
