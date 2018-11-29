@@ -8,10 +8,9 @@
 #import "LZCameraController.h"
 
 NSString * const LZCameraErrorDomain = @"com.lzcamera.LZCameraErrorDomain";
+#define LZMainQueue dispatch_get_main_queue()
 #define LZMainQueueBlock(block) \
-dispatch_async(dispatch_get_main_queue(), block);
-#define LZGlobalQueueBlock(block) \
-dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), block);
+dispatch_async(LZMainQueue, block);
 #define LZCameraQueueBlock(block) \
 dispatch_async(cameraQueue, block);
 
@@ -277,30 +276,25 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
     AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
     if (videoDeviceInput) {
         
-        LZCameraQueueBlock(^{
+        [self removeObserverForVideoZoom];
+        CGFloat zoomValue = [self currentVideoZoomValue];
         
-            [self removeObserverForVideoZoom];
-            CGFloat zoomValue = [self currentVideoZoomValue];
+        [self.captureSession beginConfiguration];
+        [self.captureSession removeInput:self.activeMediaInput];
+        if ([self.captureSession canAddInput:videoDeviceInput]) {
             
-            [self.captureSession beginConfiguration];
-            [self.captureSession removeInput:self.activeMediaInput];
-            if ([self.captureSession canAddInput:videoDeviceInput]) {
-                
-                [self.captureSession addInput:videoDeviceInput];
-                self.activeMediaInput = videoDeviceInput;
-            } else {
-                [self.captureSession addInput:self.activeMediaInput];
-            }
-            [self.captureSession commitConfiguration];
-            
-            [self regiesterObserverForVideoZoom];
-            [self setZoomValue:zoomValue];
-            LZMainQueueBlock(^{
-                if (self.captureMetaDataCompletionHandler) {
-                    self.captureMetaDataCompletionHandler(nil, nil);
-                }
-            })
-        })
+            [self.captureSession addInput:videoDeviceInput];
+            self.activeMediaInput = videoDeviceInput;
+        } else {
+            [self.captureSession addInput:self.activeMediaInput];
+        }
+        [self.captureSession commitConfiguration];
+        
+        [self regiesterObserverForVideoZoom];
+        [self setZoomValue:zoomValue];
+        if (self.captureMetaDataCompletionHandler) {
+            self.captureMetaDataCompletionHandler(nil, nil);
+        }
     } else {
         
         [self performDelegateSelectorIfSupported:@selector(cameraConfigurationFailWithError:)
@@ -487,7 +481,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)captureStillImage:(LZCameraCaptureStillImageCompletionHandler)completionHandler {
 	
-    LZGlobalQueueBlock(^{
+    LZCameraQueueBlock(^{
         
         self.captureStillImageCompletionHandler = completionHandler;
         AVCaptureConnection *connection = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
@@ -522,7 +516,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)startVideoRecording:(LZCameraCaptureVideoCompletionHandler)completionHandler {
 	
-    LZGlobalQueueBlock(^{
+    LZCameraQueueBlock(^{
         
         if (![self isVideoRecording]) {
             
@@ -571,12 +565,9 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)stopVideoRecording {
 	
-    LZGlobalQueueBlock(^{
-        
-        if ([self isVideoRecording]) {
-            [self.videoFileOutput stopRecording];
-        }
-    })
+    if ([self isVideoRecording]) {
+        [self.videoFileOutput stopRecording];
+    }    
 }
 
 - (BOOL)isVideoRecording {
@@ -589,7 +580,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 - (void)videoRecordedDurationWithProgress:(LZCameraRecordedDurationProgressHandler)progressHandler {
     
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, LZMainQueue);
     self.gcdSource = timer;
     dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC, 0.0f * NSEC_PER_SEC);
     dispatch_source_set_event_handler(timer, ^{
@@ -1146,7 +1137,7 @@ didFinishSavingWithError:(NSError *)error
         [self.captureSession addOutput:self.metadataOutput];
         // 必须要先添加输出，再设置，否则必报错。无可用的类型
         self.metadataOutput.metadataObjectTypes = [self availableMetadataObjectTypesForTypes:metaObjectTypes];
-        [self.metadataOutput setMetadataObjectsDelegate:self queue:cameraQueue];
+        [self.metadataOutput setMetadataObjectsDelegate:self queue:LZMainQueue];
     } else {
         
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Failed to meta data output."};

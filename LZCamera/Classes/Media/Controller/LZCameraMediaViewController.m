@@ -141,15 +141,12 @@ void lzPlaySound(NSString *soundName) {
         self.cameraController.flashMode = AVCaptureFlashModeAuto;
         self.cameraController.torchMode = AVCaptureTorchModeAuto;
         [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
-        self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
-        self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
         [self.cameraController startSession];
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
     [self.cameraController videoRecordedDurationWithProgress:^(CMTime duration) {
         
-        LZCameraLog(@"11111111111更新时间");
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.videoDuration = duration;
         [strongSelf.mediaStatusView updateDurationTime:duration];
@@ -186,6 +183,8 @@ void lzPlaySound(NSString *soundName) {
     __weak typeof(self) weakSelf = self;
     
     // 预览视图
+    self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
+    self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
     self.mediaPreviewView.TapToFocusAtPointHandler = ^(CGPoint point) {
         [weakSelf.cameraController focusAtPoint:point];
     };
@@ -210,8 +209,8 @@ void lzPlaySound(NSString *soundName) {
 
     // 状态视图
     self.mediaStatusView.hidden = !self.showStatusBar;
-    [self.mediaStatusView updateFlashVisualState:self.showFlashModeInStatusBar ? LZControlVisualStateOn : LZControlVisualStateOff];
-    [self.mediaStatusView updateSwitchCameraVisualState:self.showSwitchCameraInStatusBar ? LZControlVisualStateOn : LZControlVisualStateOff];
+    [self controlFlashModelVisulState];
+    [self controlSwitchCameraVisualState];
     self.mediaStatusView.captureModel = self.captureModel;
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
         
@@ -223,17 +222,10 @@ void lzPlaySound(NSString *soundName) {
         
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController switchCameras];
-        if (strongSelf.showFlashModeInStatusBar) {
-            
-            LZControlVisualState state = LZControlVisualStateOn;
-            if (![strongSelf.cameraController cameraHasFlash] || ![strongSelf.cameraController cameraHasTorch]) {
-                state = LZControlVisualStateOff;
-            }
-            [strongSelf.mediaStatusView updateFlashVisualState:state];
-        }
+        [strongSelf controlFlashModelVisulState];
     };
     
-    // 拍照视图
+    // 拍摄视图
     self.mediaModelView.captureModel = self.captureModel;
     self.mediaModelView.TapToCancelCaptureHandler = ^{
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
@@ -244,9 +236,12 @@ void lzPlaySound(NSString *soundName) {
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController captureStillImage:^(UIImage * _Nonnull stillImage, NSError * _Nullable error) {
             
-            strongSelf.previewImage = stillImage;
-            strongSelf.videoURL = nil;
-            [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
+            if (stillImage) {
+                
+                strongSelf.previewImage = stillImage;
+                strongSelf.videoURL = nil;
+                [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
+            }
             ComplteHandler();
         }];
     };
@@ -255,10 +250,13 @@ void lzPlaySound(NSString *soundName) {
         typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
             
+            [strongSelf.mediaStatusView updateFlashVisualState:LZControlVisualStateOff];
+            [strongSelf.mediaStatusView updateSwitchCameraVisualState:LZControlVisualStateOff];
             strongSelf.mediaModelView.maxDuration = strongSelf.maxShortVideoDuration;
             [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
                 
-                LZCameraLog(@"11111111111停止了");
+                [strongSelf controlFlashModelVisulState];
+                [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
                 CMTime minTime = CMTimeMake(strongSelf.minShortVideoDuration, 1);
                 int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
@@ -268,6 +266,14 @@ void lzPlaySound(NSString *soundName) {
                     strongSelf.videoURL = videoURL;
                     [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
                 } else {
+                    
+                    if (!error) {
+                        [strongSelf showCaputreTip:@"视频时间太短"];
+                    } else {
+                        
+                        LZCameraLog(@"录制视频失败:%@", error);
+                        [strongSelf alertMessage:error.localizedDescription handler:nil];
+                    }
                     
                     NSError *error;
                     NSFileManager *fileM = [NSFileManager defaultManager];
@@ -285,28 +291,83 @@ void lzPlaySound(NSString *soundName) {
 }
 
 /**
+ 控制闪光灯可视状态
+ */
+- (void)controlFlashModelVisulState {
+    
+    LZControlVisualState state = LZControlVisualStateOff;
+    if (self.showFlashModeInStatusBar) {
+        
+        if ([self.cameraController cameraHasFlash] || [self.cameraController cameraHasTorch]) {
+            state = LZControlVisualStateOn;
+        }
+    }
+    [self.mediaStatusView updateFlashVisualState:state];
+}
+
+/**
+ 控制切换摄像头可视状态
+ */
+- (void)controlSwitchCameraVisualState {
+    
+    LZControlVisualState state = LZControlVisualStateOff;
+    if (self.showFlashModeInStatusBar) {
+        
+        if ([self.cameraController canSwitchCameras]) {
+            state = LZControlVisualStateOn;
+        }
+    }
+    [self.mediaStatusView updateSwitchCameraVisualState:state];
+}
+
+/**
  配置捕捉提示
  */
 - (void)configCaptureTipView {
     
+    NSString *tipString = nil;
     switch (self.captureModel) {
         case LZCameraCaptureModeStillImage:
-            self.captureTipLabel.text = @"轻触拍照";
+            tipString = @"轻触拍照";
             break;
         case LZCameraCaptureModelShortVideo:
-            self.captureTipLabel.text = @"按住录像";
+            tipString = @"按住录像";
             break;
         case LZCameraCaptureModelStillImageAndShortVideo:
-            self.captureTipLabel.text = @"轻触拍照，按住录像";
+            tipString = @"轻触拍照，按住录像";
             break;
         case LZCameraCaptureModelLongVideo:
-            self.captureTipLabel.text = nil;
+            tipString = nil;
             break;
         default:
             break;
     }
+    [self showCaputreTip:tipString];
+}
+
+/**
+ 展示捕捉提示
+
+ @param tipMessage NSString
+ */
+- (void)showCaputreTip:(NSString *)tipMessage {
     
-    [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:1.0f];
+    if (!tipMessage || tipMessage.length == 0) {
+        
+        self.captureTipLabel.hidden = YES;
+        return;
+    }
+    
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowBlurRadius = 10.0f;
+    shadow.shadowOffset = CGSizeMake(0, 0);
+    shadow.shadowColor = [UIColor blackColor];
+    NSDictionary *attributes = @{NSShadowAttributeName : shadow};
+    NSMutableAttributedString *attributedString =
+    [[NSMutableAttributedString alloc] initWithString:tipMessage attributes:attributes];
+    self.captureTipLabel.hidden = NO;
+    self.captureTipLabel.attributedText = attributedString;
+    [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:2.0f];
 }
 
 /**
@@ -314,48 +375,6 @@ void lzPlaySound(NSString *soundName) {
  */
 - (void)hideCaptureTip {
     self.captureTipLabel.hidden = YES;
-}
-
-// 压缩视频
-- (void)compressVideo:(id)sender
-{
-//    NSString *cachePath=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSString *savePath=[cachePath stringByAppendingPathComponent:MOVIEPATH];
-//    NSURL *saveUrl=[NSURL fileURLWithPath:savePath];
-//
-//    // 通过文件的 url 获取到这个文件的资源
-//    AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:saveUrl options:nil];
-//    // 用 AVAssetExportSession 这个类来导出资源中的属性
-//    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
-//
-//    // 压缩视频
-//    if ([compatiblePresets containsObject:AVAssetExportPresetLowQuality]) { // 导出属性是否包含低分辨率
-//        // 通过资源（AVURLAsset）来定义 AVAssetExportSession，得到资源属性来重新打包资源 （AVURLAsset, 将某一些属性重新定义
-//        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetLowQuality];
-//        // 设置导出文件的存放路径
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//        [formatter setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
-//        NSDate    *date = [[NSDate alloc] init];
-//        NSString *outPutPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"output-%@.mp4",[formatter stringFromDate:date]]];
-//        exportSession.outputURL = [NSURL fileURLWithPath:outPutPath];
-//
-//        // 是否对网络进行优化
-//        exportSession.shouldOptimizeForNetworkUse = true;
-//
-//        // 转换成MP4格式
-//        exportSession.outputFileType = AVFileTypeMPEG4;
-//
-//        // 开始导出,导出后执行完成的block
-//        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-//            // 如果导出的状态为完成
-//            if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    // 更新一下显示包的大小
-//                    self.videoSize.text = [NSString stringWithFormat:@"%f MB",[self getfileSize:outPutPath]];
-//                });
-//            }
-//        }];
-//    }
 }
 
 /**

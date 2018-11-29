@@ -101,9 +101,13 @@
 
 - (IBAction)captureLongVideoDidTouch:(UIButton *)sender {
     
+    cancleCaptureBtn.hidden = YES;
     BOOL selected = sender.selected;
+    __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
     if (self.TapToCaptureVideoHandler) {
         self.TapToCaptureVideoHandler(!selected, selected, ^{
+            
+            weakCancleCaptureBtn.hidden = NO;
             sender.selected = NO;
         });
     }
@@ -114,11 +118,15 @@
     
     if (self.TapToCaptureImageHandler) {
         
+        cancleCaptureBtn.hidden = YES;
         captureContainerView.userInteractionEnabled = NO;
         captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
         __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
         __weak typeof(captureContainerView) weakCaptureContainerView = captureContainerView;
         self.TapToCaptureImageHandler(^{
+            
+            weakCancleCaptureBtn.hidden = NO;
             weakCaptureContainerView.userInteractionEnabled = YES;
             weakCaptureImgView.transform = CGAffineTransformIdentity;
         });
@@ -129,10 +137,14 @@
     
     if (self.TapToCaptureVideoHandler) {
         
+        cancleCaptureBtn.hidden = YES;
         captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
         __weak typeof(captureProgressView) weakCaptureProgressView = captureProgressView;
         __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
         self.TapToCaptureVideoHandler(gestureRecognizer.state == UIGestureRecognizerStateBegan, gestureRecognizer.state == UIGestureRecognizerStateEnded, ^{
+            
+            weakCancleCaptureBtn.hidden = NO;
             [weakCaptureProgressView clearProgress];
             weakCaptureImgView.transform = CGAffineTransformIdentity;
         });
