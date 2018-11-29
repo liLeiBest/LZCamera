@@ -36,16 +36,28 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YLb-M2-bYg">
-                        <barButtonItem key="leftBarButtonItem" title="咂摸" id="IWW-Tq-dt4">
+                        <barButtonItem key="leftBarButtonItem" title="拍摄和录像" id="IWW-Tq-dt4">
                             <connections>
-                                <action selector="leftDidClick:" destination="whP-gf-Uak" id="1yh-cz-YMt"/>
+                                <action selector="rightCaptureStillImageAndShortVideoDidClick:" destination="whP-gf-Uak" id="WR8-Wr-U3I"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="拍摄" id="zkv-Fq-pJa">
-                            <connections>
-                                <action selector="rightDidClick:" destination="whP-gf-Uak" id="1ci-WR-2rx"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="长视频" id="zkv-Fq-pJa">
+                                <connections>
+                                    <action selector="rightCaptureLongVideoDidClick:" destination="whP-gf-Uak" id="tCh-1z-RYx"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="短视频" id="o6S-Rc-nEF">
+                                <connections>
+                                    <action selector="rightCaptureShortVideoDidClick:" destination="whP-gf-Uak" id="4DC-NR-ioC"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="拍照" id="9oG-XU-2rt">
+                                <connections>
+                                    <action selector="rightCaptureStillImageDidClick:" destination="whP-gf-Uak" id="U6f-sE-MNp"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="previewImgView" destination="8aF-pB-xtz" id="Ndu-7C-u45"/>
