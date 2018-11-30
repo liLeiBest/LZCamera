@@ -5,7 +5,7 @@
 //  Created by Dear.Q on 2018/11/29.
 //
 
-#import <LZCamera/LZCamera.h>
+#import "LZCameraController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

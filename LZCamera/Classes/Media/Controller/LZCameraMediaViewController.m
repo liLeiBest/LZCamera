@@ -167,7 +167,7 @@
                     AVMetadataFaceObject *face = (AVMetadataFaceObject *)objct;
                     LZCameraLog(@"Face detected with ID: %li", (long)face.faceID);
                     LZCameraLog(@"Face bounds: %@", NSStringFromCGRect(face.bounds));
-                    [faces addObject:objct];
+                    [faces addObject:face];
                 }
             }
             
