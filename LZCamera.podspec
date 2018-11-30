@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.version          = '0.3.0'
   s.summary          = '基于 AVFoundation 实现的摄像机功能'
   s.description      = <<-DESC
-  基于 AVFoundation 实现的摄像机功能，共有三部分山容：
+  基于 AVFoundation 实现的摄像机功能，共有三部分内容：
   1.核心功能实现部分。
   2.基于 Core 模块实现多媒体捕捉功能，包括：静态图片、短视频、长视频。
   3.基于 Core 模块实现机器码识别功能，机器码类型支持自定义。
