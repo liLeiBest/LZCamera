@@ -12,21 +12,21 @@
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
 
-/**
- 播放声音
- 
- @param soundName 声音名称
- */
-void lzPlaySound(NSString *soundName) {
-    
-    NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:soundName ofType:nil];
-    NSURL *pathURL = [NSURL URLWithString:path];
-    CFURLRef cfURL = CFBridgingRetain(pathURL);
-    static SystemSoundID camera_sound = 0;
-    AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
-    AudioServicesPlaySystemSound(camera_sound);
-    AudioServicesDisposeSystemSoundID(camera_sound);
-}
+///**
+// 播放声音
+//
+// @param soundName 声音名称
+// */
+//void lzPlaySound(NSString *soundName) {
+//
+//    NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:soundName ofType:nil];
+//    NSURL *pathURL = [NSURL URLWithString:path];
+//    CFURLRef cfURL = CFBridgingRetain(pathURL);
+//    static SystemSoundID camera_sound = 0;
+//    AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
+//    AudioServicesPlaySystemSound(camera_sound);
+//    AudioServicesDisposeSystemSoundID(camera_sound);
+//}
 
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate>
 
@@ -233,7 +233,7 @@ void lzPlaySound(NSString *soundName) {
     };
     self.mediaModelView.TapToCaptureImageHandler = ^(void (^ _Nonnull ComplteHandler)(void)) {
         
-        lzPlaySound(@"media_camera.wav");
+        lzPlaySound(@"media_capture_image.wav", @"LZCameraMedia");
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController captureStillImage:^(UIImage * _Nonnull stillImage, NSError * _Nullable error) {
             

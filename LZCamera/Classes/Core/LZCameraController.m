@@ -7,7 +7,6 @@
 
 #import "LZCameraController.h"
 
-NSString * const LZCameraErrorDomain = @"com.lzcamera.LZCameraErrorDomain";
 #define LZMainQueue dispatch_get_main_queue()
 #define LZMainQueueBlock(block) \
 dispatch_async(LZMainQueue, block);

@@ -23,7 +23,7 @@
         
         if ([device lockForConfiguration:error]) {
             
-            device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNear;
+            device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionNone;
             [device unlockForConfiguration];
         }
     }

@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, LZCameraErrorCode) {
 
 /** 错误域标识 */
 FOUNDATION_EXPORT NSString * const LZCameraErrorDomain;
+
 /** 捕捉静态图片完成回调 */
 typedef void(^LZCameraCaptureStillImageCompletionHandler)(UIImage * _Nonnull stillImage, NSError * _Nullable error);
 /** 捕捉视频完成回调 */
@@ -37,5 +38,13 @@ typedef void(^ _Nullable LZCameraZoomCompletionHandler)(CGFloat zoomValue);
 typedef void(^LZCameraRecordedDurationProgressHandler)(CMTime duration);
 /** 捕捉元数据完成回调 */
 typedef void(^LZCameraCaptureMetaDataCompletionHandler)(NSArray<AVMetadataObject *> * _Nullable metadataObjects, NSError * _Nullable error);
+
+/**
+ 播放声音
+ 
+ @param soundName 声音名称
+ @param inBundle Bundle 名称
+ */
+void lzPlaySound(NSString *soundName, NSString *inBundle);
 
 #endif /* LZCameraDefine_h */

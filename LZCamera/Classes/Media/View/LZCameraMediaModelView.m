@@ -139,10 +139,11 @@
         
         cancleCaptureBtn.hidden = YES;
         captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        UIGestureRecognizerState state = gestureRecognizer.state;
         __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
         __weak typeof(captureProgressView) weakCaptureProgressView = captureProgressView;
         __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
-        self.TapToCaptureVideoHandler(gestureRecognizer.state == UIGestureRecognizerStateBegan, gestureRecognizer.state == UIGestureRecognizerStateEnded, ^{
+        self.TapToCaptureVideoHandler(state == UIGestureRecognizerStateBegan, state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled, ^{
             
             weakCancleCaptureBtn.hidden = NO;
             [weakCaptureProgressView clearProgress];

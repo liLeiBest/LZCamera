@@ -11,10 +11,11 @@
 #endif
 
 #import "LZCamera.h"
-#import "LZCameraCode.h"
-#import "LZCameraCodeViewController.h"
 #import "LZCameraCodeController.h"
+#import "LZCameraCodeViewController.h"
+#import "LZCameraCode.h"
 #import "LZCameraCodePreviewView.h"
+#import "LZCameraCodeScanView.h"
 #import "LZCameraConfig.h"
 #import "LZCameraController.h"
 #import "LZCameraControllerDelegate.h"

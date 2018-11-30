@@ -34,6 +34,8 @@ TODO: Add long description of the pod here.
   s.subspec 'CodeCapture' do |code|
      code.source_files        = 'LZCamera/Classes/Code/**/*.{h,m}'
      code.public_header_files = 'LZCamera/Classes/Code/**/*.h'
+     code.resource            = 'LZCamera/Classes/Code/Resources/LZCameraCode.bundle'
+     code.dependency 'LZCamera/Core'
   end
 
   pch_AF = <<-EOS

@@ -36,11 +36,10 @@
                        AVMetadataObjectTypeUPCECode];
     [ctr detectCodeTyps:types completionHandler:^(NSArray<NSString *> *codeArray, NSError *error, void (^CompleteHandler)(void)) {
         
-        NSString *codeString = [codeArray componentsJoinedByString:@"/"];
-        NSLog(@"Code:%@", codeString);
+        NSString *codeString = [codeArray lastObject];
         self.messageLabel.text = codeString;
         if (CompleteHandler) {
-//            CompleteHandler();
+            CompleteHandler();
         }
     }];
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
@@ -67,12 +66,19 @@
     
     LZCameraMediaViewController *ctr = [LZCameraMediaViewController instance];
     ctr.captureModel = caputreModel;
+    __weak typeof(self) weakSelf = self;
     ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage) {
-        self.previewImgView.image = stillImage;
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.previewImgView.image = stillImage;
+        NSString *size = [strongSelf calulateImageFileSize:stillImage];
+        strongSelf.messageLabel.text = [NSString stringWithFormat:@"图片的大小:%@", size];
     };
     ctr.CameraVideoCompletionHandler = ^(UIImage * _Nonnull thumbnailImage, NSURL * _Nonnull videoURL) {
-        self.previewImgView.image = thumbnailImage;
-        [self compressVideo:videoURL];
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.previewImgView.image = thumbnailImage;
+        [strongSelf compressVideo:videoURL];
     };
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
 }
@@ -118,18 +124,19 @@
 
 /**
  获取文件大小
+
+ @param path NSString
+ @return NSString
  */
 - (NSString *) getFileSize:(NSString *)path {
     
     NSString *sizeText = nil;
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    float filesize = -1.0;
     if ([fileManager fileExistsAtPath:path]) {
-        NSDictionary *fileDic = [fileManager attributesOfItemAtPath:path error:nil];//获取文件的属性
-        unsigned long long size = fileDic.fileSize;
-        filesize = 1.0*size/1024;
         
+        NSDictionary *fileDic = [fileManager attributesOfItemAtPath:path error:nil];
+        unsigned long long size = fileDic.fileSize;
         if (size >= pow(10, 9)) { // size >= 1GB
             sizeText = [NSString stringWithFormat:@"%.2fGB", size / pow(10, 9)];
         } else if (size >= pow(10, 6)) { // 1GB > size >= 1MB
@@ -137,7 +144,7 @@
         } else if (size >= pow(10, 3)) { // 1MB > size >= 1KB
             sizeText = [NSString stringWithFormat:@"%.2fKB", size / pow(10, 3)];
         } else { // 1KB > size
-            sizeText = [NSString stringWithFormat:@"%lluB", size];
+            sizeText = [NSString stringWithFormat:@"%.2lluB", size];
         }
     } else {
         NSLog(@"找不到文件");
@@ -145,5 +152,27 @@
     return sizeText;
 }
 
+
+/**
+ 计算图片的大小
+
+ @param image UIImage
+ @return NSString
+ */
+- (NSString *)calulateImageFileSize:(UIImage *)image {
+    
+    NSData *data = UIImagePNGRepresentation(image);
+    if (!data) {
+        data = UIImageJPEGRepresentation(image, 0.5);
+    }
+    double dataLength = [data length] * 1.0;
+    NSArray *typeArray = @[@"B",@"KB",@"MB",@"GB"];
+    NSInteger index = 0;
+    while (dataLength > 1000) {
+        dataLength /= 1000.0;
+        index ++;
+    }
+    return [NSString stringWithFormat:@"%.3f%@", dataLength, typeArray[index]];
+}
 
 @end

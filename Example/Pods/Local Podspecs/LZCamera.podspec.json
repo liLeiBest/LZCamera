@@ -46,7 +46,13 @@
     {
       "name": "CodeCapture",
       "source_files": "LZCamera/Classes/Code/**/*.{h,m}",
-      "public_header_files": "LZCamera/Classes/Code/**/*.h"
+      "public_header_files": "LZCamera/Classes/Code/**/*.h",
+      "resources": "LZCamera/Classes/Code/Resources/LZCameraCode.bundle",
+      "dependencies": {
+        "LZCamera/Core": [
+
+        ]
+      }
     }
   ]
 }

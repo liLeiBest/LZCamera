@@ -82,20 +82,15 @@
         
         self.codePreview.captureSesstion = self.cameraCodeController.captureSession;
         [self.cameraCodeController startSession];
-    }
-    
-    if (error) {
-        
-        [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-            
-        }];
-        return;
+    } else {
+        LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
     
     __weak typeof(self) weakSelf = self;
     LZCameraCaptureMetaDataCompletionHandler codeCaptureHandler =
     ^(NSArray<AVMetadataObject *> * _Nullable metadataObjects, NSError * _Nullable error) {
         
+        lzPlaySound(@"code_found.wav", @"LZCameraCode");
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.codePreview detectCodes:metadataObjects];
         if (strongSelf.detectMachineCodeHandler) {
@@ -122,7 +117,11 @@
     
     NSMutableArray *codeM = [NSMutableArray arrayWithCapacity:metadataObjects.count];
     for (AVMetadataMachineReadableCodeObject *codeObject in metadataObjects) {
-        [codeM addObject:codeObject.stringValue];
+        
+        NSString *codeValue = codeObject.stringValue;
+        if (codeValue) {
+            [codeM addObject:codeObject.stringValue];
+        }
     }
     return [codeM copy];
 }
