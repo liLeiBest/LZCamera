@@ -12,22 +12,6 @@
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
 
-///**
-// 播放声音
-//
-// @param soundName 声音名称
-// */
-//void lzPlaySound(NSString *soundName) {
-//
-//    NSString *path = [LZCameraNSBundle(@"LZCameraMedia") pathForResource:soundName ofType:nil];
-//    NSURL *pathURL = [NSURL URLWithString:path];
-//    CFURLRef cfURL = CFBridgingRetain(pathURL);
-//    static SystemSoundID camera_sound = 0;
-//    AudioServicesCreateSystemSoundID(cfURL, &camera_sound);
-//    AudioServicesPlaySystemSound(camera_sound);
-//    AudioServicesDisposeSystemSoundID(camera_sound);
-//}
-
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet LZCameraMediaPreviewView *mediaPreviewView;

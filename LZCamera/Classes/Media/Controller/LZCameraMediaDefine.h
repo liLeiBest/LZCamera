@@ -49,4 +49,19 @@ typedef NS_ENUM(NSUInteger, LZCameraFlashMode) {
 	LZCameraFlashModeAuto = 2,
 };
 
+/**
+ 闪光灯控件的状态
+
+ - LZCameraFlashControlWillExpand: 即将展开
+ - LZCameraFlashControlDidExpand: 已经展开
+ - LZCameraFlashControlWillCollapse: 即将折叠
+ - LZCameraFlashControlDidCollaapse: 已经折叠
+ */
+typedef NS_ENUM(NSUInteger, LZCameraFlashControlState) {
+	LZCameraFlashControlWillExpand,
+	LZCameraFlashControlDidExpand,
+	LZCameraFlashControlWillCollapse,
+	LZCameraFlashControlDidCollaapse,
+};
+
 #endif /* LZCameraMediaDefine_h */

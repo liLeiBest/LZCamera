@@ -8,40 +8,45 @@
 #import "LZCameraMediaModelView.h"
 #import "LZCameraCaptureProgressView.h"
 
-@implementation LZCameraMediaModelView {
-    IBOutlet UIButton *cancleCaptureBtn;
-    IBOutlet UIView *captureContainerView;
-    IBOutlet LZCameraCaptureProgressView *captureProgressView;
-    IBOutlet UIImageView *captureImgView;
-    IBOutlet UIView *captureLongVideoContainerView;
-    IBOutlet UIButton *captureLongVideoBtn;
-    
-    UITapGestureRecognizer *singleTap;
-    UILongPressGestureRecognizer *longTap;
-}
+@interface LZCameraMediaModelView()
+
+@property (weak, nonatomic) IBOutlet UIButton *cancleCaptureBtn;
+@property (weak, nonatomic) IBOutlet UIView *captureContainerView;
+@property (weak, nonatomic) IBOutlet LZCameraCaptureProgressView *captureContainerProgressView;
+@property (weak, nonatomic) IBOutlet UIImageView *captureImgView;
+@property (weak, nonatomic) IBOutlet UIView *captureLongVideoContainerView;
+@property (weak, nonatomic) IBOutlet UIButton *captureLongVideoBtn;
+
+@property (weak, nonatomic) UITapGestureRecognizer *singleTap;
+@property (weak, nonatomic) UILongPressGestureRecognizer *longTap;
+
+@end
+@implementation LZCameraMediaModelView
 
 // MARK: - Initialization
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    cancleCaptureBtn.backgroundColor = [UIColor clearColor];
+    self.cancleCaptureBtn.backgroundColor = [UIColor clearColor];
     UIImage *cancelImg = [self imageInBundle:@"media_capture_cancel"];
-    [cancleCaptureBtn setImage:cancelImg forState:UIControlStateNormal];
-    
-    captureContainerView.backgroundColor = captureProgressView.backgroundColor;
+    [self.cancleCaptureBtn setImage:cancelImg forState:UIControlStateNormal];
+	
+    self.captureContainerView.backgroundColor = self.captureContainerProgressView.backgroundColor;
     UIImage *captureImg = [self imageInBundle:@"media_capture_normal"];
-    [captureImgView setImage:captureImg];
-    captureContainerView.layer.cornerRadius = 40.0f;
-    singleTap =
+    [self.captureImgView setImage:captureImg];
+    UITapGestureRecognizer *singleTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(captureStillImageDidTap:)];
-    [captureContainerView addGestureRecognizer:singleTap];
-    longTap =
+    [self.captureContainerView addGestureRecognizer:singleTap];
+	self.singleTap = singleTap;
+    UILongPressGestureRecognizer *longTap =
     [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(captureVideoDidTap:)];
     longTap.minimumPressDuration = 0.5f;
-    [captureContainerView addGestureRecognizer:longTap];
+    [self.captureContainerView addGestureRecognizer:longTap];
+	self.longTap = longTap;
     [singleTap requireGestureRecognizerToFail:longTap];
-    
-    captureLongVideoContainerView.layer.cornerRadius = 40.0f;
+	
+	self.captureContainerView.layer.cornerRadius = 40.0f;
+    self.captureLongVideoContainerView.layer.cornerRadius = 40.0f;
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
@@ -50,34 +55,34 @@
     switch (captureModel) {
         case LZCameraCaptureModeStillImage: {
             
-            singleTap.enabled = YES;
-            longTap.enabled = NO;
-            captureContainerView.hidden = NO;
-            captureLongVideoContainerView.hidden = YES;
+            self.singleTap.enabled = YES;
+            self.longTap.enabled = NO;
+            self.captureContainerView.hidden = NO;
+            self.captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelShortVideo: {
             
-            singleTap.enabled = NO;
-            longTap.enabled = YES;
-            captureContainerView.hidden = NO;
-            captureLongVideoContainerView.hidden = YES;
+            self.singleTap.enabled = NO;
+            self.longTap.enabled = YES;
+            self.captureContainerView.hidden = NO;
+            self.captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelStillImageAndShortVideo: {
             
-            singleTap.enabled = YES;
-            longTap.enabled = YES;
-            captureContainerView.hidden = NO;
-            captureLongVideoContainerView.hidden = YES;
+            self.singleTap.enabled = YES;
+            self.longTap.enabled = YES;
+            self.captureContainerView.hidden = NO;
+            self.captureLongVideoContainerView.hidden = YES;
         }
             break;
         case LZCameraCaptureModelLongVideo: {
             
-            singleTap.enabled = NO;
-            longTap.enabled = NO;
-            captureContainerView.hidden = YES;
-            captureLongVideoContainerView.hidden = NO;
+            self.singleTap.enabled = NO;
+            self.longTap.enabled = NO;
+            self.captureContainerView.hidden = YES;
+            self.captureLongVideoContainerView.hidden = NO;
         }
             break;
         default:
@@ -89,7 +94,7 @@
 - (void)updateDurationTime:(CMTime)durationTime {
     
     Float64 curSeconds = CMTimeGetSeconds(durationTime);
-    captureProgressView.progressValue = curSeconds / self.maxDuration;
+    self.captureContainerProgressView.progressValue = curSeconds / self.maxDuration;
 }
 
 // MARK: - UI Action
@@ -101,34 +106,35 @@
 
 - (IBAction)captureLongVideoDidTouch:(UIButton *)sender {
     
-    cancleCaptureBtn.hidden = YES;
-    BOOL selected = sender.selected;
-    __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
+    self.cancleCaptureBtn.hidden = YES;
+    BOOL selected = self.captureLongVideoBtn.selected;
+    __weak typeof(self) weakSelf = self;
     if (self.TapToCaptureVideoHandler) {
         self.TapToCaptureVideoHandler(!selected, selected, ^{
-            
-            weakCancleCaptureBtn.hidden = NO;
-            sender.selected = NO;
+			
+			typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.cancleCaptureBtn.hidden = NO;
+			strongSelf.captureLongVideoBtn.userInteractionEnabled = YES;
         });
     }
-    sender.selected = !sender.selected;
+    self.captureLongVideoBtn.selected = !self.captureLongVideoBtn.selected;
+	self.captureLongVideoBtn.userInteractionEnabled = !self.captureLongVideoBtn.selected ? NO : YES;
 }
 
 - (void)captureStillImageDidTap:(UITapGestureRecognizer *)gestureRecognizer {
     
     if (self.TapToCaptureImageHandler) {
         
-        cancleCaptureBtn.hidden = YES;
-        captureContainerView.userInteractionEnabled = NO;
-        captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
-        __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
-        __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
-        __weak typeof(captureContainerView) weakCaptureContainerView = captureContainerView;
+        self.cancleCaptureBtn.hidden = YES;
+        self.captureContainerView.userInteractionEnabled = NO;
+        self.captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+		__weak typeof(self) weakSelf = self;
         self.TapToCaptureImageHandler(^{
-            
-            weakCancleCaptureBtn.hidden = NO;
-            weakCaptureContainerView.userInteractionEnabled = YES;
-            weakCaptureImgView.transform = CGAffineTransformIdentity;
+			
+			typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.cancleCaptureBtn.hidden = NO;
+            strongSelf.captureContainerView.userInteractionEnabled = YES;
+            strongSelf.captureImgView.transform = CGAffineTransformIdentity;
         });
     }
 }
@@ -137,17 +143,21 @@
     
     if (self.TapToCaptureVideoHandler) {
         
-        cancleCaptureBtn.hidden = YES;
-        captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+        self.cancleCaptureBtn.hidden = YES;
+        self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
         UIGestureRecognizerState state = gestureRecognizer.state;
-        __weak typeof(cancleCaptureBtn) weakCancleCaptureBtn = cancleCaptureBtn;
-        __weak typeof(captureProgressView) weakCaptureProgressView = captureProgressView;
-        __weak typeof(captureImgView) weakCaptureImgView = captureImgView;
-        self.TapToCaptureVideoHandler(state == UIGestureRecognizerStateBegan, state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled, ^{
-            
-            weakCancleCaptureBtn.hidden = NO;
-            [weakCaptureProgressView clearProgress];
-            weakCaptureImgView.transform = CGAffineTransformIdentity;
+		BOOL begin = state == UIGestureRecognizerStateBegan;
+		BOOL end = state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled;
+		self.captureContainerView.userInteractionEnabled = end ? NO : YES;
+		
+		__weak typeof(self) weakSelf = self;
+        self.TapToCaptureVideoHandler(begin, end, ^{
+			
+			typeof(weakSelf) strongSelf = weakSelf;
+			[strongSelf.captureContainerProgressView clearProgress];
+            strongSelf.cancleCaptureBtn.hidden = NO;
+            strongSelf.captureImgView.transform = CGAffineTransformIdentity;
+			strongSelf.captureContainerView.userInteractionEnabled = YES;
         });
     }
 }

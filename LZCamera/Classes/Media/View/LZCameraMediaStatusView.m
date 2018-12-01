@@ -21,6 +21,19 @@
     switchCameraBtn.backgroundColor = [UIColor clearColor];
     UIImage *switchCameraImg = [self imageInBundle:@"media_camera_switch"];
     [switchCameraBtn setImage:switchCameraImg forState:UIControlStateNormal];
+	
+	__weak typeof(switchCameraBtn) weakSwitchBtn = switchCameraBtn;
+	__weak typeof(durationTimeLab) weakDurationLab = durationTimeLab;
+	flashlightControl.FlashControlStatusHandler = ^(LZCameraFlashControlState state) {
+		
+		if (state == LZCameraFlashControlWillExpand) {
+			weakSwitchBtn.hidden = YES;
+			weakDurationLab.hidden = YES;
+		} else if(state == LZCameraFlashControlDidCollaapse) {
+			weakSwitchBtn.hidden = NO;
+			weakDurationLab.hidden = self.captureModel == LZCameraCaptureModelLongVideo ? NO : YES;
+		}
+	};
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {

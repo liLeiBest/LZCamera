@@ -8,14 +8,10 @@
 #import "LZCameraCaptureFlashControl.h"
 
 static const CGFloat BUTTON_SIZE = 60.0f;
-static const CGFloat FONT_SIZE      = 17.0f;
+static const CGFloat FONT_SIZE   = 17.0f;
 
 #define BOLD_FONT   [UIFont fontWithName:@"AvenirNextCondensed-DemiBold" size:FONT_SIZE]
 #define NORMAL_FONT [UIFont fontWithName:@"AvenirNextCondensed-Medium" size:FONT_SIZE]
-
-#define LEFT_SHRINK     CGRectMake(BUTTON_SIZE, self.midY, 0.f, BUTTON_SIZE)
-#define RIGHT_SHRINK    CGRectMake(BUTTON_SIZE + BUTTON_SIZE, 0, 0.f, BUTTON_SIZE)
-#define MIDDLE_EXPANDED CGRectMake(BUTTON_SIZE, self.midY, BUTTON_SIZE, BUTTON_SIZE)
 
 @interface LZCameraCaptureFlashControl()
 
@@ -84,12 +80,6 @@ static const CGFloat FONT_SIZE      = 17.0f;
     self.expanded = !self.expanded;
 }
 
-//- (void)performDelegateSelectorIfSupported:(SEL)sel {
-//    if ([self.delegate respondsToSelector:sel]) {
-//        [self.delegate performSelector:sel withObject:nil];
-//    }
-//}
-
 // MARK: - Private
 /**
  加载图片资源
@@ -117,10 +107,8 @@ static const CGFloat FONT_SIZE      = 17.0f;
     imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self addSubview:imageView];
 	self.imgView = imageView;
-    
-    self.midY = floorf(self.frame.size.width - BUTTON_SIZE) / 2.0f;
+    self.midY = floorf(self.frame.size.height - BUTTON_SIZE) * 0.5f;
     self.labels = [self buildLabels:@[@"自动", @"打开", @"关闭"]];
-    
     self.defaultWidth = self.frame.size.width;
     self.expandedWidth = [UIScreen mainScreen].bounds.size.width - self.frame.origin.x;
     
@@ -195,7 +183,6 @@ static const CGFloat FONT_SIZE      = 17.0f;
 	}
 }
 
-
 /**
  展开折叠动画
 
@@ -204,27 +191,28 @@ static const CGFloat FONT_SIZE      = 17.0f;
 - (void)animationToExpand:(BOOL)expand {
     
     if (!expand) {
-//        [self performDelegateSelectorIfSupported:@selector(flashControlWillCollapse)];
+		
+		[self callbackFlashControlState:LZCameraFlashControlWillCollapse];
         [UIView animateWithDuration:0.2 animations:^{
             
             for (NSUInteger i = 0; i < self.labels.count; i++) {
                 
                 UILabel *label = self.labels[i];
                 if (i < self.selectedIndex) {
-                    label.frame = LEFT_SHRINK;
+                    label.frame = CGRectMake(BUTTON_SIZE, self.midY, 0.f, BUTTON_SIZE);
                 } else if (i > self.selectedIndex) {
-                    label.frame = RIGHT_SHRINK;
+                    label.frame = CGRectMake(BUTTON_SIZE + BUTTON_SIZE, 0.f, 0.f, BUTTON_SIZE);
                 } else if (i == self.selectedIndex) {
-                    label.frame = MIDDLE_EXPANDED;
+                    label.frame = CGRectMake(BUTTON_SIZE, self.midY, BUTTON_SIZE, BUTTON_SIZE);
                 }
             }
             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.defaultWidth, self.frame.size.height);
         } completion:^(BOOL finished) {
-//         [self performDelegateSelectorIfSupported:@selector(flashControlDidCollapse)];
+			[self callbackFlashControlState:LZCameraFlashControlDidCollaapse];
         }];
     } else {
-        
-//        [self performDelegateSelectorIfSupported:@selector(flashControlWillExpand)];
+		
+		[self callbackFlashControlState:LZCameraFlashControlWillExpand];
         [UIView animateWithDuration:0.3 animations:^{
             
             self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.expandedWidth, self.frame.size.height);
@@ -236,9 +224,21 @@ static const CGFloat FONT_SIZE      = 17.0f;
                 label.frame = CGRectMake(BUTTON_SIZE + (i * BUTTON_SIZE), self.midY, BUTTON_SIZE, BUTTON_SIZE);
             }
         } completion:^(BOOL finished) {
-//         [self performDelegateSelectorIfSupported:@selector(flashControlDidExpand)];
+			[self callbackFlashControlState:LZCameraFlashControlDidExpand];
         }];
     }
+}
+
+/**
+ 回调状态
+
+ @param controlState LZCameraFlashControlState
+ */
+- (void)callbackFlashControlState:(LZCameraFlashControlState)controlState {
+	
+	if (self.FlashControlStatusHandler) {
+		self.FlashControlStatusHandler(controlState);
+	}
 }
 
 @end

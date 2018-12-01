@@ -55,10 +55,6 @@
     LZCameraLog();
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 // MARK: - Public
 + (instancetype)instance {
     return [[LZCameraCodeViewController alloc] init];

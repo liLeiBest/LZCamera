@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 点击闪光模式回调 */
 @property (copy, nonatomic) void(^TapToFlashModeHandler)(LZCameraFlashMode flashMode);
+/** 状态回调 */
+@property (copy, nonatomic) void(^FlashControlStatusHandler)(LZCameraFlashControlState state);
 @property (assign, nonatomic) LZCameraFlashMode selectedMode;
 
 @end
