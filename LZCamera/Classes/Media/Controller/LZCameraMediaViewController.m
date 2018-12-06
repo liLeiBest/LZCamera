@@ -117,6 +117,7 @@
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
     }
+	cameraConfig.minVideoFreeDiskSpaceLimit = 1500000000;
     self.cameraController = [LZCameraController cameraControllerWithConfig:cameraConfig];
     self.cameraController.delegate = self;
     NSError *error;
@@ -265,6 +266,7 @@
             }];
         } else if (end) {
             [strongSelf.cameraController stopVideoRecording];
+			ComplteHandler();
         }
     };
 }
