@@ -113,6 +113,7 @@
     __weak typeof(self) weakSelf = self;
     
     LZCameraConfig *cameraConfig = [[LZCameraConfig alloc] init];
+    cameraConfig.minVideoRecordedDuration = CMTimeMake(self.minVideoDuration, 1);
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
     }
@@ -243,28 +244,21 @@
                 [strongSelf controlFlashModelVisulState];
                 [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
-                CMTime minTime = CMTimeMake(strongSelf.minVideoDuration, 1);
-                int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
-                if (compareResult >= 0) {
+                if (error) {
                     
-                    strongSelf.previewImage = thumbnail;
-                    strongSelf.videoURL = videoURL;
-                    [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+                    LZCameraLog(@"录制视频失败:%@", error);
+                    [strongSelf alertMessage:error.localizedDescription handler:nil];
                 } else {
-                    
-                    if (!error) {
-                        [strongSelf showCaputreTip:@"视频时间太短"];
-                    } else {
+                   
+                    CMTime minTime = CMTimeMake(strongSelf.minVideoDuration, 1);
+                    int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
+                    if (compareResult >= 0) {
                         
-                        LZCameraLog(@"录制视频失败:%@", error);
-                        [strongSelf alertMessage:error.localizedDescription handler:nil];
-                    }
-                    
-                    NSError *error;
-                    NSFileManager *fileM = [NSFileManager defaultManager];
-                    [fileM removeItemAtURL:videoURL error:&error];
-                    if (error) {
-                        LZCameraLog(@"删除文件失败:%@", error);
+                        strongSelf.previewImage = thumbnail;
+                        strongSelf.videoURL = videoURL;
+                        [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+                    } else {
+                        [strongSelf showCaputreTip:@"视频时间太短"];
                     }
                 }
                 ComplteHandler();

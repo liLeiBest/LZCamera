@@ -18,6 +18,7 @@
         self.videoAutoWriteToAlbum = YES;
         self.cameraZoomRate = 1.2f;
         self.maxCameraZoomFactor = 3.0f;
+        self.minVideoRecordedDuration = kCMTimeZero;
         self.maxVideoRecordedDuration = kCMTimeInvalid;
         self.maxVideoRecordedFileSize = 0.0f;
         self.minVideoFreeDiskSpaceLimit = 0.0f;

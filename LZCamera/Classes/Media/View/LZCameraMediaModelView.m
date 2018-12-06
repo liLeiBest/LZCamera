@@ -114,6 +114,7 @@
 			
 			typeof(weakSelf) strongSelf = weakSelf;
             strongSelf.cancleCaptureBtn.hidden = NO;
+            strongSelf.captureLongVideoBtn.selected = NO;
 			strongSelf.captureLongVideoBtn.userInteractionEnabled = YES;
         });
     }

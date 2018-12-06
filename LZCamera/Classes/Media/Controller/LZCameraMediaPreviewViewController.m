@@ -62,7 +62,13 @@
 
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
+    
     [self dismissViewControllerAnimated:NO completion:nil];
+    if (self.videoURL) {
+        
+        NSFileManager *fileM = [NSFileManager defaultManager];
+        [fileM removeItemAtURL:self.videoURL error:NULL];
+    }
 }
 
 - (IBAction)editDidClick:(id)sender {

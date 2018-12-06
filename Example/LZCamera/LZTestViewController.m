@@ -7,7 +7,6 @@
 //
 
 #import "LZTestViewController.h"
-#import "LZTest1ViewController.h"
 
 @interface LZTestViewController ()
 

@@ -718,24 +718,34 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
             if ([allKeys containsObject:AVErrorRecordingSuccessfullyFinishedKey] ) {
                 
                 if ((BOOL)[[userInfo objectForKey:AVErrorRecordingSuccessfullyFinishedKey] boolValue]) {
+                    
                     [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:nil];
+                    [self deleteTempVideo:self.videoFileOutputURL];
                 }
             }
         } else {
             
-            if (error.code == AVErrorDiskFull) {
+            CMTime duratedTime = [self videoRecordedDuration];
+            if (CMTIME_IS_VALID(duratedTime) && CMTimeCompare(duratedTime, self.cameraConfig.minVideoRecordedDuration) >= 0) {
+                [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:nil];
+            } else {
                 
-                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Failed to disk full."};
-                error = [NSError errorWithDomain:LZCameraErrorDomain
-                                            code:LZCameraErrorDiskFull
-                                        userInfo:userInfo];
-            } else if (error.code == AVErrorSessionWasInterrupted) {
-                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Session was interrupted."};
-                error = [NSError errorWithDomain:LZCameraErrorDomain
-                                            code:LZCameraErrorSessionInterrupted
-                                        userInfo:userInfo];
+                if (error.code == AVErrorDiskFull) {
+                    
+                    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Failed to disk full."};
+                    error = [NSError errorWithDomain:LZCameraErrorDomain
+                                                code:LZCameraErrorDiskFull
+                                            userInfo:userInfo];
+                } else if (error.code == AVErrorSessionWasInterrupted) {
+                    
+                    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Session was interrupted."};
+                    error = [NSError errorWithDomain:LZCameraErrorDomain
+                                                code:LZCameraErrorSessionInterrupted
+                                            userInfo:userInfo];
+                }
+                [self callBackVideoOnMainQueue:[self.videoFileOutputURL copy] error:error];
+                [self deleteTempVideo:self.videoFileOutputURL];
             }
-            [self callBackVideoOnMainQueue:[self.videoFileOutputURL copy] error:error];
         }
 	} else {
         [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:error];
@@ -1094,6 +1104,21 @@ didFinishSavingWithError:(NSError *)error
 	CGImageRelease(imageRef);
 	
 	return image;
+}
+
+/**
+ 删除临时视频文件
+ 
+ @param videoURL NSURL
+ */
+- (void)deleteTempVideo:(NSURL *)videoURL {
+    
+    NSError *error;
+    NSFileManager *fileM = [NSFileManager defaultManager];
+    [fileM removeItemAtURL:videoURL error:&error];
+    if (error) {
+        LZCameraLog(@"删除文件失败:%@", error);
+    }
 }
 
 /**

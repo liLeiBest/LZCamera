@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) CGFloat cameraZoomRate;
 /** 图像最大缩放因子，默认：3.0f */
 @property (assign, nonatomic) CGFloat maxCameraZoomFactor;
+/** 视频最短录制时间，默认：无限制 */
+@property (assign, nonatomic) CMTime minVideoRecordedDuration;
 /** 视频最长录制时间，默认：无限制 */
 @property (assign, nonatomic) CMTime maxVideoRecordedDuration;
 /** 视频文件最大限制，单位:bytes，默认：无限制 */
