@@ -60,7 +60,6 @@
     [self.circleLayer addAnimation:animationGroup forKey:@"scaleAndRadiusAnimation"];
 }
 
-
 - (void)drawRect:(CGRect)rect {
     
     static CGFloat lineW = 6.0f;

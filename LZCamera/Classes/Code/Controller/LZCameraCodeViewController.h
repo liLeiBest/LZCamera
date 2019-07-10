@@ -8,7 +8,7 @@
 #import "LZCameraController.h"
 
 /** 机器码捕捉回调 */
-typedef void(^LZCameraDetectMachineCodeHandler)(NSArray<NSString *> *codeArray, NSError *error, void(^CompleteHandler)(void));
+typedef void(^LZCameraDetectMachineCodeHandler)(NSArray<NSString *> * _Nullable codeArray, NSError * _Nullable error, void(^ _Nullable CompleteHandler)(void));
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -716,13 +716,12 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
             NSDictionary *userInfo = error.userInfo;
             NSArray *allKeys = userInfo.allKeys;
             if ([allKeys containsObject:AVErrorRecordingSuccessfullyFinishedKey] ) {
-                
                 if ((BOOL)[[userInfo objectForKey:AVErrorRecordingSuccessfullyFinishedKey] boolValue]) {
-                    
                     [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:nil];
-                    [self deleteTempVideo:self.videoFileOutputURL];
                 }
-            }
+			} else {
+				[self deleteTempVideo:self.videoFileOutputURL];
+			}
         } else {
             
             CMTime duratedTime = [self videoRecordedDuration];

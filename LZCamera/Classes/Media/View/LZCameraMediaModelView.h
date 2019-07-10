@@ -16,12 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) LZCameraCaptureModel captureModel;
 /** 短时间最长持续时间 */
 @property (assign, nonatomic) CGFloat maxDuration;
-/** 触摸取消按钮回调 */
-@property (copy, nonatomic) void(^TapToCancelCaptureHandler)(void);
 /** 触摸拍摄图片按钮回调 */
 @property (copy, nonatomic) void(^TapToCaptureImageHandler)(void(^ComplteHandler)(void));
 /** 触摸拍摄视频按钮回调 */
 @property (copy, nonatomic) void(^TapToCaptureVideoHandler)(BOOL began, BOOL end, void(^ComplteHandler)(void));
+/** 触摸拍摄视频取消按钮回调 */
+@property (copy, nonatomic) void(^TapToCaptureVideoCancelHandler)(void);
 
 
 /**

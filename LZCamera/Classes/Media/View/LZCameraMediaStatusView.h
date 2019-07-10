@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 捕捉模式 */
 @property (assign, nonatomic) LZCameraCaptureModel captureModel;
+/** 触摸关闭按钮回调 */
+@property (copy, nonatomic) void(^TapToCloseCaptureHandler)(void);
 /** 触摸闪光灯模式按钮回调 */
 @property (copy, nonatomic) void(^TapToFlashModelHandler)(LZCameraFlashMode model);
 /** 触摸摄像头切换按钮回调 */

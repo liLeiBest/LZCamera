@@ -9,6 +9,8 @@
 #import "LZCameraCaptureFlashControl.h"
 
 @implementation LZCameraMediaStatusView {
+	
+	IBOutlet UIButton *closeCaptureBtn;
     IBOutlet LZCameraCaptureFlashControl *flashlightControl;
     IBOutlet UIButton *switchCameraBtn;
     IBOutlet UILabel *durationTimeLab;
@@ -17,7 +19,11 @@
 // MARK: - Initialization
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
+	
+	closeCaptureBtn.backgroundColor = [UIColor clearColor];
+	UIImage *closeImg = [self imageInBundle:@"media_capture_close"];
+	[closeCaptureBtn setImage:closeImg forState:UIControlStateNormal];
+	
     switchCameraBtn.backgroundColor = [UIColor clearColor];
     UIImage *switchCameraImg = [self imageInBundle:@"media_camera_switch"];
     [switchCameraBtn setImage:switchCameraImg forState:UIControlStateNormal];
@@ -72,10 +78,10 @@
 }
 
 // MARK: - UI Action
-- (IBAction)flashlightDidTap:(UIButton *)sender {
-    if (self.TapToFlashModelHandler) {
-        self.TapToFlashModelHandler(1);
-    }
+- (IBAction)closeDidTap:(UIButton *)sender {
+	if (self.TapToCloseCaptureHandler) {
+		self.TapToCloseCaptureHandler();
+	}
 }
 
 - (IBAction)switchCameraDidTap:(UIButton *)sender {

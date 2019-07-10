@@ -42,7 +42,7 @@
             CompleteHandler();
         }
     }];
-    [self.navigationController presentViewController:ctr animated:YES completion:nil];
+    [self.navigationController pushViewController:ctr animated:YES];
 }
 
 - (IBAction)rightCaptureStillImageDidClick:(id)sender {
@@ -66,6 +66,7 @@
     
     LZCameraMediaViewController *ctr = [LZCameraMediaViewController instance];
     ctr.captureModel = caputreModel;
+	ctr.maxShortVideoDuration = 60.0f;
     __weak typeof(self) weakSelf = self;
     ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage) {
         

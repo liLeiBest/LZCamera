@@ -98,7 +98,7 @@
 // MARK: - Public
 + (instancetype)instance {
     
-    NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController"
                                                          bundle:bundle];
     return storyboard.instantiateInitialViewController;
@@ -199,6 +199,9 @@
     [self controlFlashModelVisulState];
     [self controlSwitchCameraVisualState];
     self.mediaStatusView.captureModel = self.captureModel;
+	self.mediaStatusView.TapToCloseCaptureHandler = ^{
+		[weakSelf dismissViewControllerAnimated:YES completion:nil];
+	};
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
         
         typeof(weakSelf) strongSelf = weakSelf;
@@ -214,9 +217,6 @@
     
     // 拍摄视图
     self.mediaModelView.captureModel = self.captureModel;
-    self.mediaModelView.TapToCancelCaptureHandler = ^{
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
-    };
     self.mediaModelView.TapToCaptureImageHandler = ^(void (^ _Nonnull ComplteHandler)(void)) {
         
         lzPlaySound(@"media_capture_image.wav", @"LZCameraMedia");
@@ -232,6 +232,11 @@
             ComplteHandler();
         }];
     };
+	
+	__block BOOL forceCancel = NO;
+	self.mediaModelView.TapToCaptureVideoCancelHandler = ^{
+		forceCancel = YES;
+	};
     self.mediaModelView.TapToCaptureVideoHandler = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
         
         typeof(weakSelf) strongSelf = weakSelf;
@@ -245,6 +250,19 @@
                 [strongSelf controlFlashModelVisulState];
                 [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
+				ComplteHandler();
+				if (forceCancel) {
+					
+					NSError *error;
+					NSFileManager *fileM = [NSFileManager defaultManager];
+					[fileM removeItemAtURL:videoURL error:&error];
+					if (error) {
+						LZCameraLog(@"删除文件失败:%@", error);
+					}
+					forceCancel = NO;
+					return ;
+				}
+				
                 if (error) {
                     
                     LZCameraLog(@"录制视频失败:%@", error);
@@ -262,7 +280,6 @@
                         [strongSelf showCaputreTip:@"视频时间太短"];
                     }
                 }
-                ComplteHandler();
             }];
         } else if (end) {
             [strongSelf.cameraController stopVideoRecording];
