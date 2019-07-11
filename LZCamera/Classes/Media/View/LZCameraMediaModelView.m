@@ -34,8 +34,6 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 	
-	self.durationContainerView.hidden = YES;
-	
 	self.durationDotImgView.backgroundColor = [UIColor clearColor];
 	UIImage *durationDodImg = [self imageInBundle:@"media_capture_reddot"];
 	self.durationDotImgView.image = durationDodImg;
@@ -43,12 +41,10 @@
     self.cancelCaptureBtn.backgroundColor = [UIColor clearColor];
     UIImage *cancelImg = [self imageInBundle:@"media_capture_cancel"];
     [self.cancelCaptureBtn setImage:cancelImg forState:UIControlStateNormal];
-	self.cancelCaptureBtn.hidden = YES;
 	
 	self.finishCaptureBtn.backgroundColor = [UIColor clearColor];
 	UIImage *finishImg = [self imageInBundle:@"media_capture_finish"];
 	[self.finishCaptureBtn setImage:finishImg forState:UIControlStateNormal];
-	self.finishCaptureBtn.hidden = YES;
 	
     self.captureContainerView.backgroundColor = self.captureContainerProgressView.backgroundColor;
     UIImage *captureImg = [self imageInBundle:@"media_capture_normal"];
@@ -70,6 +66,8 @@
 	
 	self.captureContainerView.layer.cornerRadius = 40.0f;
     self.captureLongVideoContainerView.layer.cornerRadius = 40.0f;
+	
+	[self initializeCaptureState];
 }
 
 - (void)setCaptureModel:(LZCameraCaptureModel)captureModel {
@@ -123,7 +121,6 @@
     Float64 curSeconds = CMTimeGetSeconds(durationTime);
     self.captureContainerProgressView.progressValue = curSeconds / self.maxDuration;
 	
-	self.durationContainerView.hidden = NO;
 	NSString *timeString = [NSString stringWithFormat:@"%.1f秒", curSeconds];
 	self.durationLabel.text = timeString;
 }
@@ -132,16 +129,15 @@
 - (IBAction)cancelCaptureDidClick:(UIButton *)sender {
 	
 	if (self.TapToCaptureVideoCancelHandler) {
+		
+		[self initializeCaptureState];
 		self.TapToCaptureVideoCancelHandler();
-	}
-	if (self.TapToCaptureVideoHandler) {
-		[self stopCaptureVideo:YES];
 	}
 }
 
 - (IBAction)finishCaptureDidClick:(UIButton *)sender {
 	if (self.TapToCaptureVideoHandler) {
-		[self stopCaptureVideo:YES];
+		[self captureVideo:NO stop:YES];
 	}
 }
 
@@ -181,12 +177,14 @@
 	
     if (self.TapToCaptureVideoHandler) {
 		
+		self.durationContainerView.hidden = NO;
         self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
+		BOOL begin = YES;
 		BOOL end = NO;
 		if (self.captureModel == LZCameraCaptureModelStillImageAndShortVideo || self.maxDuration <= 15) {
 			
 			UIGestureRecognizerState state = gestureRecognizer.state;
-			// BOOL begin = state == UIGestureRecognizerStateBegan;
+			begin = state == UIGestureRecognizerStateBegan;
 			end = state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled;
 		} else {
 			
@@ -194,13 +192,13 @@
 			self.finishCaptureBtn.hidden = NO;
 		}
 		self.captureContainerView.userInteractionEnabled = end ? NO : YES;
-		[self stopCaptureVideo:end];
+		[self captureVideo:begin stop:end];
     }
 }
 
 - (void)captureVideoDidSingleTap:(UITapGestureRecognizer *)gestureRecognizer {
 	if (self.TapToCaptureVideoHandler) {
-		[self stopCaptureVideo:YES];
+		[self captureVideo:NO stop:YES];
 	}
 }
 
@@ -221,21 +219,30 @@
 /**
  停止录制视频
 
+ @param start 是否开始
  @param stop 是否停止
  */
-- (void)stopCaptureVideo:(BOOL)stop {
+- (void)captureVideo:(BOOL)start stop:(BOOL)stop {
 	
 	__weak typeof(self) weakSelf = self;
-	self.TapToCaptureVideoHandler(!stop, stop, ^{
+	self.TapToCaptureVideoHandler(start, stop, ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf.captureContainerProgressView clearProgress];
-		self.cancelCaptureBtn.hidden = YES;
-		self.finishCaptureBtn.hidden = YES;
-		self.durationContainerView.hidden = YES;
-		strongSelf.captureImgView.transform = CGAffineTransformIdentity;
-		strongSelf.captureContainerView.userInteractionEnabled = YES;
+		[strongSelf initializeCaptureState];
 	});
+}
+
+/**
+ 初始化捕捉状态
+ */
+- (void)initializeCaptureState {
+	
+	[self.captureContainerProgressView clearProgress];
+	self.cancelCaptureBtn.hidden = YES;
+	self.finishCaptureBtn.hidden = YES;
+	self.durationContainerView.hidden = YES;
+	self.captureImgView.transform = CGAffineTransformIdentity;
+	self.captureContainerView.userInteractionEnabled = YES;
 }
 
 @end

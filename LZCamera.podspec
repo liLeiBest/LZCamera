@@ -30,6 +30,7 @@ Pod::Spec.new do |s|
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
+	#media.dependency 'GPUImage'
   end
 
   s.subspec 'CodeCapture' do |code|

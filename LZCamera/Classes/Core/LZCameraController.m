@@ -544,6 +544,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
             }
             
             self.videoFileOutputURL = [self generateUniqueMovieFileURL];
+			LZCameraLog(@"视频输出路径:%@", self.videoFileOutputURL);
             if (self.videoFileOutputURL) {
                 [self.videoFileOutput startRecordingToOutputFileURL:self.videoFileOutputURL recordingDelegate:self];
             } else {
@@ -709,8 +710,6 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
     }
     
 	if (error) {
-        
-        [self stopVideoRecording];
         if ((error.code == AVErrorMaximumFileSizeReached || error.code == AVErrorMaximumDurationReached)) {
             
             NSDictionary *userInfo = error.userInfo;
@@ -747,9 +746,8 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
             }
         }
 	} else {
-        [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:error];
+		[self captureVideoFileFinish:[self.videoFileOutputURL copy] error:error];
 	}
-	self.videoFileOutputURL = nil;
 }
 
 // MARK: <AVCaptureVideoDataOutputSampleBufferDelegate>
