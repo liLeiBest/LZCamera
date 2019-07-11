@@ -10,10 +10,10 @@ Pod::Spec.new do |s|
   3.基于 Core 模块实现机器码识别功能，机器码类型支持自定义。
                        DESC
 
-  s.homepage         = 'https://github.com/liLeiBest/LZCamera'
+  s.homepage         = 'https://github.com/liLeiBest'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'lilei' => 'lilei0502@139.com' }
-  s.source           = { :git => 'git@github.com:liLeiBest/LZCamera.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/liLeiBest/LZCamera.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
   s.frameworks          = 'AVFoundation','Foundation','UIKit'
