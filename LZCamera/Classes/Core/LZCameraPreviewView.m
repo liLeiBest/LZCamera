@@ -17,7 +17,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     
     if (self = [super initWithFrame:frame]) {
-        [self setupView];
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return self;
 }
@@ -25,7 +25,7 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     
     if (self = [super initWithCoder:aDecoder]) {
-        [self setupView];
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     }
     return self;
 }
@@ -43,11 +43,5 @@
 }
 
 // MARK: - Private
-/**
- 设置视图
- */
-- (void)setupView {
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-}
 
 @end

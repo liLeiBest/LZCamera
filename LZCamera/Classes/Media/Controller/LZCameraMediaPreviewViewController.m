@@ -44,6 +44,7 @@
         self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
         self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         self.playerLayer.frame = self.view.layer.bounds;
         [self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
         [self.player play];

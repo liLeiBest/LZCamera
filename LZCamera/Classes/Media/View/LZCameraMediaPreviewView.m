@@ -182,7 +182,7 @@
     
     self.faceLayers = [NSMutableDictionary dictionary];
     self.overLayer = [CALayer layer];
-    self.overLayer.frame = self.previewLayer.bounds;
+	self.overLayer.frame = self.previewLayer.bounds;
     self.overLayer.sublayerTransform = CATransform3DMakePerspective(1000);
     [self.previewLayer addSublayer:self.overLayer];
 }

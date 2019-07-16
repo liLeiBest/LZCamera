@@ -26,6 +26,7 @@
 @property (weak, nonatomic) UITapGestureRecognizer *stillImageSingleTap;
 @property (weak, nonatomic) UILongPressGestureRecognizer *longTap;
 @property (weak, nonatomic) UITapGestureRecognizer *videoSingleTap;
+@property (assign, nonatomic, getter=isRecording) BOOL recording;
 
 @end
 @implementation LZCameraMediaModelView
@@ -86,8 +87,15 @@
         case LZCameraCaptureModelShortVideo: {
             
             self.stillImageSingleTap.enabled = NO;
-            self.longTap.enabled = YES;
-			self.videoSingleTap.enabled = YES;
+			if (self.maxDuration <= 15) {
+				
+				self.longTap.enabled = YES;
+				self.videoSingleTap.enabled = NO;
+			} else {
+				
+				self.longTap.enabled = NO;
+				self.videoSingleTap.enabled = YES;
+			}
             self.captureContainerView.hidden = NO;
             self.captureLongVideoContainerView.hidden = YES;
         }
@@ -136,9 +144,7 @@
 }
 
 - (IBAction)finishCaptureDidClick:(UIButton *)sender {
-	if (self.TapToCaptureVideoHandler) {
-		[self captureVideo:NO stop:YES];
-	}
+	[self captureVideo:NO stop:YES];
 }
 
 - (IBAction)captureLongVideoDidTouch:(UIButton *)sender {
@@ -175,29 +181,29 @@
 
 - (void)captureVideoDidLongTap:(UILongPressGestureRecognizer *)gestureRecognizer {
 	
-    if (self.TapToCaptureVideoHandler) {
-		
-		self.durationContainerView.hidden = NO;
-        self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
-		BOOL begin = YES;
-		BOOL end = NO;
-		if (self.captureModel == LZCameraCaptureModelStillImageAndShortVideo || self.maxDuration <= 15) {
-			
-			UIGestureRecognizerState state = gestureRecognizer.state;
-			begin = state == UIGestureRecognizerStateBegan;
-			end = state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled;
-		} else {
-			
-			self.cancelCaptureBtn.hidden = NO;
-			self.finishCaptureBtn.hidden = NO;
-		}
-		self.captureContainerView.userInteractionEnabled = end ? NO : YES;
-		[self captureVideo:begin stop:end];
-    }
+	self.durationContainerView.hidden = NO;
+	self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
+	UIGestureRecognizerState state = gestureRecognizer.state;
+	BOOL begin = state == UIGestureRecognizerStateBegan;
+	BOOL end = state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateFailed || state == UIGestureRecognizerStateCancelled;
+	self.captureContainerView.userInteractionEnabled = end ? NO : YES;
+	[self captureVideo:begin stop:end];
 }
 
 - (void)captureVideoDidSingleTap:(UITapGestureRecognizer *)gestureRecognizer {
-	if (self.TapToCaptureVideoHandler) {
+	
+	if (NO == self.isRecording) {
+		
+		self.recording = YES;
+		self.durationContainerView.hidden = NO;
+		self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
+		
+		self.cancelCaptureBtn.hidden = NO;
+		self.finishCaptureBtn.hidden = NO;
+		[self captureVideo:YES stop:NO];
+	} else {
+		
+		self.recording = NO;
 		[self captureVideo:NO stop:YES];
 	}
 }

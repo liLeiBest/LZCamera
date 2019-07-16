@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QCA-SG-j0Y">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QCA-SG-j0Y">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,29 +14,25 @@
         <scene sceneID="lc1-y4-xP3">
             <objects>
                 <viewController id="QCA-SG-j0Y" customClass="LZCameraMediaPreviewViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="LmQ-2h-uks"/>
-                        <viewControllerLayoutGuide type="bottom" id="i7g-4b-7nF"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="OFh-xw-Zxv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="n12-Yc-cwG">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e89-Og-CsI">
-                                <rect key="frame" x="0.0" y="547" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="658" width="375" height="120"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysw-pW-cCv">
-                                        <rect key="frame" x="77.5" y="30" width="60" height="60"/>
+                                        <rect key="frame" x="77.666666666666671" y="30" width="60.000000000000014" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="cancelDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="gEp-aX-FGe"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
-                                        <rect key="frame" x="157.5" y="30" width="60" height="60"/>
+                                        <rect key="frame" x="157.66666666666666" y="30" width="60" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="Mbk-7N-gG1"/>
@@ -46,7 +43,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXB-5V-OhZ">
-                                        <rect key="frame" x="237.5" y="30" width="60" height="60"/>
+                                        <rect key="frame" x="237.66666666666663" y="30" width="60" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="sureDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="smD-rI-nXP"/>
@@ -70,14 +67,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="n12-Yc-cwG" secondAttribute="trailing" id="3ww-8L-9SJ"/>
-                            <constraint firstItem="i7g-4b-7nF" firstAttribute="top" secondItem="n12-Yc-cwG" secondAttribute="bottom" id="Hlz-1P-NBX"/>
-                            <constraint firstItem="n12-Yc-cwG" firstAttribute="leading" secondItem="OFh-xw-Zxv" secondAttribute="leading" id="Kfg-Zs-b57"/>
+                            <constraint firstItem="hpK-du-ihY" firstAttribute="trailing" secondItem="n12-Yc-cwG" secondAttribute="trailing" id="3ww-8L-9SJ"/>
+                            <constraint firstItem="n12-Yc-cwG" firstAttribute="leading" secondItem="hpK-du-ihY" secondAttribute="leading" id="Kfg-Zs-b57"/>
                             <constraint firstItem="n12-Yc-cwG" firstAttribute="top" secondItem="OFh-xw-Zxv" secondAttribute="top" id="NNo-2b-siO"/>
-                            <constraint firstItem="e89-Og-CsI" firstAttribute="leading" secondItem="OFh-xw-Zxv" secondAttribute="leading" id="hdZ-GH-9l4"/>
-                            <constraint firstItem="e89-Og-CsI" firstAttribute="bottom" secondItem="i7g-4b-7nF" secondAttribute="top" id="lsQ-hx-2qQ"/>
-                            <constraint firstAttribute="trailing" secondItem="e89-Og-CsI" secondAttribute="trailing" id="xi5-EN-Aw5"/>
+                            <constraint firstItem="e89-Og-CsI" firstAttribute="leading" secondItem="hpK-du-ihY" secondAttribute="leading" id="hdZ-GH-9l4"/>
+                            <constraint firstItem="e89-Og-CsI" firstAttribute="bottom" secondItem="hpK-du-ihY" secondAttribute="bottom" id="lsQ-hx-2qQ"/>
+                            <constraint firstAttribute="bottom" secondItem="n12-Yc-cwG" secondAttribute="bottom" id="wUQ-P6-v7X"/>
+                            <constraint firstItem="hpK-du-ihY" firstAttribute="trailing" secondItem="e89-Og-CsI" secondAttribute="trailing" id="xi5-EN-Aw5"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="hpK-du-ihY"/>
                     </view>
                     <connections>
                         <outlet property="cancelBtn" destination="ysw-pW-cCv" id="Kdy-wj-ysz"/>

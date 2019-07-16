@@ -232,6 +232,7 @@
     };
     
     // 拍摄视图
+	self.mediaModelView.maxDuration = self.maxShortVideoDuration;
     self.mediaModelView.captureModel = self.captureModel;
     self.mediaModelView.TapToCaptureImageHandler = ^(void (^ _Nonnull ComplteHandler)(void)) {
         
@@ -263,7 +264,6 @@
             
             [strongSelf.mediaStatusView updateFlashVisualState:LZControlVisualStateOff];
             [strongSelf.mediaStatusView updateSwitchCameraVisualState:LZControlVisualStateOff];
-            strongSelf.mediaModelView.maxDuration = strongSelf.maxShortVideoDuration;
             [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
                 
                 [strongSelf controlFlashModelVisulState];
