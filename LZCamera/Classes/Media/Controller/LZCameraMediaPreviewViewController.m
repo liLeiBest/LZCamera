@@ -66,16 +66,12 @@
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
 	
-	if (self.cancelBtn.selected) {
+	[self dismissViewControllerAnimated:NO completion:nil];
+	if (self.videoURL) {
 		
-		[self dismissViewControllerAnimated:NO completion:nil];
-		if (self.videoURL) {
-			
-			NSFileManager *fileM = [NSFileManager defaultManager];
-			[fileM removeItemAtURL:self.videoURL error:NULL];
-		}
+		NSFileManager *fileM = [NSFileManager defaultManager];
+		[fileM removeItemAtURL:self.videoURL error:NULL];
 	}
-	self.cancelBtn.selected = !self.cancelBtn.selected;
 }
 
 - (IBAction)editDidClick:(id)sender {
