@@ -29,6 +29,8 @@
     
     UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
     [self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];
+	UIImage *deleteImg = [self imageInBundle:@"media_preview_delete"];
+	[self.cancelBtn setImage:deleteImg forState:UIControlStateSelected];
     self.cancelBtn.layer.cornerRadius = 30.0f;
     UIImage *editlImg = [self imageInBundle:@"media_preview_edit"];
     [self.editBtn setImage:editlImg forState:UIControlStateNormal];
@@ -63,13 +65,17 @@
 
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
-    if (self.videoURL) {
-        
-        NSFileManager *fileM = [NSFileManager defaultManager];
-        [fileM removeItemAtURL:self.videoURL error:NULL];
-    }
+	
+	if (self.cancelBtn.selected) {
+		
+		[self dismissViewControllerAnimated:NO completion:nil];
+		if (self.videoURL) {
+			
+			NSFileManager *fileM = [NSFileManager defaultManager];
+			[fileM removeItemAtURL:self.videoURL error:NULL];
+		}
+	}
+	self.cancelBtn.selected = !self.cancelBtn.selected;
 }
 
 - (IBAction)editDidClick:(id)sender {
