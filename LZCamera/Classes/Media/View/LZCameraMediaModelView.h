@@ -20,8 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic) void(^TapToCaptureImageHandler)(void(^ComplteHandler)(void));
 /** 触摸拍摄视频按钮回调 */
 @property (copy, nonatomic) void(^TapToCaptureVideoHandler)(BOOL began, BOOL end, void(^ComplteHandler)(void));
-/** 触摸拍摄视频取消按钮回调 */
-@property (copy, nonatomic) void(^TapToCaptureVideoCancelHandler)(void);
 
 
 /**

@@ -250,36 +250,24 @@
         }];
     };
 	
-	__block BOOL forceCancel = NO;
-	self.mediaModelView.TapToCaptureVideoCancelHandler = ^{
-		
-		 typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf.cameraController stopVideoRecording];
-		forceCancel = YES;
-	};
     self.mediaModelView.TapToCaptureVideoHandler = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
         
         typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
-            
+			
+			if (NO == strongSelf.captureTipLabel.hidden) {
+				[strongSelf hideCaptureTip];
+			}
             [strongSelf.mediaStatusView updateFlashVisualState:LZControlVisualStateOff];
             [strongSelf.mediaStatusView updateSwitchCameraVisualState:LZControlVisualStateOff];
             [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
-                
+				
+				LZCameraLog(@"录制视频完成:%@", error);
                 [strongSelf controlFlashModelVisulState];
                 [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
-				ComplteHandler();
-				if (forceCancel) {
-					
-					[strongSelf deleteVideo:videoURL];
-					forceCancel = NO;
-					return ;
-				}
 				
                 if (error) {
-					
-                    LZCameraLog(@"录制视频失败:%@", error);
                     [strongSelf alertMessage:error.localizedDescription handler:nil];
                 } else {
                    
@@ -296,10 +284,10 @@
 						[strongSelf deleteVideo:videoURL];
                     }
                 }
+				ComplteHandler();
             }];
         } else if (end) {
             [strongSelf.cameraController stopVideoRecording];
-			ComplteHandler();
         }
     };
 }
@@ -590,7 +578,7 @@
 - (void)controlSwitchCameraVisualState {
     
     LZControlVisualState state = LZControlVisualStateOff;
-    if (self.showFlashModeInStatusBar) {
+    if (self.showSwitchCameraInStatusBar) {
         
         if ([self.cameraController canSwitchCameras]) {
             state = LZControlVisualStateOn;
@@ -610,7 +598,11 @@
             tipString = @"轻触拍照";
             break;
         case LZCameraCaptureModelShortVideo:
-            tipString = @"按住录像";
+			if (self.maxShortVideoDuration < 15) {
+				tipString = @"按住录像";
+			} else {
+				tipString = @"轻触录像，再次轻触停止";
+			}
             break;
         case LZCameraCaptureModelStillImageAndShortVideo:
             tipString = @"轻触拍照，按住录像";
@@ -632,8 +624,7 @@
 - (void)showCaputreTip:(NSString *)tipMessage {
     
     if (!tipMessage || tipMessage.length == 0) {
-        
-        self.captureTipLabel.hidden = YES;
+		[self hideCaptureTip];
         return;
     }
     

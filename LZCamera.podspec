@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'MediaCapture' do |media|
-    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}'
+    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m,storyboard}'
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'

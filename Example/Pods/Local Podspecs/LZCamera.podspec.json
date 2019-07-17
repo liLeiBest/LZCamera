@@ -34,7 +34,7 @@
     },
     {
       "name": "MediaCapture",
-      "source_files": "LZCamera/Classes/Media/**/*.{h,m}",
+      "source_files": "LZCamera/Classes/Media/**/*.{h,m,storyboard}",
       "public_header_files": "LZCamera/Classes/Media/**/*.h",
       "resources": "LZCamera/Classes/Media/Resources/LZCameraMedia.bundle",
       "dependencies": {

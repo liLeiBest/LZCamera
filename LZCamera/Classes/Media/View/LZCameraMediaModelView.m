@@ -14,9 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *durationDotImgView;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *cancelCaptureBtn;
-@property (weak, nonatomic) IBOutlet UIButton *finishCaptureBtn;
-
 @property (weak, nonatomic) IBOutlet UIView *captureContainerView;
 @property (weak, nonatomic) IBOutlet LZCameraCaptureProgressView *captureContainerProgressView;
 @property (weak, nonatomic) IBOutlet UIImageView *captureImgView;
@@ -38,14 +35,6 @@
 	self.durationDotImgView.backgroundColor = [UIColor clearColor];
 	UIImage *durationDodImg = [self imageInBundle:@"media_capture_reddot"];
 	self.durationDotImgView.image = durationDodImg;
-	
-    self.cancelCaptureBtn.backgroundColor = [UIColor clearColor];
-    UIImage *cancelImg = [self imageInBundle:@"media_capture_cancel"];
-    [self.cancelCaptureBtn setImage:cancelImg forState:UIControlStateNormal];
-	
-	self.finishCaptureBtn.backgroundColor = [UIColor clearColor];
-	UIImage *finishImg = [self imageInBundle:@"media_capture_finish"];
-	[self.finishCaptureBtn setImage:finishImg forState:UIControlStateNormal];
 	
     self.captureContainerView.backgroundColor = self.captureContainerProgressView.backgroundColor;
     UIImage *captureImg = [self imageInBundle:@"media_capture_normal"];
@@ -134,19 +123,6 @@
 }
 
 // MARK: - UI Action
-- (IBAction)cancelCaptureDidClick:(UIButton *)sender {
-	
-	if (self.TapToCaptureVideoCancelHandler) {
-		
-		[self initializeCaptureState];
-		self.TapToCaptureVideoCancelHandler();
-	}
-}
-
-- (IBAction)finishCaptureDidClick:(UIButton *)sender {
-	[self captureVideo:NO stop:YES];
-}
-
 - (IBAction)captureLongVideoDidTouch:(UIButton *)sender {
 	
     BOOL selected = self.captureLongVideoBtn.selected;
@@ -181,7 +157,6 @@
 
 - (void)captureVideoDidLongTap:(UILongPressGestureRecognizer *)gestureRecognizer {
 	
-	self.durationContainerView.hidden = NO;
 	self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
 	UIGestureRecognizerState state = gestureRecognizer.state;
 	BOOL begin = state == UIGestureRecognizerStateBegan;
@@ -195,11 +170,6 @@
 	if (NO == self.isRecording) {
 		
 		self.recording = YES;
-		self.durationContainerView.hidden = NO;
-		self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
-		
-		self.cancelCaptureBtn.hidden = NO;
-		self.finishCaptureBtn.hidden = NO;
 		[self captureVideo:YES stop:NO];
 	} else {
 		
@@ -230,6 +200,14 @@
  */
 - (void)captureVideo:(BOOL)start stop:(BOOL)stop {
 	
+	if (start) {
+		
+		self.durationContainerView.hidden = NO;
+		self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
+	} else {
+		self.captureContainerView.userInteractionEnabled = NO;
+	}
+	
 	__weak typeof(self) weakSelf = self;
 	self.TapToCaptureVideoHandler(start, stop, ^{
 		
@@ -244,9 +222,8 @@
 - (void)initializeCaptureState {
 	
 	[self.captureContainerProgressView clearProgress];
-	self.cancelCaptureBtn.hidden = YES;
-	self.finishCaptureBtn.hidden = YES;
 	self.durationContainerView.hidden = YES;
+	self.durationLabel.text = @"0.0秒";
 	self.captureImgView.transform = CGAffineTransformIdentity;
 	self.captureContainerView.userInteractionEnabled = YES;
 }

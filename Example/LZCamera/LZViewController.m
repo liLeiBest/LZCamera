@@ -66,6 +66,7 @@
     
     LZCameraMediaViewController *ctr = [LZCameraMediaViewController instance];
     ctr.captureModel = caputreModel;
+	ctr.showFlashModeInStatusBar = NO;
 	ctr.maxShortVideoDuration = 60.0f;
     __weak typeof(self) weakSelf = self;
     ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage) {

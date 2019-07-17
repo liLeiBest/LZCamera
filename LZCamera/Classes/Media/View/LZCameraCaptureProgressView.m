@@ -45,8 +45,7 @@
 
 - (void)setProgressValue:(CGFloat)progressValue {
     _progressValue = progressValue;
-    
-    LZCameraLog(@"进度:%f", progressValue);
+	
     self.hidden = progressValue == 1.0f;
 	[self setNeedsDisplay];
 }
