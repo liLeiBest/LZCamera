@@ -16,13 +16,15 @@
  - LZCameraErrorInvalideFileOutputURL: 文件输出路径无效
  - LZCameraErrorDiskFull: 储存空间满
  - LZCameraErrorSessionInterrupted: 被中断，比如：后台、电话、提醒
+ - LZCameraErrorAuthorization: 权限
  */
 typedef NS_ENUM(NSInteger, LZCameraErrorCode) {
     LZCameraErrorFailedToAddInput = 100001,
     LZCameraErrorFailedToAddOutput,
     LZCameraErrorInvalideFileOutputURL,
     LZCameraErrorDiskFull,
-    LZCameraErrorSessionInterrupted
+    LZCameraErrorSessionInterrupted,
+	LZCameraErrorAuthorization,
 };
 
 /** 错误域标识 */

@@ -6,6 +6,7 @@
 //
 
 #import "LZCameraMediaPreviewViewController.h"
+#import "LZCameraToolkit.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface LZCameraMediaPreviewViewController ()
@@ -79,11 +80,21 @@
 }
 
 - (IBAction)sureDidClick:(id)sender {
-    
-    if (self.TapToSureHandler) {
-        self.TapToSureHandler();
-    }
-    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+	
+	if (self.autoSaveToAlbum) {
+		
+		if (self.videoURL) {
+			[LZCameraToolkit saveVideoToAblum:self.videoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+				[self sureHandlerOnMainThread];
+			}];
+		} else if (self.previewImage) {
+			[LZCameraToolkit saveImageToAblum:self.previewImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+				[self sureHandlerOnMainThread];
+			}];
+		}
+	} else {
+		[self sureHandlerOnMainThread];
+	}
 }
 
 // MARK: - Observer
@@ -109,5 +120,27 @@
     UIImage *image = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
     return image;
 }
+
+/**
+ 保证主线程回调
+ */
+- (void)sureHandlerOnMainThread {
+	
+	if (NO == [NSThread isMainThread]) {
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (self.TapToSureHandler) {
+				self.TapToSureHandler();
+			}
+			[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+		});
+	} else {
+		if (self.TapToSureHandler) {
+			self.TapToSureHandler();
+		}
+		[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+	}
+}
+
 
 @end

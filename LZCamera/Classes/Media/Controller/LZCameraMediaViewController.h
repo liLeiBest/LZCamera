@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否检测人脸，默认 NO */
 @property (assign, nonatomic) BOOL detectFaces;
 
+/** 是否自动保存到相册，默认：YES，自动存入相册 */
+@property (assign, nonatomic) BOOL autoSaveToAlbum;
+
 /** 拍摄图片完成回调 */
 @property (copy, nonatomic) void(^CameraImageCompletionHandler)(UIImage *stillImage);
 /** 拍摄视频完成回调 */

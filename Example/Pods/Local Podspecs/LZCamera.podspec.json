@@ -21,7 +21,8 @@
   "frameworks": [
     "AVFoundation",
     "Foundation",
-    "UIKit"
+    "UIKit",
+    "Photos"
   ],
   "source_files": "LZCamera/Classes/LZCamera.h",
   "public_header_files": "LZCamera/Classes/LZCamera.h",

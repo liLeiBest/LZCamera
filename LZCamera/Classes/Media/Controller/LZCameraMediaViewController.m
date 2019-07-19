@@ -56,6 +56,7 @@
         self.maxShortVideoDuration = 10.0f;
         self.minVideoDuration = 3.0f;
         self.detectFaces = NO;
+		self.autoSaveToAlbum = YES;
         self.videoDuration = kCMTimeZero;
     }
     return self;
@@ -94,6 +95,7 @@
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
         ctr.previewImage = self.previewImage;
         ctr.videoURL = self.videoURL;
+		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
         __weak typeof(self) weakSelf = self;
         ctr.TapToSureHandler = ^{
             
@@ -125,10 +127,10 @@
  配置摄像头
  */
 - (void)configCameraController {
-    
-    __weak typeof(self) weakSelf = self;
-    
+	
     LZCameraConfig *cameraConfig = [[LZCameraConfig alloc] init];
+	cameraConfig.stillImageAutoWriteToAlbum = self.autoSaveToAlbum;
+	cameraConfig.videoAutoWriteToAlbum = self.autoSaveToAlbum;
     cameraConfig.minVideoRecordedDuration = CMTimeMake(self.minVideoDuration, 1);
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
@@ -146,6 +148,7 @@
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
+	__weak typeof(self) weakSelf = self;
     [self.cameraController videoRecordedDurationWithProgress:^(CMTime duration) {
         
         typeof(weakSelf) strongSelf = weakSelf;

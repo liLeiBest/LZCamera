@@ -22,6 +22,7 @@
 #import "LZCameraCore.h"
 #import "LZCameraDefine.h"
 #import "LZCameraPreviewView.h"
+#import "LZCameraToolkit.h"
 #import "LZCameraMediaDefine.h"
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraMediaViewController.h"
