@@ -129,8 +129,8 @@
 - (void)configCameraController {
 	
     LZCameraConfig *cameraConfig = [[LZCameraConfig alloc] init];
-	cameraConfig.stillImageAutoWriteToAlbum = self.autoSaveToAlbum;
-	cameraConfig.videoAutoWriteToAlbum = self.autoSaveToAlbum;
+	cameraConfig.stillImageAutoWriteToAlbum = NO;
+	cameraConfig.videoAutoWriteToAlbum = NO;
     cameraConfig.minVideoRecordedDuration = CMTimeMake(self.minVideoDuration, 1);
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
