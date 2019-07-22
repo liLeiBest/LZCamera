@@ -5,8 +5,6 @@
 //  Created by Dear.Q on 2018/11/30.
 //
 
-#import <AVFoundation/AVFoundation.h>
-
 NSString * const LZCameraErrorDomain = @"com.lzcamera.LZCameraErrorDomain";
 
 void lzPlaySound(NSString *soundName, NSString *inBundle) {

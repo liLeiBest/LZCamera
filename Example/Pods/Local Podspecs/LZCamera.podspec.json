@@ -26,7 +26,7 @@
   ],
   "source_files": "LZCamera/Classes/LZCamera.h",
   "public_header_files": "LZCamera/Classes/LZCamera.h",
-  "prefix_header_contents": "#if DEBUG\n#define LZCameraLog(fmt, ...) NSLog((@\"%s [Line %d] \" fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)\n#else\n#define LZCameraLog(fmt, ...)\n#endif\n#define LZCameraNSBundle(bundleName) [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@\"LZCameraController\")] pathForResource:bundleName ofType:@\"bundle\"]]",
+  "prefix_header_contents": "#if DEBUG\n#define LZCameraLog(fmt, ...) NSLog((@\"%s [Line %d] \" fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)\n#else\n#define LZCameraLog(fmt, ...)\n#endif\n#define LZCameraNSBundle(bundleName) bundleName.length ? [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@\"LZCameraController\")] pathForResource:bundleName ofType:@\"bundle\"]] :  [NSBundle bundleForClass:NSClassFromString(@\"LZCameraController\")]\n\n#import <AVFoundation/AVFoundation.h>\n#import <Photos/Photos.h>",
   "subspecs": [
     {
       "name": "Core",
@@ -41,6 +41,9 @@
       "dependencies": {
         "LZCamera/Core": [
 
+        ],
+        "LZCamera/Editor": [
+
         ]
       }
     },
@@ -54,6 +57,15 @@
 
         ]
       }
+    },
+    {
+      "name": "Editor",
+      "source_files": [
+        "LZCamera/Classes/Editor/**/*.{h,m}",
+        "LZCamera/Classes/Editor/Controller/*.storyboard"
+      ],
+      "public_header_files": "LZCamera/Classes/Editor/**/*.h",
+      "resources": "LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle"
     }
   ]
 }

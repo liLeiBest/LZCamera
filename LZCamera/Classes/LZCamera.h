@@ -11,5 +11,6 @@
 #import "LZCameraCore.h"
 #import "LZCameraMedia.h"
 #import "LZCameraCode.h"
+#import "LZCameraEditor.h"
 
 #endif /* LZCamera_h */

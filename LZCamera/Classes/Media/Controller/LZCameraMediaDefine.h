@@ -8,8 +8,6 @@
 #ifndef LZCameraMediaDefine_h
 #define LZCameraMediaDefine_h
 
-#import <AVFoundation/AVFoundation.h>
-
 /**
  摄像头捕捉类型
 

@@ -2,23 +2,39 @@ PODS:
   - LZCamera (0.3.9):
     - LZCamera/CodeCapture (= 0.3.9)
     - LZCamera/Core (= 0.3.9)
+    - LZCamera/Editor (= 0.3.9)
     - LZCamera/MediaCapture (= 0.3.9)
   - LZCamera/CodeCapture (0.3.9):
     - LZCamera/Core
   - LZCamera/Core (0.3.9)
+  - LZCamera/Editor (0.3.9)
   - LZCamera/MediaCapture (0.3.9):
     - LZCamera/Core
+    - LZCamera/Editor
+  - SDWebImage (5.0.6):
+    - SDWebImage/Core (= 5.0.6)
+  - SDWebImage/Core (5.0.6)
+  - ZLPhotoBrowser (3.0.5):
+    - SDWebImage (~> 5.0.2)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
+  - ZLPhotoBrowser
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SDWebImage
+    - ZLPhotoBrowser
 
 EXTERNAL SOURCES:
   LZCamera:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: b538fb596b5a99ee419a24f40ad30fd27790e493
+  LZCamera: 5dd37d95b84df9151849415efb4e5120eb0d2e08
+  SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
+  ZLPhotoBrowser: e1c816eed2aebd9d570dc6de1cff19256347e8d6
 
-PODFILE CHECKSUM: 6b832192277ac3cc507e1bf2c82e8d58392c0230
+PODFILE CHECKSUM: 467bd1f17b71ea47ba3e809e9f4ae76408453aea
 
 COCOAPODS: 1.7.4

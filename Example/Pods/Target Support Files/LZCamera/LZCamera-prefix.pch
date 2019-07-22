@@ -15,4 +15,7 @@
 #else
 #define LZCameraLog(fmt, ...)
 #endif
-#define LZCameraNSBundle(bundleName) [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@"LZCameraController")] pathForResource:bundleName ofType:@"bundle"]]
+#define LZCameraNSBundle(bundleName) bundleName.length ? [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@"LZCameraController")] pathForResource:bundleName ofType:@"bundle"]] :  [NSBundle bundleForClass:NSClassFromString(@"LZCameraController")]
+
+#import <AVFoundation/AVFoundation.h>
+#import <Photos/Photos.h>

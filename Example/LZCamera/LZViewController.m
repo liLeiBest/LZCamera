@@ -9,6 +9,7 @@
 #import "LZViewController.h"
 #import "LZTestViewController.h"
 #import <LZCamera/LZCamera.h>
+#import "ZLPhotoBrowser.h"
 
 @interface LZViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
@@ -24,6 +25,16 @@
 }
 
 // MARK: - UI Action
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+	
+	ZLPhotoActionSheet *actionSheet = [[ZLPhotoActionSheet alloc] init];
+	//以下参数为自定义参数，均可不设置，有默认值
+	actionSheet.configuration.sortAscending = YES;
+	actionSheet.configuration.allowSelectVideo = YES;
+	actionSheet.configuration.allowEditVideo = YES;
+	actionSheet.sender = self;
+	[actionSheet showPhotoLibrary];
+}
 - (IBAction)scanCodeDidClick:(id)sender {
     
     LZCameraCodeViewController *ctr = [LZCameraCodeViewController instance];

@@ -153,6 +153,60 @@
 	}
 }
 
++ (AVAssetImageGenerator *)thumbnailBySecondForAsset:(AVAsset *)asset
+											interval:(CMTimeValue)interval
+											 maxSize:(CGSize)maxSize
+								   completionHandler:(void (^)(AVAsset * _Nullable, NSArray<UIImage *> * _Nullable))handler {
+	AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+	assetImageGenerator.maximumSize = maxSize;
+	assetImageGenerator.appliesPreferredTrackTransform = YES;
+	assetImageGenerator.requestedTimeToleranceBefore = kCMTimeZero;
+	assetImageGenerator.requestedTimeToleranceAfter = kCMTimeZero;
+	
+	CMTime duratoin = asset.duration;
+	CMTimeValue inrement = interval * duratoin.timescale;
+	CMTimeValue timeCount = duratoin.value / inrement;
+	NSMutableArray *times = [NSMutableArray array];
+	for (CMTimeValue i = 0; i < timeCount; i ++) {
+		
+		CMTime time = CMTimeMake(i * inrement, duratoin.timescale);
+		NSValue *timeValue = [NSValue valueWithCMTime:time];
+		[times addObject:timeValue];
+	}
+	
+	NSMutableArray *thumbnails = [NSMutableArray array];
+	
+	__block NSUInteger thumbnailCount = 0;
+	AVAssetImageGeneratorCompletionHandler completionHandler = ^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
+		
+		switch (result) {
+			case AVAssetImageGeneratorSucceeded: {
+				
+				UIImage *thumbnail = [UIImage imageWithCGImage:image];
+				[thumbnails addObject:thumbnail];
+			}
+				break;
+			case AVAssetImageGeneratorFailed:
+			case AVAssetImageGeneratorCancelled: {
+				LZCameraLog(@"%lu 张缩略图获取失败:%@", (unsigned long)thumbnailCount, error.localizedDescription);
+			}
+				break;
+			default:
+				break;
+		}
+		
+		thumbnailCount ++;
+		if (thumbnailCount == times.count && handler) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handler(asset, thumbnails);
+			});
+		}
+	};
+	[assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:completionHandler];
+	
+	return assetImageGenerator;
+}
+
 // MARK: - Private
 /**
  根据本地标识获取 PHAsset

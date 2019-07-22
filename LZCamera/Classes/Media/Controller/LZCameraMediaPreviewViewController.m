@@ -6,10 +6,10 @@
 //
 
 #import "LZCameraMediaPreviewViewController.h"
+#import "LZCameraVideoEditorViewController.h"
 #import "LZCameraToolkit.h"
-#import <AVFoundation/AVFoundation.h>
 
-@interface LZCameraMediaPreviewViewController ()
+@interface LZCameraMediaPreviewViewController ()<UINavigationControllerDelegate, UIVideoEditorControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelBtn;
@@ -27,37 +27,38 @@
 // MARK: - Initialization
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
-    [self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];
-	UIImage *deleteImg = [self imageInBundle:@"media_preview_delete"];
-	[self.cancelBtn setImage:deleteImg forState:UIControlStateSelected];
-    self.cancelBtn.layer.cornerRadius = 30.0f;
-    UIImage *editlImg = [self imageInBundle:@"media_preview_edit"];
-    [self.editBtn setImage:editlImg forState:UIControlStateNormal];
-    self.editBtn.layer.cornerRadius = 30.0f;
-    UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
-    [self.sureBtn setImage:surelImg forState:UIControlStateNormal];
-    self.sureBtn.backgroundColor = [UIColor clearColor];
-    
-    self.previewImgView.image = self.previewImage;
-    if (self.videoURL) {
-        
-        AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
-        self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-        self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-        self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+	
+	[self setupUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	self.previewImgView.image = self.previewImage;
+	if (self.videoURL) {
+		
+		AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+		self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+		self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
+		self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        self.playerLayer.frame = self.view.layer.bounds;
-        [self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
-        [self.player play];
-        
-        [[NSNotificationCenter defaultCenter]
-         addObserver:self
-         selector:@selector(playerItemDidPlayToEnd:)
-         name:AVPlayerItemDidPlayToEndTimeNotification
-         object:nil];
-    }
+		self.playerLayer.frame = self.view.layer.bounds;
+		[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
+		[self.player play];
+		
+		[[NSNotificationCenter defaultCenter]
+		 addObserver:self
+		 selector:@selector(playerItemDidPlayToEnd:)
+		 name:AVPlayerItemDidPlayToEndTimeNotification
+		 object:nil];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	[self.player pause];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc {
@@ -76,13 +77,27 @@
 }
 
 - (IBAction)editDidClick:(id)sender {
-    
+	
+	LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
+	ctr.previewImage = self.previewImage;
+	ctr.videoURL = self.videoURL;
+	ctr.videoMaximumDuration = 10.0f;
+	__weak typeof(self) weakSelf = self;
+	ctr.VideoClipCallback = ^(NSURL * _Nonnull videoUrl) {
+		
+		typeof(weakSelf) strongSelf = weakSelf;
+		strongSelf.videoURL = videoUrl;
+		AVAsset *asset = [AVAsset assetWithURL:videoUrl];
+		strongSelf.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+		strongSelf.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+		[strongSelf.player play];
+	};
+	[self presentViewController:ctr animated:YES completion:nil];
 }
 
 - (IBAction)sureDidClick:(id)sender {
 	
 	if (self.autoSaveToAlbum) {
-		
 		if (self.videoURL) {
 			[LZCameraToolkit saveVideoToAblum:self.videoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
 				[self sureHandlerOnMainThread];
@@ -95,6 +110,22 @@
 	} else {
 		[self sureHandlerOnMainThread];
 	}
+}
+
+// MARK: - Private
+- (void)setupUI {
+	
+	UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
+	[self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];
+	UIImage *deleteImg = [self imageInBundle:@"media_preview_delete"];
+	[self.cancelBtn setImage:deleteImg forState:UIControlStateSelected];
+	self.cancelBtn.layer.cornerRadius = 30.0f;
+	UIImage *editlImg = [self imageInBundle:@"media_preview_edit"];
+	[self.editBtn setImage:editlImg forState:UIControlStateNormal];
+	self.editBtn.layer.cornerRadius = 30.0f;
+	UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
+	[self.sureBtn setImage:surelImg forState:UIControlStateNormal];
+	self.sureBtn.backgroundColor = [UIColor clearColor];
 }
 
 // MARK: - Observer
@@ -141,6 +172,5 @@
 		[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 	}
 }
-
 
 @end

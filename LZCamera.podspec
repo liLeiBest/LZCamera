@@ -30,6 +30,7 @@ Pod::Spec.new do |s|
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
+	media.dependency 'LZCamera/Editor'
 	#media.dependency 'GPUImage'
   end
 
@@ -40,13 +41,23 @@ Pod::Spec.new do |s|
      code.dependency 'LZCamera/Core'
   end
 
+  s.subspec 'Editor' do |editor|
+	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}', 'LZCamera/Classes/Editor/Controller/*.storyboard'
+	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
+	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
+  end
+  
   pch_AF = <<-EOS
   #if DEBUG
   #define LZCameraLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
   #else
   #define LZCameraLog(fmt, ...)
   #endif
-  #define LZCameraNSBundle(bundleName) [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@"LZCameraController")] pathForResource:bundleName ofType:@"bundle"]]
+  #define LZCameraNSBundle(bundleName) bundleName.length ? [NSBundle bundleWithPath:[[NSBundle bundleForClass:NSClassFromString(@"LZCameraController")] pathForResource:bundleName ofType:@"bundle"]] :  [NSBundle bundleForClass:NSClassFromString(@"LZCameraController")]
+  
+  #import <AVFoundation/AVFoundation.h>
+  #import <Photos/Photos.h>
+  
   EOS
   s.prefix_header_contents = pch_AF;
   
