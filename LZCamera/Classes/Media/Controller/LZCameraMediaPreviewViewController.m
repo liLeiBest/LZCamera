@@ -20,6 +20,8 @@
 @property (strong, nonatomic) AVPlayerItem *playerItem;
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
 
+@property (copy) AVAudioSessionCategory audioSesstionCategory;
+
 @end
 
 @implementation LZCameraMediaPreviewViewController
@@ -58,11 +60,16 @@
 	[super viewWillDisappear:animated];
 	
 	[self.player pause];
+	[self.playerLayer removeFromSuperlayer];
+	self.playerItem = nil;
+	self.player = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc {
     LZCameraLog();
+	AVAudioSession *session = [AVAudioSession sharedInstance];
+	[session setCategory:self.audioSesstionCategory error:nil];
 }
 
 // MARK: - UI Action
@@ -81,7 +88,7 @@
 	LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
 	ctr.previewImage = self.previewImage;
 	ctr.videoURL = self.videoURL;
-	ctr.videoMaximumDuration = 10.0f;
+	ctr.videoMaximumDuration = 60.0f;
 	__weak typeof(self) weakSelf = self;
 	ctr.VideoClipCallback = ^(NSURL * _Nonnull videoUrl) {
 		
@@ -114,6 +121,12 @@
 
 // MARK: - Private
 - (void)setupUI {
+	
+	AVAudioSession *session = [AVAudioSession sharedInstance];
+	self.audioSesstionCategory = session.category;
+	[session setActive:YES error:nil];
+	[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+	[session setCategory:AVAudioSessionCategoryPlayback error:nil];
 	
 	UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
 	[self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];

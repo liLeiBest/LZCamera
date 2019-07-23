@@ -28,6 +28,12 @@
 @implementation LZCameraVideoEditorViewController
 
 // MARK: - Initialization
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+	if (self = [super initWithCoder:aDecoder]) {
+		self.videoMaximumDuration = 10.0f;
+	}
+	return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -35,10 +41,13 @@
 	[self fetchVideoThumbnails];
 }
 
-- (void)viewWillDisappear:(BOOL)animated:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
 	[self stopTimer];
+	[self.playerLayer removeFromSuperlayer];
+	self.playerItem = nil;
+	self.player = nil;
 }
 
 - (void)dealloc {
@@ -59,8 +68,6 @@
 // MAKR: - Private
 - (void)setupUI {
 	
-	self.videoMaximumDuration = 10.0f;
-	
 	AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
 	self.videoAsset = asset;
 	self.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMake(self.videoAsset.duration.value, self.videoAsset.duration.timescale));
@@ -75,7 +82,6 @@
 		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 		self.playerLayer.frame = self.view.layer.bounds;
 		[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
-		[self.player play];
 	}
 	
 	self.videoClipView.duration = self.videoAsset.duration;
@@ -104,11 +110,11 @@
 			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 			[formatter setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
 			NSDate *date = [[NSDate alloc] init];
-			NSString *outPutPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, true) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"output-%@.mp4", [formatter stringFromDate:date]]];
+			NSString *outPutPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, true) lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"output-%@.mov", [formatter stringFromDate:date]]];
 			NSURL *fileUrl = [NSURL fileURLWithPath:outPutPath];
 			exportSession.outputURL = fileUrl;
 			exportSession.shouldOptimizeForNetworkUse = true;
-			exportSession.outputFileType = AVFileTypeMPEG4;
+			exportSession.outputFileType = AVFileTypeQuickTimeMovie;
 			exportSession.timeRange = timeRange;
 			[exportSession exportAsynchronouslyWithCompletionHandler:^{
 				if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
@@ -142,12 +148,14 @@
 	[self.timer invalidate];
 	self.timer = nil;
 	[self.player pause];
+	[self.videoClipView removeLine];
 }
 
 - (void)playPartVideo:(NSTimer *)timer {
 	
 	[self.player play];
 	[self.player seekToTime:[self getStartTime] toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+	[self.videoClipView updateLineFrame];
 }
 
 - (CMTime)getStartTime {
@@ -168,6 +176,7 @@
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		[strongSelf.videoClipView updateVideoThumbnails:thumbnails];
+		[strongSelf startTimer];
 	}];
 }
 

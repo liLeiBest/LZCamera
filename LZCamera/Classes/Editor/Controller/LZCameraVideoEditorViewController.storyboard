@@ -69,6 +69,13 @@
                                             <outlet property="delegate" destination="7Cw-N0-jme" id="Ijl-Za-Mdn"/>
                                         </connections>
                                     </collectionView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-9e-5ge">
+                                        <rect key="frame" x="18" y="22" width="2" height="36"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="2" id="8WJ-9k-Nf0"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8uu-Ey-a3b" userLabel="leftClipView">
                                         <rect key="frame" x="10" y="20" width="10" height="40"/>
                                         <subviews>
@@ -168,14 +175,6 @@
                                                     <action selector="cancelDidClick:" destination="7Cw-N0-jme" eventType="touchDown" id="A54-8e-ugo"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uIW-tx-IUt">
-                                                <rect key="frame" x="172" y="0.0" width="30" height="29"/>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
-                                                <state key="normal" title="预览"/>
-                                                <connections>
-                                                    <action selector="previewDidClick:" destination="7Cw-N0-jme" eventType="touchDown" id="LiK-Uz-IDg"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQq-QA-TVR">
                                                 <rect key="frame" x="344" y="0.0" width="30" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
@@ -193,7 +192,9 @@
                                     <constraint firstItem="sRx-Id-lnZ" firstAttribute="top" secondItem="r0I-t1-vWL" secondAttribute="top" id="8ft-fa-88w"/>
                                     <constraint firstAttribute="trailing" secondItem="YI8-xx-ETZ" secondAttribute="trailing" constant="20" id="AAZ-Hk-RbI"/>
                                     <constraint firstAttribute="bottom" secondItem="YI8-xx-ETZ" secondAttribute="bottom" constant="10" id="JVm-mF-AW1"/>
+                                    <constraint firstItem="fUE-9e-5ge" firstAttribute="top" secondItem="een-q2-thH" secondAttribute="top" id="Plp-a7-5CM"/>
                                     <constraint firstItem="YI8-xx-ETZ" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="20" id="Pxz-Id-gLI"/>
+                                    <constraint firstItem="fUE-9e-5ge" firstAttribute="trailing" secondItem="8uu-Ey-a3b" secondAttribute="trailing" id="Sgi-r5-hbk"/>
                                     <constraint firstItem="r0I-t1-vWL" firstAttribute="top" secondItem="7Cw-N0-jme" secondAttribute="top" constant="20" id="X2V-1f-EMq"/>
                                     <constraint firstItem="8uu-Ey-a3b" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="10" id="ftU-Ey-nF8"/>
                                     <constraint firstItem="r0I-t1-vWL" firstAttribute="top" secondItem="8uu-Ey-a3b" secondAttribute="top" id="iKp-Nd-cAJ"/>
@@ -201,12 +202,14 @@
                                     <constraint firstItem="YI8-xx-ETZ" firstAttribute="top" secondItem="r0I-t1-vWL" secondAttribute="bottom" constant="10" id="kJj-li-ubb"/>
                                     <constraint firstAttribute="trailing" secondItem="r0I-t1-vWL" secondAttribute="trailing" constant="10" id="m0v-sT-cKV"/>
                                     <constraint firstItem="sRx-Id-lnZ" firstAttribute="bottom" secondItem="r0I-t1-vWL" secondAttribute="bottom" id="zMS-If-tsR"/>
+                                    <constraint firstItem="fUE-9e-5ge" firstAttribute="bottom" secondItem="een-q2-thH" secondAttribute="bottom" id="zN2-7X-uG3"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="cancelBtn" destination="3ye-0P-QpJ" id="ohd-gQ-FLL"/>
                                     <outlet property="leftClipImgView" destination="een-q2-thH" id="yxR-8U-MSf"/>
                                     <outlet property="leftClipView" destination="8uu-Ey-a3b" id="TP0-1y-Ses"/>
                                     <outlet property="leftClipViewWidth" destination="swj-kU-g8E" id="9YH-84-rhc"/>
+                                    <outlet property="lineView" destination="fUE-9e-5ge" id="Hen-yx-EuK"/>
                                     <outlet property="rightClipImgView" destination="eL8-SI-gK0" id="K61-tY-eQZ"/>
                                     <outlet property="rightClipView" destination="sRx-Id-lnZ" id="lku-yJ-Hrg"/>
                                     <outlet property="rightClipViewWidth" destination="qgp-tZ-Q7U" id="bO7-pq-Hgw"/>

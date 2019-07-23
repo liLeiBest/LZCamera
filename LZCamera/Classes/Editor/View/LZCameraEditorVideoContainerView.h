@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** 最长时间，默认为 10 秒，设置为 0 不做设置 */
 @property(nonatomic) NSTimeInterval videoMaximumDuration;
+
 @property (assign, nonatomic) CMTime duration;
 /** 取消裁剪回调 */
 @property (copy, nonatomic) void (^TapCancelClipCallback)(void);
@@ -28,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param thumbnails NSArray
  */
 - (void)updateVideoThumbnails:(NSArray *)thumbnails;
+
+- (void)updateLineFrame;
+
+- (void)removeLine;
 
 @end
 

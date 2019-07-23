@@ -17,6 +17,7 @@
 	IBOutlet UIView *rightClipView;
 	IBOutlet NSLayoutConstraint *rightClipViewWidth;
 	IBOutlet UIImageView *rightClipImgView;
+	IBOutlet UIView *lineView;
 	IBOutlet UIButton *cancelBtn;
 	IBOutlet UIButton *sureBtn;
 }
@@ -53,6 +54,7 @@
 	
 	self.startTime = kCMTimeZero;
 	self.endTime = kCMTimeZero;
+	self.offsetTime = kCMTimeZero;
 	
 	leftClipImgView.userInteractionEnabled = YES;
 	rightClipImgView.userInteractionEnabled = YES;
@@ -74,15 +76,41 @@
 	[thumbnailCollectionView reloadData];
 }
 
+- (void)updateLineFrame {
+	
+	lineView.hidden = NO;
+	
+	__block CGRect frame = lineView.frame;
+	frame.origin.x = CGRectGetMaxX(leftClipView.frame);
+	lineView.frame = frame;
+	
+	CMTimeRange timeRange = [self playTimeRange];
+	CGFloat duration = timeRange.duration.value / timeRange.duration.timescale;
+	UIViewAnimationOptions options = UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+	[UIView animateWithDuration:duration
+						  delay:.0
+						options:options
+					 animations:^{
+		
+						 frame.origin.x = CGRectGetMinX(self->rightClipView.frame);
+						 self->lineView.frame = frame;
+					 } completion:^(BOOL finished) {
+					 }];
+}
+
+- (void)removeLine {
+	
+	lineView.hidden = YES;
+	CGRect frame = lineView.frame;
+	frame.origin.x = CGRectGetMaxX(leftClipView.frame);
+	lineView.frame = frame;
+}
+
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
 	if (self.TapCancelClipCallback) {
 		self.TapCancelClipCallback();
 	}
-}
-
-- (IBAction)previewDidClick:(id)sender {
-	[self preview];
 }
 
 - (IBAction)sureDidClick:(id)sender {
@@ -110,17 +138,16 @@
 	}
 	CMTime time = CMTimeMake(seconds * self.duration.timescale, self.duration.timescale);
 	self.startTime = time;
-	[self preview];
 	
+	if (sender.state == UIGestureRecognizerStateEnded) {
+		baseWidth = leftClipViewWidth.constant;
+	}
 	if (leftClipViewWidth.constant < 10) {
 		
 		leftClipViewWidth.constant = 10;
 		baseWidth = 10.0f;
-		return;
 	}
-	if (sender.state == UIGestureRecognizerStateEnded) {
-		baseWidth = leftClipViewWidth.constant;
-	}
+	[self preview];
 }
 
 - (IBAction)rightClipViewPanGesture:(UIPanGestureRecognizer *)sender {
@@ -141,17 +168,16 @@
 	}
 	CMTime time = CMTimeMake(seconds * self.duration.timescale, self.duration.timescale);
 	self.endTime = time;
-	[self preview];
 	
+	if (sender.state == UIGestureRecognizerStateEnded) {
+		baseWidth = rightClipViewWidth.constant;
+	}
 	if (rightClipViewWidth.constant < 10) {
 		
 		rightClipViewWidth.constant = 10;
 		baseWidth = 10.0f;
-		return;
 	}
-	if (sender.state == UIGestureRecognizerStateEnded) {
-		baseWidth = rightClipViewWidth.constant;
-	}
+	[self preview];
 }
 
 // MARK: - Private
@@ -171,16 +197,22 @@
 	
 	if (self.TapPreviewClipCallback) {
 		
-		CMTimeShow(self.startTime);
-		CMTimeShow(self.offsetTime);
-		CMTime startTime = CMTimeAdd(self.startTime, self.offsetTime);
-		CMTimeShow(startTime);
-		CMTimeShow(self.endTime);
-		CMTime duration = CMTimeSubtract(CMTimeSubtract(self.duration , startTime), self.endTime);
-		CMTimeRange timeRange = CMTimeRangeMake(startTime, duration);
-		CMTimeRangeShow(timeRange);
+		CMTimeRange timeRange = [self playTimeRange];
 		self.TapPreviewClipCallback(timeRange);
 	}
+}
+
+- (CMTimeRange)playTimeRange {
+	
+	CMTimeShow(self.startTime);
+	CMTimeShow(self.offsetTime);
+	CMTime startTime = CMTimeAdd(self.startTime, self.offsetTime);
+	CMTimeShow(startTime);
+	CMTimeShow(self.endTime);
+	CMTime duration = CMTimeSubtract(CMTimeSubtract(self.duration , startTime), self.endTime);
+	CMTimeRange timeRange = CMTimeRangeMake(startTime, duration);
+	CMTimeRangeShow(timeRange);
+	return timeRange;
 }
 
 - (UIImage *)imageInBundle:(NSString *)imageName {
@@ -230,7 +262,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
 
 // MARK: <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	
+	[self removeLine];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -250,6 +282,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
 	CMTimeValue seconds = offsetX / self.widthPerUnit * self.secondPerUnit;
 	CMTime time = CMTimeMake(seconds * self.duration.timescale, self.duration.timescale);
 	self.offsetTime = time;
+	[self preview];
 }
 
 @end
