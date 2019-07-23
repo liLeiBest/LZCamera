@@ -103,10 +103,10 @@
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:strongSelf.videoAsset];
-		if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality]) {
+		if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
 			
 			AVAssetExportSession *exportSession =
-			[[AVAssetExportSession alloc] initWithAsset:strongSelf.videoAsset presetName:AVAssetExportPresetMediumQuality];
+			[[AVAssetExportSession alloc] initWithAsset:strongSelf.videoAsset presetName:AVAssetExportPresetHighestQuality];
 			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 			[formatter setDateFormat:@"yyyy-MM-dd-HH:mm:ss"];
 			NSDate *date = [[NSDate alloc] init];
