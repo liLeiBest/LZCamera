@@ -18,8 +18,6 @@
 	IBOutlet NSLayoutConstraint *rightClipViewWidth;
 	IBOutlet UIImageView *rightClipImgView;
 	IBOutlet UIView *lineView;
-	IBOutlet UIButton *cancelBtn;
-	IBOutlet UIButton *sureBtn;
 }
 
 @property (strong, nonatomic) NSMutableArray *datasource;
@@ -76,7 +74,7 @@
 	[thumbnailCollectionView reloadData];
 }
 
-- (void)updateLineFrame {
+- (void)updateProgressLine {
 	
 	lineView.hidden = NO;
 	
@@ -98,7 +96,7 @@
 					 }];
 }
 
-- (void)removeLine {
+- (void)removeProgressLine {
 	
 	lineView.hidden = YES;
 	CGRect frame = lineView.frame;
@@ -107,23 +105,6 @@
 }
 
 // MARK: - UI Action
-- (IBAction)cancelDidClick:(id)sender {
-	if (self.TapCancelClipCallback) {
-		self.TapCancelClipCallback();
-	}
-}
-
-- (IBAction)sureDidClick:(id)sender {
-	
-	if (self.TapClipCallback) {
-		
-		CMTime duration = CMTimeSubtract(CMTimeSubtract(self.duration , self.startTime), self.endTime);
-		CMTimeRange timeRange = CMTimeRangeMake(self.startTime, duration);
-		CMTimeRangeShow(timeRange);
-		self.TapClipCallback(timeRange);
-	}
-}
-
 - (IBAction)leftClipViewPanGesture:(UIPanGestureRecognizer *)sender {
 	
 	CGPoint point = [sender translationInView:thumbnailCollectionView];
@@ -189,8 +170,8 @@
 	rightClipImgView.image = clipImage;
 	rightClipImgView.userInteractionEnabled = NO;
 	
-	thumbnailCollectionView.layer.borderColor = [UIColor whiteColor].CGColor;
-	thumbnailCollectionView.layer.borderWidth = 2.0f;
+	thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
+	thumbnailCollectionView.layer.borderWidth = 2.5f;
 }
 
 - (void)preview {
@@ -262,7 +243,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
 
 // MARK: <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self removeLine];
+	[self removeProgressLine];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {

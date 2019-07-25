@@ -8,7 +8,6 @@
 #import "LZCameraEditorVideoThumbnailCell.h"
 
 NSString * const LZEditVideoThumbnailCellID = @"LZCameraEditorVideoThumbnailCell";
-
 @implementation LZCameraEditorVideoThumbnailCell
 
 // MARK: - Initialization

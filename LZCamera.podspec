@@ -31,7 +31,6 @@ Pod::Spec.new do |s|
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
 	media.dependency 'LZCamera/Editor'
-	#media.dependency 'GPUImage'
   end
 
   s.subspec 'CodeCapture' do |code|

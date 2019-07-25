@@ -15,10 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIImage *previewImage;
 /** 视频文件地址 */
 @property (strong, nonatomic) NSURL *videoURL;
-/** 裁剪完成回调 */
-@property (copy, nonatomic) void (^VideoClipCallback)(NSURL *videoUrl);
 /** 最长时间，默认为 10 秒，设置为 0 不做设置 */
 @property(nonatomic) NSTimeInterval videoMaximumDuration;
+/** 视频编辑回调 */
+@property (copy, nonatomic) void (^VideoEditCallback)(NSURL *videoURL, UIImage *previewImage);
+
 
 /**
  实例

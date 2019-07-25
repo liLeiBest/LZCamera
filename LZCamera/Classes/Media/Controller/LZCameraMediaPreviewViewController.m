@@ -16,11 +16,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *editBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sureBtn;
 
-@property (strong, nonatomic) AVPlayer *player;
-@property (strong, nonatomic) AVPlayerItem *playerItem;
+/** 预览视频地址 */
+@property (copy, nonatomic) NSURL *previewURL;
+/** 预览图层 */
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
-
-@property (copy) AVAudioSessionCategory audioSesstionCategory;
 
 @end
 
@@ -37,50 +36,43 @@
 	[super viewWillAppear:animated];
 	
 	self.previewImgView.image = self.previewImage;
-	if (self.videoURL) {
-		
-		AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
-		self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-		self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
-		self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-		self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-		self.playerLayer.frame = self.view.layer.bounds;
-		[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
-		[self.player play];
-		
-		[[NSNotificationCenter defaultCenter]
-		 addObserver:self
-		 selector:@selector(playerItemDidPlayToEnd:)
-		 name:AVPlayerItemDidPlayToEndTimeNotification
-		 object:nil];
-	}
+	[self buildPlayer];
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(playerItemDidPlayToEnd:)
+	 name:AVPlayerItemDidPlayToEndTimeNotification
+	 object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(appResignActive)
+	 name:UIApplicationWillResignActiveNotification
+	 object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(appBecomeActive)
+	 name:UIApplicationDidBecomeActiveNotification
+	 object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
-	[self.player pause];
+	[self.playerLayer.player pause];
 	[self.playerLayer removeFromSuperlayer];
-	self.playerItem = nil;
-	self.player = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc {
     LZCameraLog();
-	AVAudioSession *session = [AVAudioSession sharedInstance];
-	[session setCategory:self.audioSesstionCategory error:nil];
 }
 
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
 	
+	NSFileManager *fileM = [NSFileManager defaultManager];
+	[fileM removeItemAtURL:self.videoURL error:NULL];
+	[fileM removeItemAtURL:self.previewURL error:NULL];
 	[self dismissViewControllerAnimated:NO completion:nil];
-	if (self.videoURL) {
-		
-		NSFileManager *fileM = [NSFileManager defaultManager];
-		[fileM removeItemAtURL:self.videoURL error:NULL];
-	}
 }
 
 - (IBAction)editDidClick:(id)sender {
@@ -90,23 +82,22 @@
 	ctr.videoURL = self.videoURL;
 	ctr.videoMaximumDuration = 60.0f;
 	__weak typeof(self) weakSelf = self;
-	ctr.VideoClipCallback = ^(NSURL * _Nonnull videoUrl) {
+	ctr.VideoEditCallback = ^(NSURL * _Nonnull videoURL, UIImage * _Nonnull previewImage) {
 		
 		typeof(weakSelf) strongSelf = weakSelf;
-		strongSelf.videoURL = videoUrl;
-		AVAsset *asset = [AVAsset assetWithURL:videoUrl];
-		strongSelf.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-		strongSelf.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-		[strongSelf.player play];
+		strongSelf.previewURL = videoURL;
+		[strongSelf buildPlayer];
 	};
-	[self presentViewController:ctr animated:YES completion:nil];
+	
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+	[self presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)sureDidClick:(id)sender {
 	
 	if (self.autoSaveToAlbum) {
-		if (self.videoURL) {
-			[LZCameraToolkit saveVideoToAblum:self.videoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+		if (self.previewURL) {
+			[LZCameraToolkit saveVideoToAblum:self.previewURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
 				[self sureHandlerOnMainThread];
 			}];
 		} else if (self.previewImage) {
@@ -119,45 +110,61 @@
 	}
 }
 
+// MARK: - Observer
+- (void)playerItemDidPlayToEnd:(NSNotification *)notification {
+    
+    if (!self.playerLayer.player) {
+        return;
+    }
+    [self.playerLayer.player seekToTime:kCMTimeZero];
+    [self.playerLayer.player play];
+}
+
+- (void)appResignActive {
+	[self.playerLayer.player pause];
+}
+
+- (void)appBecomeActive {
+	[self.playerLayer.player play];
+}
+
 // MARK: - Private
 - (void)setupUI {
 	
-	AVAudioSession *session = [AVAudioSession sharedInstance];
-	self.audioSesstionCategory = session.category;
-	[session setActive:YES error:nil];
-	[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-	[session setCategory:AVAudioSessionCategoryPlayback error:nil];
+	self.previewURL = self.videoURL;
 	
 	UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
 	[self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];
 	UIImage *deleteImg = [self imageInBundle:@"media_preview_delete"];
 	[self.cancelBtn setImage:deleteImg forState:UIControlStateSelected];
 	self.cancelBtn.layer.cornerRadius = 30.0f;
+	self.cancelBtn.backgroundColor = [UIColor clearColor];
+	
 	UIImage *editlImg = [self imageInBundle:@"media_preview_edit"];
 	[self.editBtn setImage:editlImg forState:UIControlStateNormal];
 	self.editBtn.layer.cornerRadius = 30.0f;
+//	self.editBtn.backgroundColor = [UIColor clearColor];
+	
 	UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
 	[self.sureBtn setImage:surelImg forState:UIControlStateNormal];
 	self.sureBtn.backgroundColor = [UIColor clearColor];
 }
 
-// MARK: - Observer
-- (void)playerItemDidPlayToEnd:(NSNotification *)notification {
-    
-    if (!self.player) {
-        return;
-    }
-    [self.player seekToTime:kCMTimeZero];
-    [self.player play];
+- (void)buildPlayer {
+	
+	if (self.playerLayer) {
+		[self.playerLayer removeFromSuperlayer];
+	}
+	AVAsset *asset = [AVAsset assetWithURL:self.previewURL];
+	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
+	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	self.playerLayer.frame = self.view.layer.bounds;
+	[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
+	[self.playerLayer.player play];
 }
 
-// MARK: - Private
-/**
- 加载图片资源
- 
- @param imageName NSString
- @return UIImage
- */
 - (UIImage *)imageInBundle:(NSString *)imageName {
     
     NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
@@ -165,9 +172,6 @@
     return image;
 }
 
-/**
- 保证主线程回调
- */
 - (void)sureHandlerOnMainThread {
 	
 	if (NO == [NSThread isMainThread]) {

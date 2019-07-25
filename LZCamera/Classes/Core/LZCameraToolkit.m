@@ -6,7 +6,9 @@
 //
 
 #import "LZCameraToolkit.h"
-#import "LZCameraDefine.h"
+
+/** 用于生成目录的模版 */
+static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 @implementation LZCameraToolkit
 
@@ -63,7 +65,6 @@
 						return ;
 					}
 				}
-				
 				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholderAsset.localIdentifier];
 				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
 					
@@ -132,10 +133,6 @@
 						handler(nil, err);
 					}
 				}
-				[self saveAlbumCallbackOnMainThread:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
-					
-				}];
-				
 				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholder.localIdentifier];
 				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
 					
@@ -153,10 +150,30 @@
 	}
 }
 
+/**
+ 生成视频缩略图
+ 
+ @param videoURL NSURL
+ */
++ (UIImage *)thumbnailAtFirstFrameForVideoAtURL:(NSURL *)videoURL {
+	
+	AVAsset *asset = [AVAsset assetWithURL:videoURL];
+	AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+	imageGenerator.maximumSize = [UIScreen mainScreen].bounds.size;
+	imageGenerator.appliesPreferredTrackTransform = YES;
+	imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+	
+	CGImageRef imageRef = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+	UIImage *image = [UIImage imageWithCGImage:imageRef];
+	CGImageRelease(imageRef);
+	return image;
+}
+
 + (AVAssetImageGenerator *)thumbnailBySecondForAsset:(AVAsset *)asset
 											interval:(CMTimeValue)interval
 											 maxSize:(CGSize)maxSize
-								   completionHandler:(void (^)(AVAsset * _Nullable, NSArray<UIImage *> * _Nullable))handler {
+								   completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))handler {
+	
 	AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
 	assetImageGenerator.maximumSize = maxSize;
 	assetImageGenerator.appliesPreferredTrackTransform = YES;
@@ -198,7 +215,7 @@
 		thumbnailCount ++;
 		if (thumbnailCount == times.count && handler) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				handler(asset, thumbnails);
+				handler(thumbnails);
 			});
 		}
 	};
@@ -207,13 +224,114 @@
 	return assetImageGenerator;
 }
 
++ (void)mixAudioForAsset:(NSURL *)assetURL
+			   timeRange:(CMTimeRange)timeRange
+			audioPathURL:(NSURL *)audioPathURL
+		   originalAudio:(BOOL)originalAudio
+		  originalVolume:(CGFloat)originalVolume
+			 audioVolume:(CGFloat)audioVolume
+			  presetName:(NSString *)presetName
+	   completionHandler:(void (^)(NSURL * _Nullable, BOOL))handler {
+	
+	AVAsset *asset = [AVAsset assetWithURL:assetURL];
+	AVAsset *audioAsset = [AVAsset assetWithURL:audioPathURL];
+	if (0 == [asset tracksWithMediaType:AVMediaTypeVideo].count) {
+		if (handler) {
+			handler(nil, NO);
+		}
+		return;
+	}
+	AVAssetTrack *videoAssetTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+	AVAssetTrack *audioAssetTrack = nil;
+	if (0 == [audioAsset tracksWithMediaType:AVMediaTypeAudio].count) {
+		audioAssetTrack = [[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0];
+	}
+	
+	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
+		
+		CMTime duration = asset.duration;
+		timeRange = CMTimeRangeMake(kCMTimeZero, duration);
+	}
+	
+	AVMutableComposition *composition = [AVMutableComposition composition];
+	AVMutableCompositionTrack *videoCompositionTrack =
+	[composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+	[videoCompositionTrack insertTimeRange:timeRange ofTrack:videoAssetTrack atTime:kCMTimeZero error:NULL];
+	
+	AVMutableCompositionTrack *audioCompositionTrack = nil;
+	if (audioAssetTrack) {
+		
+		audioCompositionTrack =
+		[composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+		[audioCompositionTrack insertTimeRange:timeRange ofTrack:audioAssetTrack atTime:kCMTimeZero error:NULL];
+		//	audioCompositionTrack.preferredVolume = audioVolume;
+	}
+	
+	AVMutableCompositionTrack *originalAudioCompositionTrack = nil;
+	if (originalAudio) {
+		
+		NSArray *audioAssetTracks = [asset tracksWithMediaType:AVMediaTypeAudio];
+		if (0 < audioAssetTracks.count) {
+			
+			AVAssetTrack *originalAudioAssetTrack = [audioAssetTracks firstObject];
+			originalAudioCompositionTrack =
+			[composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+			[originalAudioCompositionTrack insertTimeRange:timeRange ofTrack:originalAudioAssetTrack atTime:kCMTimeZero error:NULL];
+			//		originalAudioCompositionTrack.preferredVolume = originalVolume;
+		}
+	}
+	
+	AVVideoComposition *videoComposition = [self getVideoComposition:asset renderSize:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+	
+	AVAudioMix *audioMix = nil;
+	if (originalAudioCompositionTrack && audioCompositionTrack) {
+		audioMix = [self buildAudioMixWithVideoTrack:originalAudioCompositionTrack originalVolume:originalVolume audioTrack:audioCompositionTrack audioVolume:audioVolume atTime:kCMTimeZero];
+	}
+	
+	[self exportForAsset:composition audioMix:audioMix videoComposition:videoComposition timeRange:timeRange presetName:presetName completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
+		if (handler) {
+			handler(outputFileURL, success);
+		}
+	}];
+}
+
++ (AVAssetExportSession *)exportForAsset:(AVAsset *)asset
+							   timeRange:(CMTimeRange)timeRange
+							  presetName:(NSString *)presetName
+					   completionHandler:(void (^)(NSURL * _Nonnull, BOOL success, NSError * _Nullable))handler {
+	return [self exportForAsset:asset
+					   audioMix:nil
+			   videoComposition:nil
+					  timeRange:timeRange
+					 presetName:presetName
+			  completionHandler:handler];
+}
+
++ (NSURL *)generateUniqueMovieFileURL {
+	
+	NSString *mkdTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:LZDirectoryTemplateString];
+	const char *templateCString = [mkdTemplate fileSystemRepresentation];
+	char *buffer = malloc(strlen(templateCString) + 1);
+	strcpy(buffer, templateCString);
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *directoryPath = nil;
+	char *result = mkdtemp(buffer);
+	if (result) {
+		directoryPath = [fileManager stringWithFileSystemRepresentation:buffer length:strlen(result)];
+	}
+	free(buffer);
+	
+	if (directoryPath) {
+		
+		NSString *filePath = [directoryPath stringByAppendingPathComponent:@"lacamera_movie.mp4"];
+		NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+		return fileURL;
+	}
+	return nil;
+}
+
 // MARK: - Private
-/**
- 根据本地标识获取 PHAsset
- 
- @param localIdentifier 本地标识
- @return PHAsset
- */
 + (PHAsset *)fetchAssetWithlocalIdentifier:(NSString *)localIdentifier {
 	
 	if(localIdentifier == nil){
@@ -227,12 +345,6 @@
 	return nil;
 }
 
-/**
- 获取目标相册
- 
- @param error NSError
- @return PHAssetCollection
- */
 + (PHAssetCollection *)fetchDestinationCollection:(NSError **)error {
 	
 	NSString *appName = [[NSBundle mainBundle].infoDictionary objectForKey:@"CFBundleDisplayName"];
@@ -266,13 +378,188 @@
 	return assetCollection;
 }
 
-+ (void)saveAlbumCallbackOnMainThread:(LZCameraSaveAlbumCompletionHandler)handler {
++ (AVAssetExportSession *)exportForAsset:(AVAsset *)asset
+								audioMix:(AVAudioMix *)audioMix
+						videoComposition:(AVVideoComposition *)videoComposition
+							   timeRange:(CMTimeRange)timeRange
+							  presetName:(NSString *)presetName
+					   completionHandler:(void (^)(NSURL * _Nonnull, BOOL success, NSError * _Nullable))handler {
 	
-	if (NO == [NSThread isMainThread]) {
-		
-	} else {
-		
+	NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:asset];
+	if (NO == [compatiblePresets containsObject:presetName]) {
+		presetName = AVAssetExportPresetMediumQuality;
 	}
+	
+	AVAssetExportSession *exportSession =
+	[[AVAssetExportSession alloc] initWithAsset:asset presetName:presetName];
+	NSURL *fileURL = [self generateUniqueMovieFileURL];
+	exportSession.outputURL = fileURL;
+	exportSession.shouldOptimizeForNetworkUse = true;
+	exportSession.outputFileType = AVFileTypeMPEG4;
+	exportSession.timeRange = timeRange;
+	if (audioMix) {
+		exportSession.audioMix = audioMix;
+	}
+	if (videoComposition) {
+		exportSession.videoComposition = videoComposition;
+	}
+	__block BOOL success = NO;
+	__block BOOL finish = NO;
+	[exportSession exportAsynchronouslyWithCompletionHandler:^{
+		switch (exportSession.status) {
+			case AVAssetExportSessionStatusCompleted:
+				success = YES;
+				finish = YES;
+				LZCameraLog(@"Export success");
+				break;
+			case AVAssetExportSessionStatusFailed:
+				finish = YES;
+				LZCameraLog(@"Export failed");
+				break;
+			case AVAssetExportSessionStatusCancelled:
+				finish = YES;
+				LZCameraLog(@"Export cancelled");
+				break;
+			case AVAssetExportSessionStatusWaiting:
+				LZCameraLog(@"Export waiting");
+				break;
+			case AVAssetExportSessionStatusExporting:
+				LZCameraLog(@"Export exporting");
+				break;
+			case AVAssetExportSessionStatusUnknown:
+				LZCameraLog(@"Export unknown");
+				break;
+			default:
+				break;
+		}
+		if (handler && YES == finish) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handler(fileURL, success, exportSession.error);
+			});
+		}
+	}];
+	return exportSession;
+}
+
++ (AVAudioMix *)buildAudioMixWithVideoTrack:(AVCompositionTrack *)videoTrack
+							 originalVolume:(CGFloat)originalVolume
+								 audioTrack:(AVCompositionTrack *)audioTrack
+								audioVolume:(CGFloat)audioVolume
+									 atTime:(CMTime)time {
+	
+	AVMutableAudioMixInputParameters *originalMixInputParameters =
+	[AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:videoTrack];
+	[originalMixInputParameters setVolume:originalVolume atTime:time];
+	AVMutableAudioMixInputParameters *audioMixInputParameters =
+	[AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:audioTrack];
+	[audioMixInputParameters setVolume:audioVolume atTime:time];
+	
+	AVMutableAudioMix *audioMix = [AVMutableAudioMix audioMix];
+	audioMix.inputParameters = @[originalMixInputParameters, audioMixInputParameters];
+	return audioMix;
+}
+
++ (AVMutableVideoComposition *)getVideoComposition:(AVAsset *)asset renderSize:(CGSize)renderSize {
+	
+	AVAssetTrack *videoTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+	if (!videoTrack) {
+		return nil;
+	}
+	AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+	CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+	
+	AVMutableComposition *composition = [AVMutableComposition composition];
+	NSError *error = nil;
+	AVMutableCompositionTrack *assetVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+	[assetVideoTrack insertTimeRange:timeRange ofTrack:videoTrack atTime:kCMTimeZero error:&error];
+	AVMutableCompositionTrack *assetAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+	if (audioTrack) {
+		[assetAudioTrack insertTimeRange:timeRange ofTrack:audioTrack atTime:kCMTimeZero error:&error];
+	}
+	if (error) {
+		return nil;
+	}
+	
+	CGFloat degree = [self getVideoDegree:videoTrack];
+	CGSize naturalSize = assetVideoTrack.naturalSize;
+	
+	CGAffineTransform mixedTransform =  CGAffineTransformIdentity;
+	CGFloat videoWidth = (degree == 0 || degree == M_PI) ? naturalSize.width : naturalSize.height;
+	CGFloat videoHeight = (degree == 0 || degree == M_PI) ? naturalSize.height : naturalSize.width;
+	CGSize cropSize = CGSizeMake(MIN(videoWidth, renderSize.width), MIN(videoHeight, renderSize.height));
+	CGFloat x, y;
+	if (degree == M_PI_2) {
+		// 顺时针 90°
+		CGAffineTransform t = CGAffineTransformMakeTranslation(naturalSize.height,.0);
+		CGAffineTransform t1 = CGAffineTransformRotate(t, M_PI_2);
+		// x为正向下 y为正向左
+		x = -(videoHeight-cropSize.height) / 2.0;
+		y = (videoWidth-cropSize.width) / 2.0;
+		mixedTransform = CGAffineTransformTranslate(t1, x, y);
+	} else if (degree == M_PI) {
+		// 顺时针 180°
+		CGAffineTransform t = CGAffineTransformMakeTranslation(naturalSize.width, naturalSize.height);
+		CGAffineTransform t1 = CGAffineTransformRotate(t, M_PI);
+		// x为正向左 y为正向上
+		x = (videoWidth-cropSize.width) / 2.0;
+		y = (videoHeight-cropSize.height) / 2.0;
+		mixedTransform = CGAffineTransformTranslate(t1, x, y);
+	} else if (degree == (M_PI_2 * 3.0)) {
+		// 顺时针 270°
+		CGAffineTransform t = CGAffineTransformMakeTranslation(.0, naturalSize.width);
+		CGAffineTransform t1 = CGAffineTransformRotate(t, M_PI_2 * 3.0);
+		// x为正向上 y为正向右
+		x = (videoHeight-cropSize.height) / 2.0;
+		y = -(videoWidth-cropSize.width) / 2.0;
+		mixedTransform = CGAffineTransformTranslate(t1, x, y);
+	} else if (degree == 1) {
+		// 前摄像头的情况
+		CGAffineTransform transform = CGAffineTransformMakeScale(-1.0, 1.0);
+		transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+		x = -(videoHeight-cropSize.height) / 2.0;
+		y = (videoWidth-cropSize.width) / 2.0;
+		mixedTransform = CGAffineTransformTranslate(transform, x, y);
+	} else {
+		// x为正向右 y为正向下
+		x = -(videoWidth-cropSize.width) / 2.0;
+		y = -(videoHeight-cropSize.height) / 2.0;
+		mixedTransform = CGAffineTransformMakeTranslation(x, y);
+	}
+	
+	AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+	[layerInstruction setOpacity:0.0 atTime:assetVideoTrack.timeRange.duration];
+	[layerInstruction setTransform:mixedTransform atTime:kCMTimeZero];
+	
+	AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+	instruction.timeRange = CMTimeRangeMake(kCMTimeZero, composition.duration);
+	instruction.layerInstructions = @[layerInstruction];
+	
+	//管理所有需要处理的视频
+	AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+	videoComposition.frameDuration = CMTimeMake(1, 30);
+	videoComposition.renderScale = 1.0;
+	videoComposition.renderSize = cropSize;
+	videoComposition.instructions = @[instruction];
+	
+	return videoComposition;
+}
+
++ (CGFloat)getVideoDegree:(AVAssetTrack *)videoTrack {
+	
+	CGAffineTransform tf = videoTrack.preferredTransform;
+	CGFloat degree = 0;
+	if (tf.b == 1.0 && tf.c == -1.0) {
+		degree = M_PI_2;
+	} else if (tf.a == -1.0 && tf.d == -1.0) {
+		degree = M_PI;
+	} else if (tf.b == -1.0 && tf.c == 1.0) {
+		degree = M_PI_2 * 3;
+	} else if (tf.a == 1.0 && tf.d == 1.0) {
+		degree = 0;
+	} else {
+		degree = 1;
+	}
+	return degree;
 }
 
 @end

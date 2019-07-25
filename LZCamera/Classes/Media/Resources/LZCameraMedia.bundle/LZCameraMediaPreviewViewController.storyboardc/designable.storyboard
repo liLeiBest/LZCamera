@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,14 +23,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e89-Og-CsI">
                                 <rect key="frame" x="0.0" y="658" width="375" height="120"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysw-pW-cCv">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysw-pW-cCv">
                                         <rect key="frame" x="77.666666666666671" y="30" width="60.000000000000014" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="cancelDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="gEp-aX-FGe"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwf-a2-DM8">
                                         <rect key="frame" x="157.66666666666666" y="30" width="60" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <constraints>
@@ -42,7 +41,7 @@
                                             <action selector="editDidClick:" destination="QCA-SG-j0Y" eventType="touchDown" id="2dB-D7-55K"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXB-5V-OhZ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXB-5V-OhZ">
                                         <rect key="frame" x="237.66666666666663" y="30" width="60" height="60"/>
                                         <color key="backgroundColor" red="0.81176470588235294" green="0.792156862745098" blue="0.77647058823529413" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <connections>

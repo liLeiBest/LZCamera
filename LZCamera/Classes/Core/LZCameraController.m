@@ -6,6 +6,7 @@
 //
 
 #import "LZCameraController.h"
+#import "LZCameraToolkit.h"
 
 #define LZMainQueue dispatch_get_main_queue()
 #define LZMainQueueBlock(block) \
@@ -25,8 +26,6 @@ static const NSString * LZCameraVideoRampingZoomContext;
 static NSString * const LZCameraAdjustingExposureKey = @"adjustingExposure";
 /** 用于监听摄像头正在曝光的上下文 */
 static const NSString * LZCameraAdjustingExposureContext;
-/** 用于生成目录的模版 */
-static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 
 @interface LZCameraController()<AVCaptureFileOutputRecordingDelegate, AVCaptureMetadataOutputObjectsDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>{
     dispatch_queue_t cameraQueue;
@@ -543,7 +542,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
                 }
             }
             
-            self.videoFileOutputURL = [self generateUniqueMovieFileURL];
+            self.videoFileOutputURL = [LZCameraToolkit generateUniqueMovieFileURL];
 			LZCameraLog(@"视频输出路径:%@", self.videoFileOutputURL);
             if (self.videoFileOutputURL) {
                 [self.videoFileOutput startRecordingToOutputFileURL:self.videoFileOutputURL recordingDelegate:self];
@@ -988,35 +987,6 @@ didFinishSavingWithError:(NSError *)error
 }
 
 /**
- 生成唯一的视频文件路径
-
- @return NSURL
- */
-- (NSURL *)generateUniqueMovieFileURL {
-	
-	NSString *mkdTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:LZDirectoryTemplateString];
-	const char *templateCString = [mkdTemplate fileSystemRepresentation];
-	char *buffer = malloc(strlen(templateCString) + 1);
-	strcpy(buffer, templateCString);
-	
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *directoryPath = nil;
-	char *result = mkdtemp(buffer);
-	if (result) {
-		directoryPath = [fileManager stringWithFileSystemRepresentation:buffer length:strlen(result)];
-	}
-	free(buffer);
-	
-	if (directoryPath) {
-		
-		NSString *filePath = [directoryPath stringByAppendingPathComponent:@"lacamera_movie.mov"];
-		NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-		return fileURL;
-	}
-	return nil;
-}
-
-/**
  视频保存到相册
 
  @param videoURL NSURL
@@ -1070,7 +1040,7 @@ didFinishSavingWithError:(NSError *)error
 	LZCameraQueueBlock(^{
 		UIImage *thumbnail = nil;
 		if (!error) {
-			thumbnail = [self generateThumbnailForVideoAtURL:videoURL];
+			thumbnail = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:videoURL];
 		}
 		LZMainQueueBlock(^{
 			if (self.captureVideoCompletionHandler) {
@@ -1081,26 +1051,6 @@ didFinishSavingWithError:(NSError *)error
 			}
 		})
 	})
-}
-
-/**
- 生成视频缩略图
-
- @param videoURL NSURL
- */
-- (UIImage *)generateThumbnailForVideoAtURL:(NSURL *)videoURL {
-	
-	AVAsset *asset = [AVAsset assetWithURL:videoURL];
-	AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-	imageGenerator.maximumSize = CGSizeMake(200.f, 0);
-    imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
-	imageGenerator.appliesPreferredTrackTransform = YES;
-	
-	CGImageRef imageRef = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-	UIImage *image = [UIImage imageWithCGImage:imageRef];
-	CGImageRelease(imageRef);
-	
-	return image;
 }
 
 /**

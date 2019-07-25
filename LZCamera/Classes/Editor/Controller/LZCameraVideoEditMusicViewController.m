@@ -1,51 +1,37 @@
 //
-//  LZCameraVideoEditorViewController.m
+//  LZCameraVideoEditMusicViewController.m
 //  LZCamera
 //
-//  Created by Dear.Q on 2019/7/21.
+//  Created by Dear.Q on 2019/7/25.
 //
 
-#import "LZCameraVideoEditorViewController.h"
-#import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraVideoEditMusicViewController.h"
+#import "LZCameraEditorVideoMusicContainerView.h"
 #import "LZCameraToolkit.h"
 
-@interface LZCameraVideoEditorViewController ()
+@interface LZCameraVideoEditMusicViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
-@property (weak, nonatomic) IBOutlet LZCameraEditorVideoContainerView *videoClipView;;
+@property (weak, nonatomic) IBOutlet LZCameraEditorVideoMusicContainerView *musicView;
 
 /** 预览层 */
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
-/** 计时器 */
-@property (strong, nonatomic) NSTimer *timer;
-/** 循环播放的区间 */
-@property (assign, nonatomic) CMTimeRange timeRange;
 /** 已编辑的视频地址 */
 @property (copy, nonatomic) NSURL *editVideoURL;
+/** 背景音乐 */
+@property (strong, nonatomic) LZCameraEditorMusicModel *musicModel;
+/** 计时器 */
+@property (strong, nonatomic) NSTimer *timer;
 
 @end
 
-@implementation LZCameraVideoEditorViewController
+@implementation LZCameraVideoEditMusicViewController
 
-// MARK: - Initialization
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-	if (self = [super initWithCoder:aDecoder]) {
-		self.videoMaximumDuration = 10.0f;
-	}
-	return self;
-}
-
+// AMRK: - Initialization
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
 	[self setupUI];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	
-	[self fetchVideoThumbnails];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -69,7 +55,7 @@
 + (instancetype)instance {
 	
 	NSBundle *bundle = LZCameraNSBundle(@"");
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraVideoEditorViewController"
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraVideoEditMusicViewController"
 														 bundle:bundle];
 	return storyboard.instantiateInitialViewController;
 }
@@ -79,25 +65,24 @@
 	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)nextDidClick {
+- (void)doneDidClick {
 	
-	LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
-	ctr.videoURL = self.editVideoURL;
-	ctr.timeRange = self.timeRange;
-	ctr.VideoEditCallback = self.VideoEditCallback;
-	[self.navigationController pushViewController:ctr animated:YES];
+	if (self.VideoEditCallback) {
+		
+		UIImage *previewImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.editVideoURL];
+		self.VideoEditCallback(self.editVideoURL, previewImage);
+	}
+	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-// MAKR: - Private
+// MARK: - Private
 - (void)setupUI {
 	
-	self.title = @"裁剪视频";
+	self.title = @"加音乐";
 	
 	self.editVideoURL = self.videoURL;
-	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
-	self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-	self.previewImgView.image = self.previewImage;
 	[self buildPlayer];
+	[self startTimer];
 	
 	[[NSNotificationCenter defaultCenter]
 	 addObserver:self
@@ -110,14 +95,32 @@
 	 name:UIApplicationDidBecomeActiveNotification
 	 object:nil];
 	
-	self.videoClipView.duration = asset.duration;
-	self.videoClipView.videoMaximumDuration = self.videoMaximumDuration;
 	__weak typeof(self) weakSelf = self;
-	self.videoClipView.TapPreviewClipCallback = ^(CMTimeRange timeRange) {
+	self.musicView.TapOriginalMusicCallback = ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
-		strongSelf.timeRange = timeRange;
+		strongSelf.editVideoURL = strongSelf.videoURL;
+		[strongSelf buildPlayer];
 		[strongSelf startTimer];
+	};
+	self.musicView.TapMusicCallback = ^(LZCameraEditorMusicModel * _Nonnull musicModel) {
+		
+		typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf stopTimer];
+		
+		strongSelf.musicModel = musicModel;
+		NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
+		NSString *musicPath = [bundle pathForResource:strongSelf.musicModel.thumbnail ofType:@"mp3"];
+		NSURL *musicURL = [NSURL fileURLWithPath:musicPath];
+		if (nil == musicURL) {
+			return ;
+		}
+		[LZCameraToolkit mixAudioForAsset:strongSelf.videoURL timeRange:strongSelf.timeRange audioPathURL:musicURL originalAudio:YES originalVolume:1 audioVolume:0.5 presetName:AVAssetExportPresetMediumQuality completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
+			
+			strongSelf.editVideoURL = outputFileURL;
+			[strongSelf buildPlayer];
+			[strongSelf startTimer];
+		}];
 	};
 	
 	self.navigationItem.leftBarButtonItem =
@@ -126,10 +129,10 @@
 									target:self
 									action:@selector(popDidClick)];
 	self.navigationItem.rightBarButtonItem =
-	[[UIBarButtonItem alloc] initWithTitle:@"下一步"
+	[[UIBarButtonItem alloc] initWithTitle:@"完成"
 									 style:UIBarButtonItemStylePlain
 									target:self
-									action:@selector(nextDidClick)];
+									action:@selector(doneDidClick)];
 }
 
 - (void)buildPlayer {
@@ -166,7 +169,6 @@
 	[self.timer invalidate];
 	self.timer = nil;
 	[self.playerLayer.player pause];
-	[self.videoClipView removeProgressLine];
 }
 
 - (void)playPartVideo:(NSTimer *)timer {
@@ -175,7 +177,6 @@
 	[self.playerLayer.player seekToTime:[self getStartTime]
 						toleranceBefore:kCMTimeZero
 						 toleranceAfter:kCMTimeZero];
-	[self.videoClipView updateProgressLine];
 }
 
 - (CMTime)getStartTime {
@@ -185,19 +186,6 @@
 		time = kCMTimeZero;
 	}
 	return time;
-}
-
-- (void)fetchVideoThumbnails {
-	
-	CMTimeValue interval= 1.0f;
-	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
-	__weak typeof(self) weakSelf = self;
-	[LZCameraToolkit thumbnailBySecondForAsset:asset interval:interval maxSize:CGSizeMake(60, 0) completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
-		
-		typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf.videoClipView updateVideoThumbnails:thumbnails];
-		[strongSelf startTimer];
-	}];
 }
 
 // MARK: - Obasever
