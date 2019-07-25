@@ -234,17 +234,20 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	   completionHandler:(void (^)(NSURL * _Nullable, BOOL))handler {
 	
 	AVAsset *asset = [AVAsset assetWithURL:assetURL];
-	AVAsset *audioAsset = [AVAsset assetWithURL:audioPathURL];
-	if (0 == [asset tracksWithMediaType:AVMediaTypeVideo].count) {
+	NSArray *videoAssetTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+	if (0 == videoAssetTracks.count) {
 		if (handler) {
-			handler(nil, NO);
+			handler(assetURL, NO);
 		}
 		return;
 	}
-	AVAssetTrack *videoAssetTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+	AVAssetTrack *videoAssetTrack = [videoAssetTracks firstObject];
+	
+	AVAsset *audioAsset = [AVAsset assetWithURL:audioPathURL];
 	AVAssetTrack *audioAssetTrack = nil;
-	if (0 == [audioAsset tracksWithMediaType:AVMediaTypeAudio].count) {
-		audioAssetTrack = [[audioAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0];
+	NSArray *audioAssetTracks = [audioAsset tracksWithMediaType:AVMediaTypeAudio];
+	if (0 < audioAssetTracks.count) {
+		audioAssetTrack = [audioAssetTracks firstObject];
 	}
 	
 	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
@@ -277,7 +280,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 			originalAudioCompositionTrack =
 			[composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
 			[originalAudioCompositionTrack insertTimeRange:timeRange ofTrack:originalAudioAssetTrack atTime:kCMTimeZero error:NULL];
-			//		originalAudioCompositionTrack.preferredVolume = originalVolume;
+			//	originalAudioCompositionTrack.preferredVolume = originalVolume;
 		}
 	}
 	
