@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/liLeiBest/LZCamera.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
-  s.frameworks          = 'AVFoundation','Foundation','UIKit','Photos'
+  s.frameworks          = 'AVFoundation','Foundation','UIKit','Photos','CoreServices'
   s.source_files        = 'LZCamera/Classes/LZCamera.h'
   s.public_header_files = 'LZCamera/Classes/LZCamera.h'
 
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'MediaCapture' do |media|
-    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}'
+    media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}', 'LZCamera/Classes/Media/Controller/*.storyboard'
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Editor' do |editor|
-	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}', 'LZCamera/Classes/Editor/Controller/*.storyboard'
+	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}'#, 'LZCamera/Classes/Editor/Controller/*.storyboard'
 	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
 	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
   end

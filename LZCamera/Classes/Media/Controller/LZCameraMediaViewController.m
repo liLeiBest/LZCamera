@@ -11,24 +11,10 @@
 #import "LZCameraMediaModelView.h"
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
-#if 0
-#import <GPUImage/GPUImage.h>
-#endif
+#import "LZCameraToolkit.h"
+#import <CoreServices/CoreServices.h>
 
-@interface LZCameraMediaViewController ()<LZCameraControllerDelegate>
-#if 0
-{
-	///GPUImage
-	GPUImageMovie *movieFile;
-	GPUImageOutput<GPUImageInput> *filter;
-	GPUImageMovieWriter *movieWriter;
-	CADisplayLink* dlink;
-	
-	///AVFoundation
-	AVAsset * videoAsset;
-	AVAssetExportSession *exporter;
-}
-#endif
+@interface LZCameraMediaViewController ()<LZCameraControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet LZCameraMediaPreviewView *mediaPreviewView;
 @property (weak, nonatomic) IBOutlet LZCameraMediaStatusView *mediaStatusView;
@@ -123,9 +109,6 @@
 }
 
 // MARK: - Private
-/**
- 配置摄像头
- */
 - (void)configCameraController {
 	
     LZCameraConfig *cameraConfig = [[LZCameraConfig alloc] init];
@@ -181,9 +164,6 @@
     }
 }
 
-/**
- 设置视图
- */
 - (void)setupView {
     
     __weak typeof(self) weakSelf = self;
@@ -237,7 +217,12 @@
     // 拍摄视图
 	self.mediaModelView.maxDuration = self.maxShortVideoDuration;
     self.mediaModelView.captureModel = self.captureModel;
-    self.mediaModelView.TapToCaptureImageHandler = ^(void (^ _Nonnull ComplteHandler)(void)) {
+	self.mediaModelView.TapToAlbumVideoCallback = ^{
+		
+		typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf chooseVideoFromAlbum];
+	};
+    self.mediaModelView.TapToCaptureImageCallback = ^(void (^ _Nonnull ComplteHandler)(void)) {
         
         lzPlaySound(@"media_capture_image.wav", @"LZCameraMedia");
         typeof(weakSelf) strongSelf = weakSelf;
@@ -252,8 +237,7 @@
             ComplteHandler();
         }];
     };
-	
-    self.mediaModelView.TapToCaptureVideoHandler = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
+    self.mediaModelView.TapToCaptureVideoCallback = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
         
         typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
@@ -295,11 +279,40 @@
     };
 }
 
-/**
- 删除视频文件
- 
- @param videoURL NSURL
- */
+- (void)chooseVideoFromAlbum {
+	
+	NSString *mediaType = (NSString *)kUTTypeMovie;
+	UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+	if ([self cameraSupportMedia:mediaType sourceType:sourceType]) {
+		
+		UIImagePickerController *pickCtr = [[UIImagePickerController alloc] init];
+		pickCtr.sourceType = sourceType;
+		pickCtr.mediaTypes = @[mediaType];
+		pickCtr.allowsEditing = NO;
+		pickCtr.delegate = self;
+		[self presentViewController:pickCtr animated:YES completion:nil];
+	}
+}
+
+- (BOOL)cameraSupportMedia:(NSString*)paramMediaType
+				sourceType:(UIImagePickerControllerSourceType)paramSourceType {
+	
+	__block BOOL result=NO;
+	if ([paramMediaType length]==0) {
+		NSLog(@"Media type is empty.");
+		return NO;
+	}
+	NSArray*availableMediaTypes=[UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+	[availableMediaTypes enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		NSString *mediaType = (NSString *)obj;
+		if ([mediaType isEqualToString:paramMediaType]){
+			result = YES;
+			*stop= YES;
+		}
+	}];
+	return result;
+}
+
 - (void)deleteVideo:(NSURL *)videoURL {
 	
 	NSError *error;
@@ -310,259 +323,6 @@
 	}
 }
 
-#if 0
-/**
- 使用GPUImage加载水印
- 
- @param vedioPath 视频路径
- @param img 水印图片
- @param coverImg 水印图片二
- @param question 字符串水印
- @param fileName 生成之后的视频名字
- */
--(void)saveVedioPath:(NSURL*)vedioPath WithWaterImg:(UIImage*)img WithCoverImage:(UIImage*)coverImg WithQustion:(NSString*)question WithFileName:(NSString*)fileName WithCompletionHandler:(void (^)(NSURL* outPutURL, int code))handler {
-	// 滤镜
-	//    filter = [[GPUImageDissolveBlendFilter alloc] init];
-	//    [(GPUImageDissolveBlendFilter *)filter setMix:0.0f];
-	//也可以使用透明滤镜
-	//    filter = [[GPUImageAlphaBlendFilter alloc] init];
-	//    //mix即为叠加后的透明度,这里就直接写1.0了
-	//    [(GPUImageDissolveBlendFilter *)filter setMix:1.0f];
-	
-	filter = [[GPUImageNormalBlendFilter alloc] init];
-	
-	NSURL *sampleURL  = vedioPath;
-	AVAsset *asset = [AVAsset assetWithURL:sampleURL];
-	CGSize size = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize];
-	
-	movieFile = [[GPUImageMovie alloc] initWithAsset:asset];
-	movieFile.playAtActualSpeed = NO;
-	
-	// 文字水印
-	UILabel *label = [[UILabel alloc] init];
-	label.text = question;
-	label.font = [UIFont systemFontOfSize:30];
-	label.textColor = [UIColor whiteColor];
-	[label setTextAlignment:NSTextAlignmentCenter];
-	[label sizeToFit];
-	label.layer.masksToBounds = YES;
-	label.layer.cornerRadius = 18.0f;
-	[label setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
-	[label setFrame:CGRectMake(50, 100, label.frame.size.width+20, label.frame.size.height)];
-	
-	//图片水印
-	UIImage *coverImage1 = [img copy];
-	UIImageView *coverImageView1 = [[UIImageView alloc] initWithImage:coverImage1];
-	[coverImageView1 setFrame:CGRectMake(0, 100, 210, 50)];
-	
-//	//第二个图片水印
-//	UIImage *coverImage2 = [coverImg copy];
-//	UIImageView *coverImageView2 = [[UIImageView alloc] initWithImage:coverImage2];
-//	[coverImageView2 setFrame:CGRectMake(270, 100, 210, 50)];
-	
-	UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-	subView.backgroundColor = [UIColor clearColor];
-	
-	[subView addSubview:coverImageView1];
-//	[subView addSubview:coverImageView2];
-	[subView addSubview:label];
-	
-	
-	GPUImageUIElement *uielement = [[GPUImageUIElement alloc] initWithView:subView];
-	NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@.mp4",fileName]];
-	unlink([pathToMovie UTF8String]);
-	NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-	
-	movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(720.0, 1280.0)];
-	
-	GPUImageFilter* progressFilter = [[GPUImageFilter alloc] init];
-	[progressFilter addTarget:filter];
-	[movieFile addTarget:progressFilter];
-	[uielement addTarget:filter];
-	movieWriter.shouldPassthroughAudio = YES;
-	if ([[asset tracksWithMediaType:AVMediaTypeAudio] count] > 0){
-		movieFile.audioEncodingTarget = movieWriter;
-	} else {//no audio
-		movieFile.audioEncodingTarget = nil;
-	}
-	//    movieFile.playAtActualSpeed = true;
-	[movieFile enableSynchronizedEncodingUsingMovieWriter:movieWriter];
-	// 显示到界面
-	[filter addTarget:movieWriter];
-	
-	[movieWriter startRecording];
-	[movieFile startProcessing];
-	
-	//    dlink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateProgress)];
-	//    [dlink setFrameInterval:15];
-	//    [dlink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	//    [dlink setPaused:NO];
-	
-	__weak typeof(self) weakSelf = self;
-	//渲染
-	[progressFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
-		//水印可以移动
-//		CGRect frame = coverImageView1.frame;
-//		frame.origin.x += 1;
-//		frame.origin.y += 1;
-//		coverImageView1.frame = frame;
-		//第5秒之后隐藏coverImageView2
-//		if (time.value/time.timescale>=5.0) {
-//			[coverImageView2 removeFromSuperview];
-//		}
-//		[uielement update];
-		
-	}];
-	//保存相册
-	[movieWriter setCompletionBlock:^{
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			__strong typeof(self) strongSelf = weakSelf;
-			[strongSelf->filter removeTarget:strongSelf->movieWriter];
-			[strongSelf->movieWriter finishRecording];
-			
-			if (handler) {
-				handler(movieURL, 0);
-			}
-		});
-	}];
-}
-
-- (void)addWaterMarkTypeWithCorAnimationAndInputVideoURL:(NSURL*)InputURL WithCompletionHandler:(void (^)(NSURL* outPutURL, int code))handler{
-	
-	NSDictionary *opts = [NSDictionary dictionaryWithObject:@(YES) forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
-	AVAsset *videoAsset = [AVURLAsset URLAssetWithURL:InputURL options:opts];
-	AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
-	AVMutableCompositionTrack *videoTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo
-																		preferredTrackID:kCMPersistentTrackID_Invalid];
-	NSError *errorVideo = [NSError new];
-	AVAssetTrack *assetVideoTrack = [[videoAsset tracksWithMediaType:AVMediaTypeVideo]firstObject];
-	CMTime endTime = assetVideoTrack.asset.duration;
-	BOOL bl = [videoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, assetVideoTrack.asset.duration)
-								  ofTrack:assetVideoTrack
-								   atTime:kCMTimeZero error:&errorVideo];
-	videoTrack.preferredTransform = assetVideoTrack.preferredTransform;
-	NSLog(@"errorVideo:%ld%d",errorVideo.code,bl);
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	formatter.dateFormat = @"yyyyMMddHHmmss";
-	NSString *outPutFileName = [formatter stringFromDate:[NSDate dateWithTimeIntervalSinceNow:0]];
-	NSString *myPathDocs =  [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov",outPutFileName]];
-	NSURL* outPutVideoUrl = [NSURL fileURLWithPath:myPathDocs];
-	
-	CGSize videoSize = [videoTrack naturalSize];
-	
-	UIFont *font = [UIFont systemFontOfSize:60.0];
-	CATextLayer *aLayer = [[CATextLayer alloc] init];
-	[aLayer setFontSize:60];
-	[aLayer setString:@"H"];
-	[aLayer setAlignmentMode:kCAAlignmentCenter];
-	[aLayer setForegroundColor:[[UIColor greenColor] CGColor]];
-	[aLayer setBackgroundColor:[UIColor clearColor].CGColor];
-	CGSize textSize = [@"H" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-	[aLayer setFrame:CGRectMake(240, 470, textSize.width, textSize.height)];
-	aLayer.anchorPoint = CGPointMake(0.5, 1.0);
-	
-	
-	CATextLayer *bLayer = [[CATextLayer alloc] init];
-	[bLayer setFontSize:60];
-	[bLayer setString:@"E"];
-	[bLayer setAlignmentMode:kCAAlignmentCenter];
-	[bLayer setForegroundColor:[[UIColor greenColor] CGColor]];
-	[bLayer setBackgroundColor:[UIColor clearColor].CGColor];
-	CGSize textSizeb = [@"E" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-	[bLayer setFrame:CGRectMake(240 + textSize.width, 470 , textSizeb.width, textSizeb.height)];
-	bLayer.anchorPoint = CGPointMake(0.5, 1.0);
-	
-	
-	CATextLayer *cLayer = [[CATextLayer alloc] init];
-	[cLayer setFontSize:60];
-	[cLayer setString:@"L"];
-	[cLayer setAlignmentMode:kCAAlignmentCenter];
-	[cLayer setForegroundColor:[[UIColor greenColor] CGColor]];
-	[cLayer setBackgroundColor:[UIColor clearColor].CGColor];
-	CGSize textSizec = [@"L" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-	[cLayer setFrame:CGRectMake(240 + textSizeb.width + textSize.width, 470 , textSizec.width, textSizec.height)];
-	cLayer.anchorPoint = CGPointMake(0.5, 1.0);
-	
-	
-	CATextLayer *dLayer = [[CATextLayer alloc] init];
-	[dLayer setFontSize:60];
-	[dLayer setString:@"L"];
-	[dLayer setAlignmentMode:kCAAlignmentCenter];
-	[dLayer setForegroundColor:[[UIColor greenColor] CGColor]];
-	[dLayer setBackgroundColor:[UIColor clearColor].CGColor];
-	CGSize textSized = [@"L" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-	[dLayer setFrame:CGRectMake(240 + textSizec.width+ textSizeb.width + textSize.width, 470 , textSized.width, textSized.height)];
-	dLayer.anchorPoint = CGPointMake(0.5, 1.0);
-	
-	CATextLayer *eLayer = [[CATextLayer alloc] init];
-	[eLayer setFontSize:60];
-	[eLayer setString:@"O"];
-	[eLayer setAlignmentMode:kCAAlignmentCenter];
-	[eLayer setForegroundColor:[[UIColor greenColor] CGColor]];
-	[eLayer setBackgroundColor:[UIColor clearColor].CGColor];
-	CGSize textSizede = [@"O" sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName, nil]];
-	[eLayer setFrame:CGRectMake(240 + textSized.width + textSizec.width+ textSizeb.width + textSize.width, 470 , textSizede.width, textSizede.height)];
-	eLayer.anchorPoint = CGPointMake(0.5, 1.0);
-	
-	CABasicAnimation* basicAni = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-	basicAni.fromValue = @(0.2f);
-	basicAni.toValue = @(1.0f);
-	basicAni.beginTime = AVCoreAnimationBeginTimeAtZero;
-	basicAni.duration = 2.0f;
-	basicAni.repeatCount = HUGE_VALF;
-	basicAni.removedOnCompletion = NO;
-	basicAni.fillMode = kCAFillModeForwards;
-	[aLayer addAnimation:basicAni forKey:nil];
-	[bLayer addAnimation:basicAni forKey:nil];
-	[cLayer addAnimation:basicAni forKey:nil];
-	[dLayer addAnimation:basicAni forKey:nil];
-	[eLayer addAnimation:basicAni forKey:nil];
-	
-	CALayer *parentLayer = [CALayer layer];
-	CALayer *videoLayer = [CALayer layer];
-	parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-	videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-	[parentLayer addSublayer:videoLayer];
-	[parentLayer addSublayer:aLayer];
-	[parentLayer addSublayer:bLayer];
-	[parentLayer addSublayer:cLayer];
-	[parentLayer addSublayer:dLayer];
-	[parentLayer addSublayer:eLayer];
-	
-	AVMutableVideoComposition* videoComp = [AVMutableVideoComposition videoComposition];
-	videoComp.renderSize = videoSize;
-	parentLayer.geometryFlipped = true;
-	videoComp.frameDuration = CMTimeMake(1, 30);
-	videoComp.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-	AVMutableVideoCompositionInstruction* instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-	
-	instruction.timeRange = CMTimeRangeMake(kCMTimeZero, endTime);
-	AVMutableVideoCompositionLayerInstruction* layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
-	instruction.layerInstructions = [NSArray arrayWithObjects:layerInstruction, nil];
-	videoComp.instructions = [NSArray arrayWithObject: instruction];
-	
-	
-	AVAssetExportSession* exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition
-																	  presetName:AVAssetExportPresetHighestQuality];
-	exporter.outputURL=outPutVideoUrl;
-	exporter.outputFileType = AVFileTypeMPEG4;
-	exporter.shouldOptimizeForNetworkUse = YES;
-	exporter.videoComposition = videoComp;
-	[exporter exportAsynchronouslyWithCompletionHandler:^{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			//这里是输出视频之后的操作，做你想做的
-			NSLog(@"输出视频地址:%@ andCode:%@",myPathDocs,exporter.error);
-			handler(outPutVideoUrl,(int)exporter.error.code);
-		});
-	}];
-}
-#endif
-
-/**
- 控制闪光灯可视状态
- */
 - (void)controlFlashModelVisulState {
     
     LZControlVisualState state = LZControlVisualStateOff;
@@ -575,9 +335,6 @@
     [self.mediaStatusView updateFlashVisualState:state];
 }
 
-/**
- 控制切换摄像头可视状态
- */
 - (void)controlSwitchCameraVisualState {
     
     LZControlVisualState state = LZControlVisualStateOff;
@@ -590,9 +347,6 @@
     [self.mediaStatusView updateSwitchCameraVisualState:state];
 }
 
-/**
- 配置捕捉提示
- */
 - (void)configCaptureTipView {
     
     NSString *tipString = nil;
@@ -619,11 +373,6 @@
     [self showCaputreTip:tipString];
 }
 
-/**
- 展示捕捉提示
-
- @param tipMessage NSString
- */
 - (void)showCaputreTip:(NSString *)tipMessage {
     
     if (!tipMessage || tipMessage.length == 0) {
@@ -643,18 +392,10 @@
     [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:2.0f];
 }
 
-/**
- 隐藏捕捉提示
- */
 - (void)hideCaptureTip {
     self.captureTipLabel.hidden = YES;
 }
 
-/**
- 提示错误
-
- @param message NSString
- */
 - (void)alertMessage:(NSString *)message handler:(void (^)(UIAlertAction *action))handler {
     
     UIAlertController *alertCtr =
@@ -675,6 +416,45 @@
 
 - (void)photosAlbumWriteFailedWithError:(NSError *)error {
     [self alertMessage:error.localizedDescription handler:nil];
+}
+
+// MARK: <UIImagePickerControllerDelegate>
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> *)info {
+	
+	[picker dismissViewControllerAnimated:YES completion:nil];
+	NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
+	
+	NSURL *destURL = [LZCameraToolkit generateUniqueMovieFileURL:LZExportVideoTypeMov];
+	NSFileManager *fileM = [NSFileManager defaultManager];
+	NSError *error = nil;
+	[fileM moveItemAtURL:videoURL toURL:destURL error:&error];
+	if (nil == error) {
+		
+		self.previewImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:destURL];;
+		self.videoURL = destURL;
+		[self performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+	}
+	
+	return;
+//	LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
+//	ctr.previewImage = self.previewImage;
+//	ctr.videoURL = self.videoURL;
+//	ctr.videoMaximumDuration = 60.0f;
+//	__weak typeof(self) weakSelf = self;
+//	ctr.VideoEditCallback = ^(NSURL * _Nonnull videoURL, UIImage * _Nonnull previewImage) {
+//
+//		typeof(weakSelf) strongSelf = weakSelf;
+//		if (strongSelf.CameraVideoCompletionHandler) {
+//			strongSelf.CameraVideoCompletionHandler(previewImage, strongSelf.videoURL);
+//		}
+//	};
+//
+//	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+//	[self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

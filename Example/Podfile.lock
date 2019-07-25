@@ -31,7 +31,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: 5dd37d95b84df9151849415efb4e5120eb0d2e08
+  LZCamera: 79f529886ca2db4c68e1ed7a7926066f040d5e9a
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   ZLPhotoBrowser: e1c816eed2aebd9d570dc6de1cff19256347e8d6
 

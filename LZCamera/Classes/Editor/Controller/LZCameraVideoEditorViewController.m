@@ -68,7 +68,7 @@
 // MARK: - Public
 + (instancetype)instance {
 	
-	NSBundle *bundle = LZCameraNSBundle(@"");
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraVideoEditorViewController"
 														 bundle:bundle];
 	return storyboard.instantiateInitialViewController;

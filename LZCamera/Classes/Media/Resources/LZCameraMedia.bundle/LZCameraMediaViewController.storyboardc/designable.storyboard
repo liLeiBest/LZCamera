@@ -152,11 +152,11 @@
                                         <rect key="frame" x="0.0" y="9.9999999999999982" width="375" height="19.333333333333329"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O6F-DL-Hxq">
-                                                <rect key="frame" x="176.66666666666666" y="5.6666666666667425" width="8" height="8"/>
+                                                <rect key="frame" x="179.66666666666666" y="7.3333333333333712" width="5" height="5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="O6F-DL-Hxq" secondAttribute="height" multiplier="1:1" id="Lhs-Re-Gsh"/>
-                                                    <constraint firstAttribute="width" constant="8" id="Wmt-WO-LKR"/>
+                                                    <constraint firstAttribute="width" constant="5" id="Wmt-WO-LKR"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kah-Ek-jMQ" userLabel="midLine">
@@ -187,13 +187,27 @@
                                             <constraint firstItem="kah-Ek-jMQ" firstAttribute="leading" secondItem="O6F-DL-Hxq" secondAttribute="trailing" constant="3" id="wIX-VY-pKS"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iPC-yo-hP8">
+                                        <rect key="frame" x="53.666666666666657" y="62.333333333333371" width="54" height="54"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="iPC-yo-hP8" secondAttribute="height" multiplier="1:1" id="CuU-dM-nut"/>
+                                            <constraint firstAttribute="width" constant="54" id="LHu-ly-eVL"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="albumVideoDidClick:" destination="5hF-bt-HOB" eventType="touchDown" id="Ugh-6p-KcB"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="q5i-Pn-go8" firstAttribute="centerX" secondItem="5hF-bt-HOB" secondAttribute="centerX" id="2gg-yB-3mr"/>
                                     <constraint firstItem="qP2-Na-mYg" firstAttribute="top" secondItem="0Lg-wd-JRg" secondAttribute="bottom" constant="20" id="5FC-MO-f8T"/>
+                                    <constraint firstItem="q5i-Pn-go8" firstAttribute="centerY" secondItem="iPC-yo-hP8" secondAttribute="centerY" id="FPU-Uy-Exr"/>
                                     <constraint firstItem="q5i-Pn-go8" firstAttribute="bottom" secondItem="qP2-Na-mYg" secondAttribute="bottom" id="ZIn-bY-j5B"/>
                                     <constraint firstItem="0Lg-wd-JRg" firstAttribute="top" secondItem="5hF-bt-HOB" secondAttribute="top" constant="10" id="aT1-C2-QwV"/>
                                     <constraint firstItem="0Lg-wd-JRg" firstAttribute="leading" secondItem="5hF-bt-HOB" secondAttribute="leading" id="aZS-ei-zGf"/>
+                                    <constraint firstItem="q5i-Pn-go8" firstAttribute="leading" secondItem="iPC-yo-hP8" secondAttribute="trailing" constant="40" id="gfc-lt-d0m"/>
                                     <constraint firstItem="q5i-Pn-go8" firstAttribute="top" secondItem="qP2-Na-mYg" secondAttribute="top" id="no7-sw-czi"/>
                                     <constraint firstAttribute="trailing" secondItem="0Lg-wd-JRg" secondAttribute="trailing" id="sF1-Fd-U2N"/>
                                     <constraint firstItem="q5i-Pn-go8" firstAttribute="leading" secondItem="qP2-Na-mYg" secondAttribute="leading" id="su4-H0-HZV"/>
@@ -202,6 +216,7 @@
                                     <constraint firstAttribute="bottom" secondItem="q5i-Pn-go8" secondAttribute="bottom" constant="20" id="yZ1-Vz-GzV"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="albumVideoBtn" destination="iPC-yo-hP8" id="tLx-lu-uVY"/>
                                     <outlet property="captureContainerProgressView" destination="b4o-DP-1nH" id="MNX-Hz-YYE"/>
                                     <outlet property="captureContainerView" destination="q5i-Pn-go8" id="vGX-q2-dm4"/>
                                     <outlet property="captureImgView" destination="3KJ-2c-kO6" id="7c2-YR-eTT"/>

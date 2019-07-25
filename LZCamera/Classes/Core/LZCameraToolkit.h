@@ -95,7 +95,7 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
  
  @return NSURL
  */
-+ (NSURL *)generateUniqueMovieFileURL;
++ (NSURL *)generateUniqueMovieFileURL:(LZExportVideoType)videoType;
 
 @end
 

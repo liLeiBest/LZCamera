@@ -27,6 +27,18 @@ typedef NS_ENUM(NSInteger, LZCameraErrorCode) {
 	LZCameraErrorAuthorization,
 };
 
+
+/**
+ 导出视频格式
+
+ - LZExportVideoTypeMov: MOV
+ - LZExportVideoTypeMp4: MPEG4
+ */
+typedef NS_ENUM(NSUInteger, LZExportVideoType) {
+	LZExportVideoTypeMov,
+	LZExportVideoTypeMp4,
+};
+
 /** 错误域标识 */
 FOUNDATION_EXPORT NSString * _Nullable const LZCameraErrorDomain;
 

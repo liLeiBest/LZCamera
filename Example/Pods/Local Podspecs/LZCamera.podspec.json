@@ -22,7 +22,8 @@
     "AVFoundation",
     "Foundation",
     "UIKit",
-    "Photos"
+    "Photos",
+    "CoreServices"
   ],
   "source_files": "LZCamera/Classes/LZCamera.h",
   "public_header_files": "LZCamera/Classes/LZCamera.h",
@@ -35,7 +36,10 @@
     },
     {
       "name": "MediaCapture",
-      "source_files": "LZCamera/Classes/Media/**/*.{h,m}",
+      "source_files": [
+        "LZCamera/Classes/Media/**/*.{h,m}",
+        "LZCamera/Classes/Media/Controller/*.storyboard"
+      ],
       "public_header_files": "LZCamera/Classes/Media/**/*.h",
       "resources": "LZCamera/Classes/Media/Resources/LZCameraMedia.bundle",
       "dependencies": {
@@ -60,10 +64,7 @@
     },
     {
       "name": "Editor",
-      "source_files": [
-        "LZCamera/Classes/Editor/**/*.{h,m}",
-        "LZCamera/Classes/Editor/Controller/*.storyboard"
-      ],
+      "source_files": "LZCamera/Classes/Editor/**/*.{h,m}",
       "public_header_files": "LZCamera/Classes/Editor/**/*.h",
       "resources": "LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle"
     }

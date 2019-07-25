@@ -542,7 +542,7 @@ static const NSString * LZCameraAdjustingExposureContext;
                 }
             }
             
-            self.videoFileOutputURL = [LZCameraToolkit generateUniqueMovieFileURL];
+            self.videoFileOutputURL = [LZCameraToolkit generateUniqueMovieFileURL:LZExportVideoTypeMov];
 			LZCameraLog(@"视频输出路径:%@", self.videoFileOutputURL);
             if (self.videoFileOutputURL) {
                 [self.videoFileOutput startRecordingToOutputFileURL:self.videoFileOutputURL recordingDelegate:self];

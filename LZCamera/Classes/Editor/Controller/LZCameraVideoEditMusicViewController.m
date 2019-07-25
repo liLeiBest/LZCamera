@@ -18,6 +18,8 @@
 @property (strong, nonatomic) AVPlayerLayer *playerLayer;
 /** 已编辑的视频地址 */
 @property (copy, nonatomic) NSURL *editVideoURL;
+/** 已编辑的视频时间 */
+@property (assign, nonatomic) CMTimeRange editVideoTimeRange;
 /** 背景音乐 */
 @property (strong, nonatomic) LZCameraEditorMusicModel *musicModel;
 /** 计时器 */
@@ -54,7 +56,7 @@
 // MARK: - Public
 + (instancetype)instance {
 	
-	NSBundle *bundle = LZCameraNSBundle(@"");
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraVideoEditMusicViewController"
 														 bundle:bundle];
 	return storyboard.instantiateInitialViewController;
@@ -81,6 +83,7 @@
 	self.title = @"加音乐";
 	
 	self.editVideoURL = self.videoURL;
+	self.editVideoTimeRange = CMTimeRangeMake(self.timeRange.start, self.timeRange.duration);
 	[self buildPlayer];
 	[self startTimer];
 	
@@ -100,6 +103,7 @@
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		strongSelf.editVideoURL = strongSelf.videoURL;
+		strongSelf.editVideoTimeRange = CMTimeRangeMake(strongSelf.timeRange.start, strongSelf.timeRange.duration);
 		[strongSelf buildPlayer];
 		[strongSelf startTimer];
 	};
@@ -118,6 +122,8 @@
 		[LZCameraToolkit mixAudioForAsset:strongSelf.videoURL timeRange:strongSelf.timeRange audioPathURL:musicURL originalAudio:YES originalVolume:1 audioVolume:0.5 presetName:AVAssetExportPresetMediumQuality completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
 			
 			strongSelf.editVideoURL = outputFileURL;
+			AVAsset *asset = [AVAsset assetWithURL:outputFileURL];
+			strongSelf.editVideoTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
 			[strongSelf buildPlayer];
 			[strongSelf startTimer];
 		}];
@@ -154,7 +160,7 @@
 - (void)startTimer {
 	
 	[self stopTimer];
-	CGFloat duration = self.timeRange.duration.value / self.timeRange.duration.timescale;
+	CGFloat duration = CMTimeGetSeconds(self.editVideoTimeRange.duration);
 	self.timer =
 	[NSTimer scheduledTimerWithTimeInterval:duration
 									 target:self
@@ -181,7 +187,7 @@
 
 - (CMTime)getStartTime {
 	
-	CMTime time = self.timeRange.start;
+	CMTime time = self.editVideoTimeRange.start;
 	if (NO == CMTIME_IS_VALID(time)) {
 		time = kCMTimeZero;
 	}

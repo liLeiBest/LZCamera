@@ -10,6 +10,8 @@
 
 @interface LZCameraMediaModelView()
 
+@property (weak, nonatomic) IBOutlet UIButton *albumVideoBtn;
+
 @property (weak, nonatomic) IBOutlet UIView *durationContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *durationDotImgView;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
@@ -31,6 +33,10 @@
 // MARK: - Initialization
 - (void)awakeFromNib {
     [super awakeFromNib];
+	
+	self.albumVideoBtn.backgroundColor = [UIColor clearColor];
+	UIImage *addVideoImg = [self imageInBundle:@"media_album_video"];
+	[self.albumVideoBtn setImage:addVideoImg forState:UIControlStateNormal];
 	
 	self.durationDotImgView.backgroundColor = [UIColor clearColor];
 	UIImage *durationDodImg = [self imageInBundle:@"media_capture_reddot"];
@@ -65,7 +71,8 @@
     
     switch (captureModel) {
         case LZCameraCaptureModeStillImage: {
-            
+			
+			self.albumVideoBtn.hidden = YES;
             self.stillImageSingleTap.enabled = YES;
             self.longTap.enabled = NO;
 			self.videoSingleTap.enabled = NO;
@@ -90,7 +97,8 @@
         }
             break;
         case LZCameraCaptureModelStillImageAndShortVideo: {
-            
+			
+			self.albumVideoBtn.hidden = YES;
             self.stillImageSingleTap.enabled = YES;
             self.longTap.enabled = YES;
 			self.videoSingleTap.enabled = NO;
@@ -99,7 +107,8 @@
         }
             break;
         case LZCameraCaptureModelLongVideo: {
-            
+			
+			self.albumVideoBtn.hidden = YES;
             self.stillImageSingleTap.enabled = NO;
             self.longTap.enabled = NO;
 			self.videoSingleTap.enabled = NO;
@@ -123,12 +132,18 @@
 }
 
 // MARK: - UI Action
+- (IBAction)albumVideoDidClick:(id)sender {
+	if (self.TapToAlbumVideoCallback) {
+		self.TapToAlbumVideoCallback();
+	}
+}
+
 - (IBAction)captureLongVideoDidTouch:(UIButton *)sender {
 	
     BOOL selected = self.captureLongVideoBtn.selected;
     __weak typeof(self) weakSelf = self;
-    if (self.TapToCaptureVideoHandler) {
-        self.TapToCaptureVideoHandler(!selected, selected, ^{
+    if (self.TapToCaptureVideoCallback) {
+        self.TapToCaptureVideoCallback(!selected, selected, ^{
 			
 			typeof(weakSelf) strongSelf = weakSelf;
             strongSelf.captureLongVideoBtn.selected = NO;
@@ -141,12 +156,12 @@
 
 - (void)captureStillImageDidTap:(UITapGestureRecognizer *)gestureRecognizer {
     
-    if (self.TapToCaptureImageHandler) {
+    if (self.TapToCaptureImageCallback) {
 		
         self.captureContainerView.userInteractionEnabled = NO;
         self.captureImgView.transform = CGAffineTransformMakeScale(0.8, 0.8);
 		__weak typeof(self) weakSelf = self;
-        self.TapToCaptureImageHandler(^{
+        self.TapToCaptureImageCallback(^{
 			
 			typeof(weakSelf) strongSelf = weakSelf;
             strongSelf.captureContainerView.userInteractionEnabled = YES;
@@ -167,6 +182,7 @@
 
 - (void)captureVideoDidSingleTap:(UITapGestureRecognizer *)gestureRecognizer {
 	
+	self.albumVideoBtn.hidden = YES;
 	if (NO == self.isRecording) {
 		
 		self.recording = YES;
@@ -175,6 +191,7 @@
 		
 		self.recording = NO;
 		[self captureVideo:NO stop:YES];
+		self.albumVideoBtn.hidden = NO;
 	}
 }
 
@@ -209,7 +226,7 @@
 	}
 	
 	__weak typeof(self) weakSelf = self;
-	self.TapToCaptureVideoHandler(start, stop, ^{
+	self.TapToCaptureVideoCallback(start, stop, ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		[strongSelf initializeCaptureState];
