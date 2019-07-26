@@ -159,7 +159,7 @@
 	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
 	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
 	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 	self.playerLayer.frame = self.view.layer.bounds;
 	[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
 	[self.playerLayer.player play];

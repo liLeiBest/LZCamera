@@ -169,11 +169,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	return image;
 }
 
-+ (AVAssetImageGenerator *)thumbnailBySecondForAsset:(AVAsset *)asset
-											interval:(CMTimeValue)interval
-											 maxSize:(CGSize)maxSize
-								   completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))handler {
++ (AVAssetImageGenerator *)thumbnailBySecondForVideoAsset:(NSURL *)assetURL
+												 interval:(CMTimeValue)interval
+												  maxSize:(CGSize)maxSize
+								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))handler {
 	
+	AVAsset *asset = asset = [AVAsset assetWithURL:assetURL];
 	AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
 	assetImageGenerator.maximumSize = maxSize;
 	assetImageGenerator.appliesPreferredTrackTransform = YES;
@@ -275,8 +276,18 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				   timeRange:timeRange
 				  presetName:presetName
 		   completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
-			   if (handler) {
-				   handler(success ? outputFileURL : assetURL, success);
+			   
+			   if (NO == success) {
+				   [self exportAsset:composition type:LZCameraAssetTypeMov videoComposition:nil audioMix:audioMix timeRange:timeRange presetName:presetName completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
+					   if (handler) {
+						   handler(outputFileURL, success);
+					   }
+				   }];
+			   } else {
+				   
+				   if (handler) {
+					   handler(outputFileURL, success);
+				   }
 			   }
 		   }];
 }

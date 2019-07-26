@@ -190,14 +190,16 @@
 - (void)fetchVideoThumbnails {
 	
 	CMTimeValue interval= 1.0f;
-	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
 	__weak typeof(self) weakSelf = self;
-	[LZCameraToolkit thumbnailBySecondForAsset:asset interval:interval maxSize:CGSizeMake(60, 0) completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
+	[LZCameraToolkit thumbnailBySecondForVideoAsset:self.editVideoURL
+										   interval:interval
+											maxSize:CGSizeMake(60, 0)
+								  completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
 		
-		typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf.videoClipView updateVideoThumbnails:thumbnails];
-		[strongSelf startTimer];
-	}];
+									  typeof(weakSelf) strongSelf = weakSelf;
+									  [strongSelf.videoClipView updateVideoThumbnails:thumbnails];
+									  [strongSelf startTimer];
+								  }];
 }
 
 // MARK: - Obasever
