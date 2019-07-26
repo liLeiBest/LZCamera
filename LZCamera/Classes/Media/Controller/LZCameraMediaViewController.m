@@ -83,16 +83,16 @@
         ctr.videoURL = self.videoURL;
 		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
         __weak typeof(self) weakSelf = self;
-        ctr.TapToSureHandler = ^{
-            
+		ctr.TapToSureHandler = ^(UIImage * _Nonnull thumbnailImage, NSURL * _Nonnull videoURL) {
+			
             typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf.videoURL) {
                 if (strongSelf.CameraVideoCompletionHandler) {
-                    strongSelf.CameraVideoCompletionHandler(strongSelf.previewImage, strongSelf.videoURL);
+                    strongSelf.CameraVideoCompletionHandler(thumbnailImage, videoURL);
                 }
             } else {
                 if (strongSelf.CameraImageCompletionHandler) {
-                    strongSelf.CameraImageCompletionHandler(strongSelf.previewImage);
+                    strongSelf.CameraImageCompletionHandler(thumbnailImage);
                 }
             }
         };
@@ -424,7 +424,7 @@
 	[picker dismissViewControllerAnimated:YES completion:nil];
 	NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
 	
-	NSURL *destURL = [LZCameraToolkit generateUniqueMovieFileURL:LZExportVideoTypeMov];
+	NSURL *destURL = [LZCameraToolkit generateUniqueAssetFileURL:LZCameraAssetTypeMov];
 	NSFileManager *fileM = [NSFileManager defaultManager];
 	NSError *error = nil;
 	[fileM moveItemAtURL:videoURL toURL:destURL error:&error];

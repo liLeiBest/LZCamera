@@ -86,7 +86,7 @@
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		strongSelf.previewURL = videoURL;
-		[strongSelf buildPlayer];
+		strongSelf.previewImage = previewImage;
 	};
 	
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
@@ -174,20 +174,12 @@
 
 - (void)sureHandlerOnMainThread {
 	
-	if (NO == [NSThread isMainThread]) {
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (self.TapToSureHandler) {
-				self.TapToSureHandler();
-			}
-			[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-		});
-	} else {
+	dispatch_async(dispatch_get_main_queue(), ^{
 		if (self.TapToSureHandler) {
-			self.TapToSureHandler();
+			self.TapToSureHandler(self.previewImage, self.previewURL);
 		}
 		[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-	}
+	});
 }
 
 @end

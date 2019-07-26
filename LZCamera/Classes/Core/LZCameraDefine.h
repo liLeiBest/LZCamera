@@ -27,16 +27,17 @@ typedef NS_ENUM(NSInteger, LZCameraErrorCode) {
 	LZCameraErrorAuthorization,
 };
 
-
 /**
- 导出视频格式
+ 资源类型
 
- - LZExportVideoTypeMov: MOV
- - LZExportVideoTypeMp4: MPEG4
+ - LZCameraAssetTypeMov: mov
+ - LZCameraAssetTypeMp4: mp4
+ - LZCameraAssetTypeM4A: m4a
  */
-typedef NS_ENUM(NSUInteger, LZExportVideoType) {
-	LZExportVideoTypeMov,
-	LZExportVideoTypeMp4,
+typedef NS_ENUM(NSUInteger, LZCameraAssetType) {
+	LZCameraAssetTypeMov,
+	LZCameraAssetTypeMp4,
+	LZCameraAssetTypeM4A,
 };
 
 /** 错误域标识 */

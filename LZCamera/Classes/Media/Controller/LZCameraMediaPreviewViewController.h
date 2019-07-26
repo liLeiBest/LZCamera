@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否自动保存到相册，默认：YES，自动存入相册 */
 @property (assign, nonatomic) BOOL autoSaveToAlbum;
 /** 确定选择回调 */
-@property (copy, nonatomic) void(^TapToSureHandler)(void);
+@property (copy, nonatomic) void(^TapToSureHandler)(UIImage *thumbnailImage, NSURL *videoURL);
 
 @end
 

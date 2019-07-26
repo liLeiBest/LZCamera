@@ -56,6 +56,20 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 								   completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))handler;
 
 /**
+ 裁剪资源
+
+ @param assetURL 资源地址
+ @param type 资源类型
+ @param timeRange 裁剪区间
+ @param handler 完成回调
+ @return AVAssetExportSession
+ */
++ (AVAssetExportSession *)cutAsset:(NSURL *)assetURL
+							  type:(LZCameraAssetType)type
+						  timeRane:(CMTimeRange)timeRange
+				 completionHandler:(void (^)(NSURL * _Nullable outputFileURL, BOOL success))handler;
+
+/**
  混合音频
 
  @param assetURL 视频原文件
@@ -66,36 +80,23 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
  @param audioVolume 设置混合音频音量
  @param presetName 预设名称
  @param handler 完成回调
- */
-+ (void)mixAudioForAsset:(NSURL *)assetURL
-			   timeRange:(CMTimeRange)timeRange
-			audioPathURL:(NSURL *)audioPathURL
-		   originalAudio:(BOOL)originalAudio
-		 originalVolume:(CGFloat)originalVolume
-			 audioVolume:(CGFloat)audioVolume
-			  presetName:(NSString *)presetName
-	  completionHandler:(void (^)(NSURL * _Nullable outputFileURL, BOOL success))handler;
-
-/**
- 导出视频
-
- @param asset 视频 AVAsset
- @param timeRange 时间范围
- @param presetName 预设名称
- @param handler 完成回调
  @return AVAssetExportSession
  */
-+ (AVAssetExportSession *)exportForAsset:(AVAsset *)asset
-							   timeRange:(CMTimeRange)timeRange
-							  presetName:(NSString *)presetName
-					   completionHandler:(void (^)(NSURL *outputFileURL, BOOL success, NSError * _Nullable error))handler;
++ (AVAssetExportSession *)mixAudioForAsset:(NSURL *)assetURL
+								 timeRange:(CMTimeRange)timeRange
+							  audioPathURL:(NSURL *)audioPathURL
+							 originalAudio:(BOOL)originalAudio
+							originalVolume:(CGFloat)originalVolume
+							   audioVolume:(CGFloat)audioVolume
+								presetName:(NSString *)presetName
+						 completionHandler:(void (^)(NSURL * _Nullable outputFileURL, BOOL success))handler;
 
 /**
  生成唯一的视频文件路径
  
  @return NSURL
  */
-+ (NSURL *)generateUniqueMovieFileURL:(LZExportVideoType)videoType;
++ (NSURL *)generateUniqueAssetFileURL:(LZCameraAssetType)assetType;
 
 @end
 
