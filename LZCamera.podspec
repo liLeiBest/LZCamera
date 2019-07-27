@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/liLeiBest/LZCamera.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
-  s.frameworks          = 'AVFoundation','Foundation','UIKit','Photos','CoreServices'
+  s.frameworks          = 'AVFoundation','Foundation','UIKit','Photos','CoreServices','CoreMedia'
   s.source_files        = 'LZCamera/Classes/LZCamera.h'
   s.public_header_files = 'LZCamera/Classes/LZCamera.h'
 

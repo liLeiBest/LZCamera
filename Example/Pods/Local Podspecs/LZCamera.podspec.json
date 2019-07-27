@@ -23,7 +23,8 @@
     "Foundation",
     "UIKit",
     "Photos",
-    "CoreServices"
+    "CoreServices",
+    "CoreMedia"
   ],
   "source_files": "LZCamera/Classes/LZCamera.h",
   "public_header_files": "LZCamera/Classes/LZCamera.h",
