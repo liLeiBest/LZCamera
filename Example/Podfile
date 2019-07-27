@@ -3,7 +3,6 @@ use_frameworks!
 
 target 'LZCamera_Example' do
   pod 'LZCamera', :path => '../'
-	pod 'ZLPhotoBrowser'
   target 'LZCamera_Tests' do
     inherit! :search_paths
 
