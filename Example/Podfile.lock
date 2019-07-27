@@ -7,7 +7,8 @@ PODS:
   - LZCamera/CodeCapture (0.4.0):
     - LZCamera/Core
   - LZCamera/Core (0.4.0)
-  - LZCamera/Editor (0.4.0)
+  - LZCamera/Editor (0.4.0):
+    - LZCamera/Core
   - LZCamera/MediaCapture (0.4.0):
     - LZCamera/Core
     - LZCamera/Editor
@@ -20,7 +21,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: 67cfce0922709836452f2236bd1a929d61ceb76b
+  LZCamera: 7322ab1c7d74d30c2cf204dfdc620917b8412c23
 
 PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
 
