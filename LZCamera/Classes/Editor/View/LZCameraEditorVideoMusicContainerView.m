@@ -117,9 +117,6 @@
 		}
 	}
 	[collectionView reloadData];
-	if (self.TapMusicCallback) {
-		self.TapMusicCallback(musicModel);
-	}
 }
 
 // MARK: - Delegate
@@ -145,7 +142,12 @@
 // MARK: <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	[self handleSelectedMusic:[self.datasource objectAtIndex:indexPath.row]];
+	
+	LZCameraEditorMusicModel *musicModel = [self.datasource objectAtIndex:indexPath.row];
+	[self handleSelectedMusic:musicModel];
+	if (self.TapMusicCallback) {
+		self.TapMusicCallback(musicModel);
+	}
 }
 
 // MARK: <UICollectionViewDelegateFlowLayout>

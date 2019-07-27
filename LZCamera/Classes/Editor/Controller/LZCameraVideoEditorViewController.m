@@ -8,6 +8,7 @@
 #import "LZCameraVideoEditorViewController.h"
 #import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraVideoEditMusicViewController.h"
+#import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 
 @interface LZCameraVideoEditorViewController ()
@@ -15,10 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @property (weak, nonatomic) IBOutlet LZCameraEditorVideoContainerView *videoClipView;;
 
-/** 预览层 */
-@property (strong, nonatomic) AVPlayerLayer *playerLayer;
-/** 计时器 */
-@property (strong, nonatomic) NSTimer *timer;
+/** 视频播放器 */
+@property (strong, nonatomic) LZCameraPlayer *videoPlayer;
 /** 循环播放的区间 */
 @property (assign, nonatomic) CMTimeRange timeRange;
 /** 已编辑的视频地址 */
@@ -42,27 +41,22 @@
 	[self setupUI];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	
-	[self fetchVideoThumbnails];
-}
-
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	
-	[self stopTimer];
+	[self stopPlay];
+	[self.videoPlayer.playerLayer removeFromSuperlayer];
+	self.videoPlayer = nil;
 }
 
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	
-	self.playerLayer.frame = self.previewImgView.layer.frame;
+	self.videoPlayer.playerLayer.frame = self.previewImgView.layer.frame;
 }
 
 - (void)dealloc {
 	LZCameraLog();
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 // MARK: - Public
@@ -96,19 +90,9 @@
 	self.editVideoURL = self.videoURL;
 	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
 	self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-	self.previewImgView.image = self.previewImage;
+	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.editVideoURL];
 	[self buildPlayer];
-	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self
-	 selector:@selector(appResignActive)
-	 name:UIApplicationWillResignActiveNotification
-	 object:nil];
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self
-	 selector:@selector(appBecomeActive)
-	 name:UIApplicationDidBecomeActiveNotification
-	 object:nil];
+	[self fetchVideoThumbnails];
 	
 	self.videoClipView.duration = asset.duration;
 	self.videoClipView.videoMaximumDuration = self.videoMaximumDuration;
@@ -117,7 +101,7 @@
 		
 		typeof(weakSelf) strongSelf = weakSelf;
 		strongSelf.timeRange = timeRange;
-		[strongSelf startTimer];
+		[strongSelf startPlay];
 	};
 	
 	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
@@ -138,57 +122,33 @@
 
 - (void)buildPlayer {
 	
-	if (self.playerLayer) {
+	if (self.videoPlayer) {
 		
-		[self.playerLayer.player pause];
-		[self.playerLayer removeFromSuperlayer];
+		[self.videoPlayer pause];
+		[self.videoPlayer.playerLayer removeFromSuperlayer];
 	}
-	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
-	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-	self.playerLayer.frame = self.previewImgView.layer.frame;
-	[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
+	self.videoPlayer = [LZCameraPlayer playerWithURL:self.editVideoURL];
+	self.videoPlayer.timeRange = self.timeRange;
+	__weak typeof(self) weakSelf = self;
+	self.videoPlayer.playToEndCallback = ^{
+		
+		typeof(weakSelf) strongSelf = weakSelf;
+		[strongSelf.videoClipView updateProgressLine];
+	};
+	self.videoPlayer.playerLayer.frame = self.previewImgView.frame;
+	[self.view.layer insertSublayer:self.videoPlayer.playerLayer above:self.previewImgView.layer];
 }
 
-- (void)startTimer {
+- (void)startPlay {
 	
-	[self stopTimer];
-	CGFloat duration = self.timeRange.duration.value / self.timeRange.duration.timescale;
-	self.timer =
-	[NSTimer scheduledTimerWithTimeInterval:duration
-									 target:self
-								   selector:@selector(playPartVideo:)
-								   userInfo:nil
-									repeats:YES];
-	[self.timer fire];
+	self.videoPlayer.timeRange = self.timeRange;
+	[self.videoPlayer play];
 }
 
-- (void)stopTimer {
+- (void)stopPlay {
 	
-	[self.timer invalidate];
-	self.timer = nil;
-	[self.playerLayer.player pause];
+	[self.videoPlayer pause];
 	[self.videoClipView removeProgressLine];
-}
-
-- (void)playPartVideo:(NSTimer *)timer {
-	
-	[self.playerLayer.player play];
-	[self.playerLayer.player seekToTime:[self getStartTime]
-						toleranceBefore:kCMTimeZero
-						 toleranceAfter:kCMTimeZero];
-	[self.videoClipView updateProgressLine];
-}
-
-- (CMTime)getStartTime {
-	
-	CMTime time = self.timeRange.start;
-	if (NO == CMTIME_IS_VALID(time)) {
-		time = kCMTimeZero;
-	}
-	return time;
 }
 
 - (void)fetchVideoThumbnails {
@@ -202,17 +162,8 @@
 		
 									  typeof(weakSelf) strongSelf = weakSelf;
 									  [strongSelf.videoClipView updateVideoThumbnails:thumbnails];
-									  [strongSelf startTimer];
+									  [strongSelf.videoPlayer play];
 								  }];
-}
-
-// MARK: - Obasever
-- (void)appResignActive {
-	[self stopTimer];
-}
-
-- (void)appBecomeActive {
-	[self startTimer];
 }
 
 @end

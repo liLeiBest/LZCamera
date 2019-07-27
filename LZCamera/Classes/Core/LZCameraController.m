@@ -1037,19 +1037,13 @@ didFinishSavingWithError:(NSError *)error
  */
 - (void)callBackVideoOnMainQueue:(NSURL *)videoURL error:(NSError *)error {
 	
-	LZCameraQueueBlock(^{
-		UIImage *thumbnail = nil;
-		if (!error) {
-			thumbnail = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:videoURL];
-		}
-		LZMainQueueBlock(^{
-			if (self.captureVideoCompletionHandler) {
-                if (error) {
-                    LZCameraLog(@"%@", error);
-                }
-                self.captureVideoCompletionHandler(videoURL, thumbnail, error);
+	LZMainQueueBlock(^{
+		if (self.captureVideoCompletionHandler) {
+			if (error) {
+				LZCameraLog(@"%@", error);
 			}
-		})
+			self.captureVideoCompletionHandler(videoURL, error);
+		}
 	})
 }
 

@@ -46,7 +46,7 @@ FOUNDATION_EXPORT NSString * _Nullable const LZCameraErrorDomain;
 /** 捕捉静态图片完成回调 */
 typedef void(^LZCameraCaptureStillImageCompletionHandler)(UIImage * _Nonnull stillImage, NSError * _Nullable error);
 /** 捕捉视频完成回调 */
-typedef void(^LZCameraCaptureVideoCompletionHandler)(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error);
+typedef void(^LZCameraCaptureVideoCompletionHandler)(NSURL * _Nonnull videoURL, NSError * _Nullable error);
 /** 摄像缩放完成回调 */
 typedef void(^ _Nullable LZCameraZoomCompletionHandler)(CGFloat zoomValue);
 /** 摄像记录时间进度回调 */

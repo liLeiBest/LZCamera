@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 循环播放的区间 */
 @property (assign, nonatomic) CMTimeRange timeRange;
 /** 视频编辑回调 */
-@property (copy, nonatomic) void (^VideoEditCallback)(NSURL *videoURL, UIImage *previewImage);
+@property (copy, nonatomic) void (^VideoEditCallback)(NSURL *editedVideoURL);
 
 
 /**

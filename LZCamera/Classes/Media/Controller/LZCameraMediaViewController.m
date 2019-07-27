@@ -22,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *captureTipLabel;
 
 @property (strong, nonatomic) LZCameraController *cameraController;
-@property (strong, nonatomic) UIImage *previewImage;
+@property (strong, nonatomic) UIImage *stillImage;
 @property (strong, nonatomic) NSURL *videoURL;
 @property (assign, nonatomic) CMTime videoDuration;
 
@@ -79,20 +79,22 @@
     if ([segue.identifier isEqualToString:@"LZCameraPreviewIdentifier"]) {
         
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
-        ctr.previewImage = self.previewImage;
-        ctr.videoURL = self.videoURL;
+        ctr.previewImage = self.stillImage;
+        ctr.previewVideoURL = self.videoURL;
 		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
         __weak typeof(self) weakSelf = self;
-		ctr.TapToSureHandler = ^(UIImage * _Nonnull thumbnailImage, NSURL * _Nonnull videoURL) {
+		ctr.TapToSureHandler = ^(UIImage * _Nonnull editedImage, NSURL * _Nonnull editedVideoURL) {
 			
             typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf.videoURL) {
                 if (strongSelf.CameraVideoCompletionHandler) {
-                    strongSelf.CameraVideoCompletionHandler(thumbnailImage, videoURL);
+					
+					UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
+                    strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
                 }
-            } else {
+            } else if (strongSelf.stillImage) {
                 if (strongSelf.CameraImageCompletionHandler) {
-                    strongSelf.CameraImageCompletionHandler(thumbnailImage);
+                    strongSelf.CameraImageCompletionHandler(editedImage);
                 }
             }
         };
@@ -230,7 +232,7 @@
             
             if (stillImage) {
                 
-                strongSelf.previewImage = stillImage;
+                strongSelf.stillImage = stillImage;
                 strongSelf.videoURL = nil;
                 [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
             }
@@ -247,7 +249,7 @@
 			}
             [strongSelf.mediaStatusView updateFlashVisualState:LZControlVisualStateOff];
             [strongSelf.mediaStatusView updateSwitchCameraVisualState:LZControlVisualStateOff];
-            [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, UIImage * _Nullable thumbnail, NSError * _Nullable error) {
+            [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, NSError * _Nullable error) {
 				
 				LZCameraLog(@"录制视频完成:%@", error);
                 [strongSelf controlFlashModelVisulState];
@@ -261,8 +263,8 @@
                     CMTime minTime = CMTimeMake(strongSelf.minVideoDuration, 1);
                     int32_t compareResult = CMTimeCompare(strongSelf.videoDuration, minTime);
                     if (compareResult >= 0) {
-                        
-                        strongSelf.previewImage = thumbnail;
+						
+						strongSelf.stillImage = nil;
                         strongSelf.videoURL = videoURL;
 						[strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
                     } else {
@@ -430,27 +432,11 @@
 	[fileM moveItemAtURL:videoURL toURL:destURL error:&error];
 	if (nil == error) {
 		
-		self.previewImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:destURL];;
 		self.videoURL = destURL;
 		[self performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
 	}
 	
 	return;
-//	LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
-//	ctr.previewImage = self.previewImage;
-//	ctr.videoURL = self.videoURL;
-//	ctr.videoMaximumDuration = 60.0f;
-//	__weak typeof(self) weakSelf = self;
-//	ctr.VideoEditCallback = ^(NSURL * _Nonnull videoURL, UIImage * _Nonnull previewImage) {
-//
-//		typeof(weakSelf) strongSelf = weakSelf;
-//		if (strongSelf.CameraVideoCompletionHandler) {
-//			strongSelf.CameraVideoCompletionHandler(previewImage, strongSelf.videoURL);
-//		}
-//	};
-//
-//	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-//	[self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

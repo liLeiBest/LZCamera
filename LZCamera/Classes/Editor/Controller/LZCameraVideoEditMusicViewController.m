@@ -7,19 +7,18 @@
 
 #import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
+#import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 
 /** 背景音音量 */
-static CGFloat BGMVolume = 0.5;
+static CGFloat BGMVolume = 0.5f;
 @interface LZCameraVideoEditMusicViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @property (weak, nonatomic) IBOutlet LZCameraEditorVideoMusicContainerView *musicView;
 
-/** 预览层 */
-@property (strong, nonatomic) AVPlayerLayer *playerLayer;
-/** 计时器 */
-@property (strong, nonatomic) NSTimer *timer;
+/** 视频播放器 */
+@property (strong, nonatomic) LZCameraPlayer *videoPlayer;
 /** 背景音乐播放器 */
 @property (strong, nonatomic) AVAudioPlayer *BGMPlayer;
 /** 背景音乐 */
@@ -39,18 +38,17 @@ static CGFloat BGMVolume = 0.5;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	
-	[self stopTimer];
+	[self stopPlay];
 }
 
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 	
-	self.playerLayer.frame = self.previewImgView.layer.frame;
+	self.videoPlayer.playerLayer.frame = self.previewImgView.layer.frame;
 }
 
 - (void)dealloc {
 	LZCameraLog();
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 // MARK: - Public
@@ -69,7 +67,7 @@ static CGFloat BGMVolume = 0.5;
 
 - (void)doneDidClick {
 	
-	[self stopTimer];
+	[self stopPlay];
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
 						 audioPathURL:[self fetchBGMURL]
@@ -80,9 +78,7 @@ static CGFloat BGMVolume = 0.5;
 					completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
 						if (success) {
 							if (self.VideoEditCallback) {
-								
-								UIImage *previewImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:outputFileURL];
-								self.VideoEditCallback(outputFileURL, previewImage);
+								self.VideoEditCallback(outputFileURL);
 							}
 							[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 						}
@@ -94,27 +90,20 @@ static CGFloat BGMVolume = 0.5;
 	
 	self.title = @"加音乐";
 	
+	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.videoURL];
 	[self buildPlayer];
-	[self startTimer];
-	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self
-	 selector:@selector(appResignActive)
-	 name:UIApplicationWillResignActiveNotification
-	 object:nil];
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self
-	 selector:@selector(appBecomeActive)
-	 name:UIApplicationDidBecomeActiveNotification
-	 object:nil];
 	
 	__weak typeof(self) weakSelf = self;
 	self.musicView.TapOriginalMusicCallback = ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf.BGMPlayer pause];
-		strongSelf.BGMPlayer = nil;
-		[strongSelf startTimer];
+		if (strongSelf.musicModel) {
+			
+			[strongSelf.BGMPlayer pause];
+			strongSelf.BGMPlayer = nil;
+			strongSelf.musicModel = nil;
+			[strongSelf startPlay];
+		}
 	};
 	self.musicView.TapMusicCallback = ^(LZCameraEditorMusicModel * _Nonnull musicModel) {
 		
@@ -123,7 +112,7 @@ static CGFloat BGMVolume = 0.5;
 			return ;
 		}
 		strongSelf.musicModel = musicModel;
-		[strongSelf stopTimer];
+		[strongSelf stopPlay];
 		[strongSelf cutBGMusic];
 	};
 	
@@ -160,7 +149,7 @@ static CGFloat BGMVolume = 0.5;
 						self.BGMPlayer.numberOfLoops = -1;
 						self.BGMPlayer.volume = BGMVolume;
 						[self.BGMPlayer prepareToPlay];
-						[self startTimer];
+						[self startPlay];
 					}
 				}
 	}];
@@ -180,66 +169,28 @@ static CGFloat BGMVolume = 0.5;
 
 - (void)buildPlayer {
 	
-	if (self.playerLayer) {
+	if (self.videoPlayer) {
 		
-		[self.playerLayer.player pause];
-		[self.playerLayer removeFromSuperlayer];
+		[self.videoPlayer pause];
+		[self.videoPlayer.playerLayer removeFromSuperlayer];
 	}
-	AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
-	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-	self.playerLayer.frame = self.previewImgView.layer.frame;
-	[self.view.layer insertSublayer:self.playerLayer above:self.previewImgView.layer];
+	self.videoPlayer = [LZCameraPlayer playerWithURL:self.videoURL];
+	self.videoPlayer.timeRange = self.timeRange;
+	self.videoPlayer.playerLayer.frame = self.previewImgView.frame;
+	[self.view.layer insertSublayer:self.videoPlayer.playerLayer above:self.previewImgView.layer];
+	[self startPlay];
 }
 
-- (void)startTimer {
+- (void)startPlay{
 	
-	[self stopTimer];
-	CGFloat duration = CMTimeGetSeconds(self.timeRange.duration);
-	self.timer =
-	[NSTimer scheduledTimerWithTimeInterval:duration
-									 target:self
-								   selector:@selector(playPartVideo:)
-								   userInfo:nil
-									repeats:YES];
-	[self.timer fire];
+	[self.videoPlayer play];
 	[self.BGMPlayer play];
 }
 
-- (void)stopTimer {
+- (void)stopPlay {
 	
-	[self.timer invalidate];
-	self.timer = nil;
-	[self.playerLayer.player pause];
+	[self.videoPlayer pause];
 	[self.BGMPlayer pause];
-}
-
-- (void)playPartVideo:(NSTimer *)timer {
-	
-	[self.playerLayer.player play];
-	[self.playerLayer.player seekToTime:[self getStartTime]
-						toleranceBefore:kCMTimeZero
-						 toleranceAfter:kCMTimeZero];
-}
-
-- (CMTime)getStartTime {
-	
-	CMTime time = self.timeRange.start;
-	if (NO == CMTIME_IS_VALID(time)) {
-		time = kCMTimeZero;
-	}
-	return time;
-}
-
-// MARK: - Obasever
-- (void)appResignActive {
-	[self stopTimer];
-}
-
-- (void)appBecomeActive {
-	[self startTimer];
 }
 
 @end
