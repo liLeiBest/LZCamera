@@ -117,7 +117,7 @@
 		self.editImage = self.previewImage;
 		self.previewImgView.image = self.editImage;
 	}
-	self.editBtn.hidden = self.editImage;
+	self.editBtn.hidden = nil != self.editImage;
 	
 	UIImage *cancelImg = [self imageInBundle:@"media_preview_cancel"];
 	[self.cancelBtn setImage:cancelImg forState:UIControlStateNormal];
