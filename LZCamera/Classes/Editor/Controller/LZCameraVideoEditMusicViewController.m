@@ -7,6 +7,7 @@
 
 #import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
+#import "LZCameraToastViewController.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 
@@ -67,6 +68,9 @@ static CGFloat BGMVolume = 0.5f;
 
 - (void)doneDidClick {
 	
+	LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
+	[ctr showMessage:@"处理中……"];
+	[self presentViewController:ctr animated:YES completion:nil];
 	[self stopPlay];
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
@@ -80,7 +84,9 @@ static CGFloat BGMVolume = 0.5f;
 							if (self.VideoEditCallback) {
 								self.VideoEditCallback(outputFileURL);
 							}
-							[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+							[ctr hideAfterDelay:0 completionHandler:^{
+								[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+							}];
 						}
 					}];
 }

@@ -8,6 +8,7 @@
 #import "LZCameraVideoEditorViewController.h"
 #import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraVideoEditMusicViewController.h"
+#import "LZCameraToastViewController.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 
@@ -153,6 +154,9 @@
 
 - (void)fetchVideoThumbnails {
 	
+	LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
+	[ctr showMessage:@"加载中……"];
+	[self presentViewController:ctr animated:YES completion:nil];
 	CMTimeValue interval= 1.0f;
 	__weak typeof(self) weakSelf = self;
 	[LZCameraToolkit thumbnailBySecondForVideoAsset:self.editVideoURL
@@ -162,7 +166,9 @@
 		
 									  typeof(weakSelf) strongSelf = weakSelf;
 									  [strongSelf.videoClipView updateVideoThumbnails:thumbnails];
-									  [strongSelf.videoPlayer play];
+									  [ctr hideAfterDelay:0 completionHandler:^{
+										  [strongSelf.videoPlayer play];
+									  }];
 								  }];
 }
 

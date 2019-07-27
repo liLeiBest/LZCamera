@@ -9,6 +9,7 @@
 #import "LZViewController.h"
 #import "LZTestViewController.h"
 #import <LZCamera/LZCamera.h>
+#import <LZCamera/LZCameraToastViewController.h>
 
 @interface LZViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
@@ -26,6 +27,10 @@
 // MARK: - UI Action
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
 	
+	[LZCameraToast showMessage:@"处理中……"];
+	[LZCameraToast hideAfterDelay:2 completionHandler:^{
+		NSLog(@"提示关闭了");
+	}];
 }
 
 - (IBAction)scanCodeDidClick:(id)sender {
