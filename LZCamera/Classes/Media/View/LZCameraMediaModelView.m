@@ -108,7 +108,7 @@
             break;
         case LZCameraCaptureModelLongVideo: {
 			
-			self.albumVideoBtn.hidden = YES;
+			self.albumVideoBtn.hidden = NO;
             self.stillImageSingleTap.enabled = NO;
             self.longTap.enabled = NO;
 			self.videoSingleTap.enabled = NO;
@@ -151,6 +151,7 @@
         });
     }
     self.captureLongVideoBtn.selected = !self.captureLongVideoBtn.selected;
+	self.albumVideoBtn.hidden = self.captureLongVideoBtn.selected;
 	self.captureLongVideoBtn.userInteractionEnabled = !self.captureLongVideoBtn.selected ? NO : YES;
 }
 
@@ -182,7 +183,6 @@
 
 - (void)captureVideoDidSingleTap:(UITapGestureRecognizer *)gestureRecognizer {
 	
-	self.albumVideoBtn.hidden = YES;
 	if (NO == self.isRecording) {
 		
 		self.recording = YES;
@@ -191,7 +191,6 @@
 		
 		self.recording = NO;
 		[self captureVideo:NO stop:YES];
-		self.albumVideoBtn.hidden = NO;
 	}
 }
 
@@ -219,6 +218,7 @@
 	
 	if (start) {
 		
+		self.albumVideoBtn.hidden = YES;
 		self.durationContainerView.hidden = NO;
 		self.captureImgView.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
 	} else {
@@ -229,7 +229,13 @@
 	self.TapToCaptureVideoCallback(start, stop, ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
-		[strongSelf initializeCaptureState];
+		[UIView animateWithDuration:0.25 animations:^{
+			
+			[strongSelf initializeCaptureState];
+			if (strongSelf.captureModel == LZCameraCaptureModelLongVideo || strongSelf.captureModel == LZCameraCaptureModelShortVideo) {
+				strongSelf.albumVideoBtn.hidden = NO;
+			}
+		}];
 	});
 }
 

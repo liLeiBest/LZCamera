@@ -120,8 +120,12 @@
 		[strongSelf startTimer];
 	};
 	
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
+	UIImage *navBackImage = [UIImage imageNamed:@"nav_back_default"
+									   inBundle:bundle
+				  compatibleWithTraitCollection:nil];
 	self.navigationItem.leftBarButtonItem =
-	[[UIBarButtonItem alloc] initWithTitle:@"返回"
+	[[UIBarButtonItem alloc] initWithImage:navBackImage
 									 style:UIBarButtonItemStylePlain
 									target:self
 									action:@selector(popDidClick)];

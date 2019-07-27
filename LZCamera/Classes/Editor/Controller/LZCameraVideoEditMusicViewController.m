@@ -119,13 +119,20 @@ static CGFloat BGMVolume = 0.5;
 	self.musicView.TapMusicCallback = ^(LZCameraEditorMusicModel * _Nonnull musicModel) {
 		
 		typeof(weakSelf) strongSelf = weakSelf;
+		if ([strongSelf.musicModel isEqual:musicModel]) {
+			return ;
+		}
 		strongSelf.musicModel = musicModel;
 		[strongSelf stopTimer];
 		[strongSelf cutBGMusic];
 	};
 	
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
+	UIImage *navBackImage = [UIImage imageNamed:@"nav_back_default"
+									   inBundle:bundle
+				  compatibleWithTraitCollection:nil];
 	self.navigationItem.leftBarButtonItem =
-	[[UIBarButtonItem alloc] initWithTitle:@"返回"
+	[[UIBarButtonItem alloc] initWithImage:navBackImage
 									 style:UIBarButtonItemStylePlain
 									target:self
 									action:@selector(popDidClick)];
@@ -161,9 +168,13 @@ static CGFloat BGMVolume = 0.5;
 
 - (NSURL *)fetchBGMURL {
 	
-	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
-	NSString *musicPath = [bundle pathForResource:self.musicModel.thumbnail ofType:@"mp3"];
-	NSURL *musicURL = [NSURL fileURLWithPath:musicPath];
+	NSURL *musicURL = nil;
+	if (self.musicModel) {
+		
+		NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
+		NSString *musicPath = [bundle pathForResource:self.musicModel.thumbnail ofType:@"mp3"];
+		musicURL = [NSURL fileURLWithPath:musicPath];
+	}
 	return musicURL;
 }
 

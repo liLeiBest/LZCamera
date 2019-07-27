@@ -39,6 +39,8 @@
 
 // MARK: - UI Action
 - (IBAction)originalAudioDidClick:(id)sender {
+	
+	[self handleSelectedMusic:nil];
 	if (self.TapOriginalMusicCallback) {
 		self.TapOriginalMusicCallback();
 	}

@@ -150,11 +150,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	}
 }
 
-/**
- 生成视频缩略图
- 
- @param videoURL NSURL
- */
 + (UIImage *)thumbnailAtFirstFrameForVideoAtURL:(NSURL *)videoURL {
 	
 	AVAsset *asset = [AVAsset assetWithURL:videoURL];
@@ -221,7 +216,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		}
 	};
 	[assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:completionHandler];
-	
 	return assetImageGenerator;
 }
 
@@ -261,7 +255,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 													 originalVolume:originalVolume
 														audioVolume:audioVolume];
 	
-	AVMutableVideoComposition *videoComposition = [self videoCompositionWithAsset:asset timeRange:timeRange];
+	AVMutableVideoComposition *videoComposition = [self videoCompositionWithAsset:asset];
 	
 	AVAudioMix *audioMix = nil;
 	NSArray *audioCompositionTracks = [composition tracksWithMediaType:AVMediaTypeAudio];
@@ -521,20 +515,15 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		videoAssetTrack = [videoAssetTracks firstObject];
 	}
 	
-	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
-		
-		CMTime duration = asset.duration;
-		timeRange = CMTimeRangeMake(kCMTimeZero, duration);
-	}
-	
 	AVMutableComposition *assetComposition = [AVMutableComposition composition];
 	NSError *error = nil;
 	
+	CMTimeRange assetTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
 	if (videoAssetTrack) {
 		
 		AVMutableCompositionTrack *videoCompositionTrack =
 		[assetComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-		[videoCompositionTrack insertTimeRange:timeRange ofTrack:videoAssetTrack atTime:timeRange.start error:&error];
+		[videoCompositionTrack insertTimeRange:assetTimeRange ofTrack:videoAssetTrack atTime:kCMTimeZero error:&error];
 		if (error) {
 			LZCameraLog(@"资源合成-添加原视频轨道失败:%@", error);
 		}
@@ -546,28 +535,54 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	if (0 < audioAssetTracks.count) {
 		audioAssetTrack = [audioAssetTracks firstObject];
 	}
-	AVMutableCompositionTrack *audioCompositionTrack = nil;
 	if (audioAssetTrack) {
 		
-		audioCompositionTrack =
+		CMTime assetTime = timeRange.duration;
+		CMTime audioTime = audioAsset.duration;
+#if DEBUG
+		CMTimeShow(assetTime);
+		CMTimeShow(audioTime);
+#endif
+		
+		// 特殊处理视频比音频长的情况
+		CMTime tmpTime = kCMTimeZero;
+		static int32_t multi = 0;
+		do {
+			multi++;
+			tmpTime = CMTimeMultiply(audioTime, multi);
+			LZCameraLog(@"放大%d倍", (int)multi);
+#if DEBUG
+			CMTimeShow(tmpTime);
+#endif
+		} while (0 < CMTimeCompare(assetTime, tmpTime));
+		AVMutableCompositionTrack *audioCompositionTrack =
 		[assetComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-		[audioCompositionTrack insertTimeRange:timeRange ofTrack:audioAssetTrack atTime:timeRange.start error:&error];
 		//	audioCompositionTrack.preferredVolume = audioVolume;
-		if (error) {
-			LZCameraLog(@"资源合成-添加背景音音轨失败:%@", error);
+		for (int i = 0; i < multi; i++) {
+			
+			CMTime start = 0 == i ? timeRange.start : kCMTimeInvalid;
+			CMTimeRange audioTimeRange = CMTimeRangeMake(kCMTimeZero, audioTime);
+#if DEBUG
+			CMTimeShow(start);
+			CMTimeRangeShow(audioTimeRange);
+#endif
+			[audioCompositionTrack insertTimeRange:audioTimeRange ofTrack:audioAssetTrack atTime:start error:&error];
+			if (error) {
+				LZCameraLog(@"资源合成-添加背景音音轨失败:%@", error);
+			}
 		}
+		multi = 0;
 	}
 	
-	AVMutableCompositionTrack *originalAudioCompositionTrack = nil;
 	if (mixAudio) {
 		
 		NSArray *audioAssetTracks = [asset tracksWithMediaType:AVMediaTypeAudio];
 		if (0 < audioAssetTracks.count) {
 			
 			AVAssetTrack *originalAudioAssetTrack = [audioAssetTracks firstObject];
-			originalAudioCompositionTrack =
+			AVMutableCompositionTrack *originalAudioCompositionTrack =
 			[assetComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-			[originalAudioCompositionTrack insertTimeRange:timeRange ofTrack:originalAudioAssetTrack atTime:timeRange.start error:&error];
+			[originalAudioCompositionTrack insertTimeRange:assetTimeRange ofTrack:originalAudioAssetTrack atTime:kCMTimeZero error:&error];
 			//	originalAudioCompositionTrack.preferredVolume = originalVolume;
 			if (error) {
 				LZCameraLog(@"资源合成-添加原音音轨失败:%@", error);
@@ -577,8 +592,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	return assetComposition;
 }
 
-+ (AVMutableVideoComposition *)videoCompositionWithAsset:(AVAsset *)asset
-											   timeRange:(CMTimeRange)timeRange {
++ (AVMutableVideoComposition *)videoCompositionWithAsset:(AVAsset *)asset {
 	
 	NSArray *videoAssetTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
 	AVAssetTrack *videoAssetTrack = nil;
@@ -598,12 +612,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		
 		AVMutableVideoCompositionLayerInstruction *layerInstruction =
 		[AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoAssetTrack];
-		[layerInstruction setOpacity:0.0 atTime:timeRange.duration];
-		[layerInstruction setTransform:mixedTransform atTime:timeRange.start];
+		[layerInstruction setOpacity:0.0 atTime:asset.duration];
+		[layerInstruction setTransform:mixedTransform atTime:kCMTimeZero];
 		
 		AVMutableVideoCompositionInstruction *instruction =
 		[AVMutableVideoCompositionInstruction videoCompositionInstruction];
-		instruction.timeRange = timeRange;
+		instruction.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
 		instruction.layerInstructions = @[layerInstruction];
 		
 		videoComposition = [AVMutableVideoComposition videoComposition];

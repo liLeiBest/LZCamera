@@ -185,14 +185,16 @@
 
 - (CMTimeRange)playTimeRange {
 	
-	CMTimeShow(self.startTime);
-	CMTimeShow(self.offsetTime);
 	CMTime startTime = CMTimeAdd(self.startTime, self.offsetTime);
-	CMTimeShow(startTime);
-	CMTimeShow(self.endTime);
 	CMTime duration = CMTimeSubtract(CMTimeSubtract(self.duration , startTime), self.endTime);
 	CMTimeRange timeRange = CMTimeRangeMake(startTime, duration);
+#if DEBUG
+	CMTimeShow(self.startTime);
+	CMTimeShow(self.offsetTime);
+	CMTimeShow(startTime);
+	CMTimeShow(self.endTime);
 	CMTimeRangeShow(timeRange);
+#endif
 	return timeRange;
 }
 
