@@ -167,7 +167,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 + (AVAssetImageGenerator *)thumbnailBySecondForVideoAsset:(NSURL *)assetURL
 												 interval:(CMTimeValue)interval
 												  maxSize:(CGSize)maxSize
-								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))handler {
+										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))progressHandler
+								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))completionHandler {
 	
 	AVAsset *asset = asset = [AVAsset assetWithURL:assetURL];
 	AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
@@ -190,7 +191,8 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	NSMutableArray *thumbnails = [NSMutableArray array];
 	
 	__block NSUInteger thumbnailCount = 0;
-	AVAssetImageGeneratorCompletionHandler completionHandler = ^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
+	__block NSUInteger failCount = 0;
+	AVAssetImageGeneratorCompletionHandler generatorHandler = ^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
 		
 		switch (result) {
 			case AVAssetImageGeneratorSucceeded: {
@@ -199,23 +201,35 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				[thumbnails addObject:thumbnail];
 			}
 				break;
-			case AVAssetImageGeneratorFailed:
+			case AVAssetImageGeneratorFailed: {
+				
+				LZCameraLog(@"第 %lu 张缩略图获取失败:%@", (unsigned long)thumbnailCount, error.localizedDescription);
+				failCount++;
+			}
+				break;
 			case AVAssetImageGeneratorCancelled: {
-				LZCameraLog(@"%lu 张缩略图获取失败:%@", (unsigned long)thumbnailCount, error.localizedDescription);
+				LZCameraLog(@"取消缩略图生成");
 			}
 				break;
 			default:
 				break;
 		}
 		
-		thumbnailCount ++;
-		if (thumbnailCount == times.count && handler) {
+		if (progressHandler) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				handler(thumbnails);
+				progressHandler(thumbnails);
 			});
 		}
+		thumbnailCount ++;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (thumbnailCount + failCount == times.count) {
+				if (completionHandler) {
+					completionHandler(thumbnails);
+				}
+			}
+		});
 	};
-	[assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:completionHandler];
+	[assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:generatorHandler];
 	return assetImageGenerator;
 }
 

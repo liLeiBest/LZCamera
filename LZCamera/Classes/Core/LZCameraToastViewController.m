@@ -48,26 +48,21 @@
 }
 
 - (void)showMessage:(NSString *)message {
-	
-	@synchronized (self) {
-		self.message = message;
-	}
+	self.message = message;
 }
 
 - (void)hideAfterDelay:(CGFloat)delay
 	 completionHandler:(void (^)(void))handler {
 	
-	@synchronized (self) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			
-			[self->indicatorView stopAnimating];
-			[self dismissViewControllerAnimated:YES completion:^{
-				if (handler) {
-					handler();
-				}
-			}];
-		});
-	}
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		
+		[self->indicatorView stopAnimating];
+		[self dismissViewControllerAnimated:YES completion:^{
+			if (handler) {
+				handler();
+			}
+		}];
+	});
 }
 
 @end

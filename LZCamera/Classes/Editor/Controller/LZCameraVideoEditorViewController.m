@@ -154,21 +154,21 @@
 
 - (void)fetchVideoThumbnails {
 	
-	LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
-	[ctr showMessage:@"加载中……"];
-	[self presentViewController:ctr animated:YES completion:nil];
 	CMTimeValue interval= 1.0f;
 	__weak typeof(self) weakSelf = self;
 	[LZCameraToolkit thumbnailBySecondForVideoAsset:self.editVideoURL
 										   interval:interval
 											maxSize:CGSizeMake(60, 0)
+									progressHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
+										
+										typeof(weakSelf) strongSelf = weakSelf;
+										[strongSelf.videoClipView updateVideoThumbnails:thumbnails complete:NO];
+									}
 								  completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
-		
+									  
 									  typeof(weakSelf) strongSelf = weakSelf;
-									  [strongSelf.videoClipView updateVideoThumbnails:thumbnails];
-									  [ctr hideAfterDelay:0 completionHandler:^{
-										  [strongSelf.videoPlayer play];
-									  }];
+									  [strongSelf.videoClipView updateVideoThumbnails:nil complete:YES];
+									  [strongSelf.videoPlayer play];
 								  }];
 }
 

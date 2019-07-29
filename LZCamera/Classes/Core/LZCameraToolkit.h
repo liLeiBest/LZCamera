@@ -47,13 +47,15 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
  @param assetURL 视频资源地址
  @param interval 时间间隔，单位为秒
  @param maxSize 缩略图的最大尺寸，强烈建议进行设置，可显著提高性别
- @param handler 完成回调
+ @param progressHandler 解析进度回调，缩略图数量递增，直至所有
+ @param completionHandler 解析完成回调，包含所有缩略图
  @return AVAssetImageGenerator，注意强引用，会导致无法调用回调
  */
 + (AVAssetImageGenerator *)thumbnailBySecondForVideoAsset:(NSURL *)assetURL
 												 interval:(CMTimeValue)interval
 												  maxSize:(CGSize)maxSize
-								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))handler;
+										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))progressHandler
+								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))completionHandler;
 
 /**
  裁剪资源

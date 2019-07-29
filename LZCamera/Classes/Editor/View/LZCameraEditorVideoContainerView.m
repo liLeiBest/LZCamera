@@ -48,30 +48,39 @@
 }
 
 // MARK: - Public
-- (void)updateVideoThumbnails:(NSArray *)thumbnails {
+- (void)updateVideoThumbnails:(NSArray *)thumbnails
+					 complete:(BOOL)complete{
 	
-	self.startTime = kCMTimeZero;
-	self.endTime = kCMTimeZero;
-	self.offsetTime = kCMTimeZero;
-	
-	leftClipImgView.userInteractionEnabled = YES;
-	rightClipImgView.userInteractionEnabled = YES;
-	
-	if (0 == self.videoMaximumDuration) {
+	if (complete) {
 		
-		self.widthPerUnit =thumbnailCollectionView.frame.size.width / thumbnails.count;
-		self.secondPerUnit = self.duration.value / self.duration.timescale / thumbnails.count;
-	} else {
+		self.startTime = kCMTimeZero;
+		self.endTime = kCMTimeZero;
+		self.offsetTime = kCMTimeZero;
 		
-		CGFloat perUnitWidth = thumbnailCollectionView.frame.size.width / self.videoMaximumDuration;
-		CGFloat scale = thumbnails.count > self.videoMaximumDuration ? 1.0 : self.videoMaximumDuration / thumbnails.count;
-		self.widthPerUnit = perUnitWidth * scale;
-		self.secondPerUnit = 1.0f;
+		thumbnailCollectionView.scrollEnabled = YES;
+		
+		leftClipImgView.userInteractionEnabled = YES;
+		rightClipImgView.userInteractionEnabled = YES;
 	}
 	
-	[self.datasource removeAllObjects];
-	[self.datasource addObjectsFromArray:thumbnails];
-	[thumbnailCollectionView reloadData];
+	if (thumbnails && thumbnails.count) {
+		
+		if (0 == self.videoMaximumDuration) {
+			
+			self.widthPerUnit = thumbnailCollectionView.frame.size.width / thumbnails.count;
+			self.secondPerUnit = self.duration.value / self.duration.timescale / thumbnails.count;
+		} else {
+			
+			CGFloat perUnitWidth = thumbnailCollectionView.frame.size.width / self.videoMaximumDuration;
+			CGFloat scale = thumbnails.count > self.videoMaximumDuration ? 1.0 : self.videoMaximumDuration / thumbnails.count;
+			self.widthPerUnit = perUnitWidth * scale;
+			self.secondPerUnit = 1.0f;
+		}
+		
+		[self.datasource removeAllObjects];
+		[self.datasource addObjectsFromArray:thumbnails];
+		[thumbnailCollectionView reloadData];
+	}
 }
 
 - (void)updateProgressLine {
@@ -163,6 +172,8 @@
 
 // MARK: - Private
 - (void)setupUI {
+	
+	thumbnailCollectionView.scrollEnabled = NO;
 	
 	UIImage *clipImage = [self imageInBundle:@"editor_video_clip"];
 	leftClipImgView.image = clipImage;
