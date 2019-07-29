@@ -229,6 +229,7 @@
 	self.TapToCaptureVideoCallback(start, stop, ^{
 		
 		typeof(weakSelf) strongSelf = weakSelf;
+		strongSelf.recording = NO;
 		[UIView animateWithDuration:0.25 animations:^{
 			
 			[strongSelf initializeCaptureState];
