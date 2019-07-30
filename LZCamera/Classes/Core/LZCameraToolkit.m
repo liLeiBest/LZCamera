@@ -236,9 +236,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 + (AVAssetExportSession *)cutAsset:(NSURL *)assetURL
 							  type:(LZCameraAssetType)type
 						  timeRane:(CMTimeRange)timeRange
-				 completionHandler:(void (^)(NSURL * _Nullable, BOOL))handler {
+				 completionHandler:(void (^ _Nullable)(NSURL * _Nullable, BOOL))completionHandler {
 	
-	AVAsset *asset = asset = [AVAsset assetWithURL:assetURL];
+	AVAsset *asset = [AVAsset assetWithURL:assetURL];
+	if (CMTimeRangeEqual(timeRange, kCMTimeRangeZero)) {
+		timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+	}
 	return [self exportAsset:asset
 						type:type
 			videoComposition:nil
@@ -246,8 +249,26 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				   timeRange:timeRange
 				  presetName:nil
 		   completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
-			   if (handler) {
-				   handler(outputFileURL, success);
+			   if (completionHandler) {
+				   completionHandler(outputFileURL, success);
+			   }
+		   }];
+}
+
++ (AVAssetExportSession *)exportVideoAsset:(NSURL *)assetURL
+								presetName:(NSString *)presetName
+						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable, BOOL))completionHandler {
+	
+	AVAsset *asset = asset = [AVAsset assetWithURL:assetURL];
+	return [self exportAsset:asset
+						type:LZCameraAssetTypeMp4
+			videoComposition:nil
+					audioMix:nil
+				   timeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
+				  presetName:presetName
+		   completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
+			   if (completionHandler) {
+				   completionHandler(outputFileURL, success);
 			   }
 		   }];
 }
@@ -259,7 +280,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 							originalVolume:(CGFloat)originalVolume
 							   audioVolume:(CGFloat)audioVolume
 								presetName:(NSString *)presetName
-						 completionHandler:(void (^)(NSURL * _Nullable, BOOL))handler {
+						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable, BOOL))completionHandler {
 	
 	AVAsset *asset = [AVAsset assetWithURL:assetURL];
 	AVMutableComposition *composition = [self composingAudioToAsset:asset
@@ -287,14 +308,13 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 			   
 			   if (NO == success) {
 				   [self exportAsset:composition type:LZCameraAssetTypeMov videoComposition:nil audioMix:audioMix timeRange:timeRange presetName:presetName completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
-					   if (handler) {
-						   handler(outputFileURL, success);
+					   if (completionHandler) {
+						   completionHandler(outputFileURL, success);
 					   }
 				   }];
 			   } else {
-				   
-				   if (handler) {
-					   handler(outputFileURL, success);
+				   if (completionHandler) {
+					   completionHandler(outputFileURL, success);
 				   }
 			   }
 		   }];
@@ -338,6 +358,59 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		return fileURL;
 	}
 	return nil;
+}
+
++ (BOOL)deleteFile:(NSURL *)fileURL {
+	
+	NSFileManager *fileM = [NSFileManager defaultManager];
+	BOOL success = YES;
+	if ([fileM fileExistsAtPath:fileURL.relativePath]) {
+		
+		NSError *error;
+		success = [fileM removeItemAtURL:fileURL error:&error];
+		LZCameraLog(@"删除文件%@:%@", success ? @"成功" : @"失败", success ? @"" : error.localizedDescription);
+	}
+	return success;
+}
+
++ (NSString * _Nullable)sizeForFile:(NSString *)filePath {
+	
+	NSString *sizeText = nil;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:filePath]) {
+		
+		NSDictionary *fileDic = [fileManager attributesOfItemAtPath:filePath error:nil];
+		unsigned long long size = fileDic.fileSize;
+		if (size >= pow(10, 9)) { // size >= 1GB
+			sizeText = [NSString stringWithFormat:@"%.2fGB", size / pow(10, 9)];
+		} else if (size >= pow(10, 6)) { // 1GB > size >= 1MB
+			sizeText = [NSString stringWithFormat:@"%.2fMB", size / pow(10, 6)];
+		} else if (size >= pow(10, 3)) { // 1MB > size >= 1KB
+			sizeText = [NSString stringWithFormat:@"%.2fKB", size / pow(10, 3)];
+		} else { // 1KB > size
+			sizeText = [NSString stringWithFormat:@"%.2lluB", size];
+		}
+	} else {
+		NSLog(@"找不到文件");
+		
+	}
+	return sizeText;
+}
+
++ (NSString *)sizeForImage:(UIImage *)image {
+	
+	NSData *data = UIImagePNGRepresentation(image);
+	if (!data) {
+		data = UIImageJPEGRepresentation(image, 0.5);
+	}
+	double dataLength = [data length] * 1.0;
+	NSArray *typeArray = @[@"B",@"KB",@"MB",@"GB"];
+	NSInteger index = 0;
+	while (dataLength > 1000) {
+		dataLength /= 1000.0;
+		index ++;
+	}
+	return [NSString stringWithFormat:@"%.2f%@", dataLength, typeArray[index]];
 }
 
 // MARK: - Private
@@ -393,7 +466,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 							 audioMix:(AVAudioMix *)audioMix
 							timeRange:(CMTimeRange)timeRange
 						   presetName:(NSString *)presetName
-					completionHandler:(void (^)(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error))handler {
+					completionHandler:(void (^)(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error))completionHandler {
 	
 	presetName = [self exportPresetName:presetName asset:asset type:type];
 	AVAssetExportSession *exportSession =
@@ -410,41 +483,17 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		exportSession.audioMix = audioMix;
 	}
 	
-	__block BOOL success = NO;
-	__block BOOL finish = NO;
 	[exportSession exportAsynchronouslyWithCompletionHandler:^{
-		switch (exportSession.status) {
-			case AVAssetExportSessionStatusCompleted:
-				success = YES;
-				finish = YES;
-				LZCameraLog(@"Export success");
-				break;
-			case AVAssetExportSessionStatusFailed:
-				finish = YES;
-				LZCameraLog(@"Export failed");
-				break;
-			case AVAssetExportSessionStatusCancelled:
-				finish = YES;
-				LZCameraLog(@"Export cancelled");
-				break;
-			case AVAssetExportSessionStatusWaiting:
-				LZCameraLog(@"Export waiting");
-				break;
-			case AVAssetExportSessionStatusExporting:
-				LZCameraLog(@"Export exporting");
-				break;
-			case AVAssetExportSessionStatusUnknown:
-				LZCameraLog(@"Export unknown");
-				break;
-			default:
-				break;
-		}
-		if (handler && YES == finish) {
+		
+		BOOL success = exportSession.status == AVAssetExportSessionStatusCompleted;
+		if (completionHandler) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				if (NO == success) {
-					LZCameraLog(@"音乐合成失败:%@", exportSession.error);
+					
+					LZCameraLog(@"Export Asset Failed:%@", exportSession.error);
+					[self deleteFile:fileURL];
 				}
-				handler(fileURL, success, exportSession.error);
+				completionHandler(fileURL, success, exportSession.error);
 			});
 		}
 	}];

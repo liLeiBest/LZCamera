@@ -19,17 +19,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YBo-hl-Eob">
-                                <rect key="frame" x="0.0" y="44" width="414" height="718"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="715"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6X6-P8-JOH">
-                                <rect key="frame" x="0.0" y="762" width="414" height="134"/>
+                                <rect key="frame" x="0.0" y="759" width="414" height="137"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYo-YF-TW9" customClass="LZCameraEditorVideoMusicContainerView">
-                                <rect key="frame" x="0.0" y="762" width="414" height="100"/>
+                                <rect key="frame" x="0.0" y="759" width="414" height="103"/>
                                 <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-LE-Aig">
+                                        <rect key="frame" x="0.0" y="1" width="414" height="2"/>
+                                        <color key="progressTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="trackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </progressView>
                                     <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKj-DS-gNg">
-                                        <rect key="frame" x="10" y="10" width="40" height="80"/>
+                                        <rect key="frame" x="10" y="13" width="40" height="80"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="9Kk-mg-8YT"/>
@@ -39,7 +44,7 @@
                                         </connections>
                                     </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VYh-2W-kTH">
-                                        <rect key="frame" x="60" y="10" width="354" height="80"/>
+                                        <rect key="frame" x="60" y="13" width="354" height="80"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="80" id="dqp-Ye-6sZ"/>
                                         </constraints>
@@ -105,16 +110,20 @@
                                 <constraints>
                                     <constraint firstItem="VYh-2W-kTH" firstAttribute="bottom" secondItem="hKj-DS-gNg" secondAttribute="bottom" id="1qv-G6-6d1"/>
                                     <constraint firstAttribute="trailing" secondItem="VYh-2W-kTH" secondAttribute="trailing" id="3Sy-I2-8Wi"/>
+                                    <constraint firstItem="VYh-2W-kTH" firstAttribute="top" secondItem="hcf-LE-Aig" secondAttribute="bottom" constant="10" id="5OM-DT-Ae9"/>
+                                    <constraint firstItem="hcf-LE-Aig" firstAttribute="top" secondItem="yYo-YF-TW9" secondAttribute="top" constant="1" id="CEp-HS-C0N"/>
                                     <constraint firstItem="VYh-2W-kTH" firstAttribute="top" secondItem="hKj-DS-gNg" secondAttribute="top" id="JWM-tM-M88"/>
+                                    <constraint firstAttribute="trailing" secondItem="hcf-LE-Aig" secondAttribute="trailing" id="QsI-0l-cSp"/>
                                     <constraint firstItem="VYh-2W-kTH" firstAttribute="leading" secondItem="hKj-DS-gNg" secondAttribute="trailing" constant="10" id="TKO-Zy-Rzt"/>
                                     <constraint firstItem="hKj-DS-gNg" firstAttribute="leading" secondItem="yYo-YF-TW9" secondAttribute="leading" constant="10" id="XSh-bM-qov"/>
                                     <constraint firstAttribute="bottom" secondItem="VYh-2W-kTH" secondAttribute="bottom" constant="10" id="avW-wP-13y"/>
-                                    <constraint firstItem="VYh-2W-kTH" firstAttribute="top" secondItem="yYo-YF-TW9" secondAttribute="top" constant="10" id="cK3-Aa-f3t"/>
                                     <constraint firstItem="VYh-2W-kTH" firstAttribute="centerY" secondItem="hKj-DS-gNg" secondAttribute="centerY" id="kL7-m8-neM"/>
+                                    <constraint firstItem="hcf-LE-Aig" firstAttribute="leading" secondItem="yYo-YF-TW9" secondAttribute="leading" id="uYK-5C-bk0"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="collectionView" destination="VYh-2W-kTH" id="ayt-E6-86Z"/>
                                     <outlet property="originAudioBtn" destination="hKj-DS-gNg" id="Ror-cT-ttu"/>
+                                    <outlet property="progressView" destination="hcf-LE-Aig" id="c7M-KH-CjO"/>
                                 </connections>
                             </view>
                         </subviews>

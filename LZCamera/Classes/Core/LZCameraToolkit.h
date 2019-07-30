@@ -62,14 +62,26 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 
  @param assetURL 资源地址
  @param type 资源类型
- @param timeRange 裁剪区间
- @param handler 完成回调
+ @param timeRange 裁剪区间，如是传 kCMTimeRangeZero 
+ @param completionHandler 完成回调
  @return AVAssetExportSession
  */
 + (AVAssetExportSession *)cutAsset:(NSURL *)assetURL
 							  type:(LZCameraAssetType)type
 						  timeRane:(CMTimeRange)timeRange
-				 completionHandler:(void (^)(NSURL * _Nullable outputFileURL, BOOL success))handler;
+				 completionHandler:(void (^ _Nullable)(NSURL * _Nullable outputFileURL, BOOL success))completionHandler;
+
+/**
+ 导出视频资源
+
+ @param assetURL 资源地址
+ @param presetName 预设名称
+ @param completionHandler 完成回调
+ @return AVAssetExportSession
+ */
++ (AVAssetExportSession *)exportVideoAsset:(NSURL *)assetURL
+								presetName:(NSString *)presetName
+						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable outputFileURL, BOOL success))completionHandler;
 
 /**
  混合音频
@@ -81,7 +93,7 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
  @param originalVolume 设置原始音频音量
  @param audioVolume 设置混合音频音量
  @param presetName 预设名称
- @param handler 完成回调
+ @param completionHandler 完成回调
  @return AVAssetExportSession
  */
 + (AVAssetExportSession *)mixAudioForAsset:(NSURL *)assetURL
@@ -91,7 +103,7 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 							originalVolume:(CGFloat)originalVolume
 							   audioVolume:(CGFloat)audioVolume
 								presetName:(NSString *)presetName
-						 completionHandler:(void (^)(NSURL * _Nullable outputFileURL, BOOL success))handler;
+						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable outputFileURL, BOOL success))completionHandler;
 
 /**
  生成唯一的视频文件路径
@@ -99,6 +111,30 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
  @return NSURL
  */
 + (NSURL *)generateUniqueAssetFileURL:(LZCameraAssetType)assetType;
+
+/**
+ 删除文件
+ 
+ @param fileURL 文件地址
+ @return BOOL
+ */
++ (BOOL)deleteFile:(NSURL *)fileURL;
+
+/**
+ 获取文件大小
+ 
+ @param filePath 文件路径
+ @return NSString 文件不存在时，返回 nil
+ */
++ (NSString * _Nullable)sizeForFile:(NSString *)filePath;
+
+/**
+ 获取图片对象的大小
+ 
+ @param image UIImage
+ @return NSString
+ */
++ (NSString *)sizeForImage:(UIImage *)image;
 
 @end
 

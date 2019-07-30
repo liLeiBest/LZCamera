@@ -46,6 +46,7 @@ Pod::Spec.new do |s|
 	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
 	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
 	  editor.dependency 'LZCamera/Core'
+	  editor.dependency 'LZDependencyToolkit/Object'
   end
   
   pch_AF = <<-EOS

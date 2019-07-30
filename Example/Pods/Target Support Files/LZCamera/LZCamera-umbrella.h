@@ -33,6 +33,7 @@
 #import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
 #import "LZCameraEditorVideoThumbnailCell.h"
+#import "LZCameraLoadingButton.h"
 #import "LZCameraMediaDefine.h"
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraMediaViewController.h"

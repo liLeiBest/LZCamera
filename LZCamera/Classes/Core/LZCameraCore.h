@@ -8,7 +8,10 @@
 #ifndef LZCameraCore_h
 #define LZCameraCore_h
 
-#import "LZCameraPreviewView.h"
 #import "LZCameraController.h"
+#import "LZCameraPreviewView.h"
+#import "LZCameraPlayer.h"
+#import "LZCameraToastViewController.h"
+#import "LZCameraToolkit.h"
 
 #endif /* LZCameraCore_h */

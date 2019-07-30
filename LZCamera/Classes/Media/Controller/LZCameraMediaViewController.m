@@ -268,9 +268,7 @@
                         strongSelf.videoURL = videoURL;
 						[strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
                     } else {
-						
                         [strongSelf showCaputreTip:@"视频时间太短"];
-						[strongSelf deleteVideo:videoURL];
                     }
                 }
 				ComplteHandler();
@@ -313,16 +311,6 @@
 		}
 	}];
 	return result;
-}
-
-- (void)deleteVideo:(NSURL *)videoURL {
-	
-	NSError *error;
-	NSFileManager *fileM = [NSFileManager defaultManager];
-	[fileM removeItemAtURL:videoURL error:&error];
-	if (error) {
-		LZCameraLog(@"删除视频文件失败:%@", error);
-	}
 }
 
 - (void)controlFlashModelVisulState {

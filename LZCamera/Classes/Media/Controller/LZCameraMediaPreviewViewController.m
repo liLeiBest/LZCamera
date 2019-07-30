@@ -69,9 +69,8 @@
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
 	
-	NSFileManager *fileM = [NSFileManager defaultManager];
-	[fileM removeItemAtURL:self.previewVideoURL error:NULL];
-	[fileM removeItemAtURL:self.editVideoURL error:NULL];
+	[LZCameraToolkit deleteFile:self.previewVideoURL];
+	[LZCameraToolkit deleteFile:self.editVideoURL];
 	[self dismissViewControllerAnimated:NO completion:nil];
 }
 

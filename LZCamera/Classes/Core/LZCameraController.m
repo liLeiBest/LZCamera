@@ -718,7 +718,7 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                     [self captureVideoFileFinish:[self.videoFileOutputURL copy] error:nil];
                 }
 			} else {
-				[self deleteTempVideo:self.videoFileOutputURL];
+				[LZCameraToolkit deleteFile:self.videoFileOutputURL];
 			}
         } else {
             
@@ -741,7 +741,7 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                                             userInfo:userInfo];
                 }
                 [self callBackVideoOnMainQueue:[self.videoFileOutputURL copy] error:error];
-                [self deleteTempVideo:self.videoFileOutputURL];
+				[LZCameraToolkit deleteFile:self.videoFileOutputURL];
             }
         }
 	} else {
@@ -1045,21 +1045,6 @@ didFinishSavingWithError:(NSError *)error
 			self.captureVideoCompletionHandler(videoURL, error);
 		}
 	})
-}
-
-/**
- 删除临时视频文件
- 
- @param videoURL NSURL
- */
-- (void)deleteTempVideo:(NSURL *)videoURL {
-    
-    NSError *error;
-    NSFileManager *fileM = [NSFileManager defaultManager];
-    [fileM removeItemAtURL:videoURL error:&error];
-    if (error) {
-        LZCameraLog(@"删除文件失败:%@", error);
-    }
 }
 
 /**

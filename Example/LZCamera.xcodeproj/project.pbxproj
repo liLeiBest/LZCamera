@@ -346,10 +346,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-LZCamera_Example/Pods-LZCamera_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/LZCamera/LZCamera.framework",
+				"${BUILT_PRODUCTS_DIR}/LZDependencyToolkit/LZDependencyToolkit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LZCamera.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LZDependencyToolkit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

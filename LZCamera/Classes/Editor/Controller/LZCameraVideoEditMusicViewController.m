@@ -8,11 +8,15 @@
 #import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
 #import "LZCameraToastViewController.h"
+#import "LZCameraLoadingButton.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
+#import <LZDependencyToolkit/LZObject.h>
 
 /** 背景音音量 */
 static CGFloat BGMVolume = 0.5f;
+/** 监听资源导出进度的 Key */
+static NSString * const AssetProgressKeyPath = @"progress";
 @interface LZCameraVideoEditMusicViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
@@ -24,6 +28,12 @@ static CGFloat BGMVolume = 0.5f;
 @property (strong, nonatomic) AVAudioPlayer *BGMPlayer;
 /** 背景音乐 */
 @property (strong, nonatomic) LZCameraEditorMusicModel *musicModel;
+/** 导出会话 */
+@property (strong, nonatomic) AVAssetExportSession *exportSession;
+/** 加载视图 */
+@property (weak, nonatomic) LZCameraLoadingButton *doneLoadingItem;
+/** 计时器 */
+@property (strong, nonatomic) LZWeakTimer *timer;
 
 @end
 
@@ -63,15 +73,19 @@ static CGFloat BGMVolume = 0.5f;
 
 // MARK: - UI Action
 - (void)popDidClick {
+
+	if (self.exportSession && (self.exportSession.status ==  AVAssetExportSessionStatusWaiting
+		 || self.exportSession.status == AVAssetExportSessionStatusExporting)) {
+		[self.exportSession cancelExport];
+	}
 	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doneDidClick {
 	
-	LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
-	[ctr showMessage:@"处理中……"];
-	[self presentViewController:ctr animated:YES completion:nil];
 	[self stopPlay];
+	[self.musicView updateEditEnable:NO];
+	self.exportSession =
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
 						 audioPathURL:[self fetchBGMURL]
@@ -80,24 +94,71 @@ static CGFloat BGMVolume = 0.5f;
 						  audioVolume:BGMVolume
 						   presetName:AVAssetExportPresetMediumQuality
 					completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
+						
+						[self.doneLoadingItem animationFinish];
+						[self.timer invalidate];
+						[self.musicView updateEditProgress:1.0f];
+						[self.musicView updateEditEnable:YES];
 						if (success) {
 							if (self.VideoEditCallback) {
 								self.VideoEditCallback(outputFileURL);
 							}
-							[ctr hideAfterDelay:0 completionHandler:^{
-								[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-							}];
+							[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+						} else {
+#warning 这里需要改
+							LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
+							[ctr showMessage:@"编辑失败，请重试"];
+							[self presentViewController:ctr animated:YES completion:nil];
 						}
 					}];
+	[self scheduledTimer];
 }
 
 // MARK: - Private
 - (void)setupUI {
 	
 	self.title = @"加音乐";
-	
+	[self configNavigationItem];
+	[self configEditorMusicContainerView];
 	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.videoURL];
 	[self buildPlayer];
+}
+
+- (void)configNavigationItem {
+	
+	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
+	UIImage *navBackImage = [UIImage imageNamed:@"nav_back_default"
+									   inBundle:bundle
+				  compatibleWithTraitCollection:nil];
+	self.navigationItem.leftBarButtonItem =
+	[[UIBarButtonItem alloc] initWithImage:navBackImage
+									 style:UIBarButtonItemStylePlain
+									target:self
+									action:@selector(popDidClick)];
+	
+	NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+	UIColor *titleColor = nil;
+	if (nil == attributes) {
+		
+		titleColor = self.navigationController.navigationBar.tintColor ?:[UIColor blackColor];
+		attributes = attributes?:@{NSFontAttributeName : [UIFont systemFontOfSize:17],
+								   NSForegroundColorAttributeName :  titleColor,
+								   };
+	} else {
+		titleColor = [attributes objectForKey:NSForegroundColorAttributeName];
+	}
+	NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"完成" attributes:attributes];
+	CGSize size = title.size;
+	LZCameraLoadingButton *loadingBtn = [[LZCameraLoadingButton alloc] initWithTitle:title shapColor:[UIColor clearColor] frame:CGRectMake(0, 0, size.width + 5, 30)];
+	loadingBtn.circleColor = titleColor;
+	loadingBtn.maskColor = [UIColor clearColor];
+	loadingBtn.loadColor = titleColor;
+	[loadingBtn addTarget:self action:@selector(doneDidClick)];
+	self.doneLoadingItem = loadingBtn;
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadingBtn];
+}
+
+- (void)configEditorMusicContainerView {
 	
 	__weak typeof(self) weakSelf = self;
 	self.musicView.TapOriginalMusicCallback = ^{
@@ -118,47 +179,53 @@ static CGFloat BGMVolume = 0.5f;
 			return ;
 		}
 		strongSelf.musicModel = musicModel;
-		[strongSelf stopPlay];
-		[strongSelf cutBGMusic];
+		[strongSelf syncPlayBGMusic];
 	};
-	
-	NSBundle *bundle = LZCameraNSBundle(@"LZCameraEditor");
-	UIImage *navBackImage = [UIImage imageNamed:@"nav_back_default"
-									   inBundle:bundle
-				  compatibleWithTraitCollection:nil];
-	self.navigationItem.leftBarButtonItem =
-	[[UIBarButtonItem alloc] initWithImage:navBackImage
-									 style:UIBarButtonItemStylePlain
-									target:self
-									action:@selector(popDidClick)];
-	self.navigationItem.rightBarButtonItem =
-	[[UIBarButtonItem alloc] initWithTitle:@"完成"
-									 style:UIBarButtonItemStylePlain
-									target:self
-									action:@selector(doneDidClick)];
+	[self.musicView updateEditEnable:YES];
 }
 
-- (void)cutBGMusic {
+- (void)scheduledTimer {
 	
-	CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, self.timeRange.duration);
-	NSURL *musicURL = [self fetchBGMURL];
-	[LZCameraToolkit cutAsset:musicURL
+	__weak typeof(self) weakSelf = self;
+	self.timer =
+	[LZWeakTimer scheduledTimerWithTimeInterval:1.0f
+										repeats:YES
+								  dispatchQueue:dispatch_get_main_queue()
+								   eventHandler:^{
+									 
+									   typeof(weakSelf) strongSelf = weakSelf;
+									   CGFloat exportProgress = strongSelf.exportSession.progress;
+									   [strongSelf.musicView updateEditProgress:exportProgress];
+								   }];
+}
+
+- (void)syncPlayBGMusic {
+	
+	[self stopPlay];
+	[self.musicView updateEditEnable:NO];
+	self.exportSession =
+	[LZCameraToolkit cutAsset:[self fetchBGMURL]
 						 type:LZCameraAssetTypeM4A
-					 timeRane:timeRange
+					 timeRane:CMTimeRangeMake(kCMTimeZero, self.timeRange.duration)
 			completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
+				
+				[self.timer invalidate];
+				[self.musicView updateEditProgress:1.0f];
+				[self.musicView updateEditEnable:YES];
 				if (success) {
 					
 					NSError *error;
-					self.BGMPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:outputFileURL error:&error];
+					self.BGMPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:outputFileURL error:&error];
 					if (error == nil) {
-						
+
 						self.BGMPlayer.numberOfLoops = -1;
 						self.BGMPlayer.volume = BGMVolume;
 						[self.BGMPlayer prepareToPlay];
 						[self startPlay];
 					}
 				}
-	}];
+			}];
+	[self scheduledTimer];
 }
 
 - (NSURL *)fetchBGMURL {
@@ -181,13 +248,18 @@ static CGFloat BGMVolume = 0.5f;
 		[self.videoPlayer.playerLayer removeFromSuperlayer];
 	}
 	self.videoPlayer = [LZCameraPlayer playerWithURL:self.videoURL];
+	if (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIMERANGE_IS_INVALID(self.timeRange)) {
+		
+		AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+		self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+	}
 	self.videoPlayer.timeRange = self.timeRange;
 	self.videoPlayer.playerLayer.frame = self.previewImgView.frame;
 	[self.view.layer insertSublayer:self.videoPlayer.playerLayer above:self.previewImgView.layer];
 	[self startPlay];
 }
 
-- (void)startPlay{
+- (void)startPlay {
 	
 	[self.videoPlayer play];
 	[self.BGMPlayer play];
@@ -195,6 +267,7 @@ static CGFloat BGMVolume = 0.5f;
 
 - (void)stopPlay {
 	
+	[self.timer invalidate];
 	[self.videoPlayer pause];
 	[self.BGMPlayer pause];
 }

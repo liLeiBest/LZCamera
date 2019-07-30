@@ -1,0 +1,6 @@
+framework module LZDependencyToolkit {
+  umbrella header "LZDependencyToolkit-umbrella.h"
+
+  export *
+  module * { export * }
+}

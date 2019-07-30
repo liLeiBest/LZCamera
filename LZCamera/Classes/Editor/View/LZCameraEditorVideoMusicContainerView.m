@@ -10,11 +10,13 @@
 
 @interface LZCameraEditorVideoMusicContainerView()<UICollectionViewDataSource, UICollectionViewDelegate> {
 	
+	IBOutlet UIProgressView *progressView;
 	IBOutlet UIButton *originAudioBtn;
 	IBOutlet UICollectionView *collectionView;
 }
 
 @property (strong, nonatomic) NSMutableArray *datasource;
+@property (assign, nonatomic) BOOL editEnable;
 
 @end
 @implementation LZCameraEditorVideoMusicContainerView
@@ -36,13 +38,40 @@
 }
 
 // MARK: - Public
+- (void)updateEditProgress:(CGFloat)progress {
+	
+	NSLog(@"进度:%f", progress);
+	UIViewAnimationOptions options = UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+	[UIView animateWithDuration:1.0f
+						  delay:.0
+						options:options
+					 animations:^{
+						 [self->progressView setProgress:progress animated:YES];
+					 } completion:^(BOOL finished) {
+						 if (finished) {
+							 if (1 <= progress) {
+								 [UIView animateWithDuration:0.25 animations:^{
+								 } completion:^(BOOL finished) {
+									 self->progressView.progress = 0.0;
+								 }];
+							 }
+						 }
+					 }];
+}
+
+- (void)updateEditEnable:(BOOL)enable {
+	self.editEnable = enable;
+}
 
 // MARK: - UI Action
 - (IBAction)originalAudioDidClick:(id)sender {
 	
-	[self handleSelectedMusic:nil];
-	if (self.TapOriginalMusicCallback) {
-		self.TapOriginalMusicCallback();
+	if (YES == self.editEnable) {
+		
+		[self handleSelectedMusic:nil];
+		if (self.TapOriginalMusicCallback) {
+			self.TapOriginalMusicCallback();
+		}
 	}
 }
 // MARK: - Private
@@ -143,10 +172,13 @@
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	LZCameraEditorMusicModel *musicModel = [self.datasource objectAtIndex:indexPath.row];
-	[self handleSelectedMusic:musicModel];
-	if (self.TapMusicCallback) {
-		self.TapMusicCallback(musicModel);
+	if (YES == self.editEnable) {
+		
+		LZCameraEditorMusicModel *musicModel = [self.datasource objectAtIndex:indexPath.row];
+		[self handleSelectedMusic:musicModel];
+		if (self.TapMusicCallback) {
+			self.TapMusicCallback(musicModel);
+		}
 	}
 }
 

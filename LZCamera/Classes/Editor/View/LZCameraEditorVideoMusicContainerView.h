@@ -19,6 +19,21 @@ NS_ASSUME_NONNULL_BEGIN
 /** 选择音乐回调 */
 @property (copy, nonatomic) void (^TapMusicCallback)(LZCameraEditorMusicModel *musicModel);
 
+
+/**
+ 更新编辑进度
+
+ @param progress CGFloat
+ */
+- (void)updateEditProgress:(CGFloat)progress;
+
+/**
+ 更新是否可编辑
+
+ @param enable BOOL
+ */
+- (void)updateEditEnable:(BOOL)enable;
+
 @end
 
 NS_ASSUME_NONNULL_END
