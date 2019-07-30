@@ -21,6 +21,13 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YBo-hl-Eob">
                                 <rect key="frame" x="0.0" y="44" width="414" height="715"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCw-GK-a9k">
+                                <rect key="frame" x="10" y="721" width="394" height="18"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                <color key="textColor" red="0.81176470590000005" green="0.79215686269999996" blue="0.77647058820000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <size key="shadowOffset" width="0.0" height="0.0"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6X6-P8-JOH">
                                 <rect key="frame" x="0.0" y="759" width="414" height="137"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -134,18 +141,22 @@
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="leading" secondItem="Gdt-bX-jVn" secondAttribute="leading" id="CNe-WA-V11"/>
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="bottom" secondItem="Gdt-bX-jVn" secondAttribute="bottom" id="JhB-Mf-GLc"/>
                             <constraint firstItem="6X6-P8-JOH" firstAttribute="leading" secondItem="Gdt-bX-jVn" secondAttribute="leading" id="LPB-un-Enw"/>
+                            <constraint firstItem="aCw-GK-a9k" firstAttribute="leading" secondItem="Gdt-bX-jVn" secondAttribute="leading" constant="10" id="Ng2-Pp-RXo"/>
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="top" secondItem="6X6-P8-JOH" secondAttribute="top" id="QcI-6t-LLj"/>
                             <constraint firstItem="YBo-hl-Eob" firstAttribute="leading" secondItem="Gdt-bX-jVn" secondAttribute="leading" id="Qq6-2D-9NO"/>
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="trailing" secondItem="Gdt-bX-jVn" secondAttribute="trailing" id="Qrz-as-r2a"/>
+                            <constraint firstItem="Gdt-bX-jVn" firstAttribute="trailing" secondItem="aCw-GK-a9k" secondAttribute="trailing" constant="10" id="XrZ-hv-Lbq"/>
                             <constraint firstItem="Gdt-bX-jVn" firstAttribute="trailing" secondItem="YBo-hl-Eob" secondAttribute="trailing" id="gqf-Pt-a8H"/>
                             <constraint firstAttribute="bottom" secondItem="6X6-P8-JOH" secondAttribute="bottom" id="ijW-nF-9Du"/>
                             <constraint firstItem="6X6-P8-JOH" firstAttribute="top" secondItem="YBo-hl-Eob" secondAttribute="bottom" id="u1p-Ki-yy1"/>
+                            <constraint firstItem="6X6-P8-JOH" firstAttribute="top" secondItem="aCw-GK-a9k" secondAttribute="bottom" constant="20" id="yTs-Ng-OXK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Gdt-bX-jVn"/>
                     </view>
                     <connections>
                         <outlet property="musicView" destination="yYo-YF-TW9" id="4tv-dX-7pC"/>
                         <outlet property="previewImgView" destination="YBo-hl-Eob" id="NKg-yL-Ah2"/>
+                        <outlet property="tipLabel" destination="aCw-GK-a9k" id="Cwr-40-Shw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OEe-EM-eGJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

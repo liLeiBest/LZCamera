@@ -379,7 +379,9 @@
     [[NSMutableAttributedString alloc] initWithString:tipMessage attributes:attributes];
     self.captureTipLabel.hidden = NO;
     self.captureTipLabel.attributedText = attributedString;
-    [self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:2.0f];
+	if ([self canPerformAction:@selector(hideCaptureTip) withSender:nil]) {
+		[self performSelector:@selector(hideCaptureTip) withObject:nil afterDelay:2.0f];
+	}
 }
 
 - (void)hideCaptureTip {

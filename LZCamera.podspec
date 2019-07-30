@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Editor' do |editor|
-	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}'#, 'LZCamera/Classes/Editor/Controller/*.storyboard'
+	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}', 'LZCamera/Classes/Editor/Controller/*.storyboard'
 	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
 	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
 	  editor.dependency 'LZCamera/Core'

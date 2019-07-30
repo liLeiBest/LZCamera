@@ -7,94 +7,93 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01EE7512A9610B454503A86FD4ECB48D /* LZCameraToastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E783FBC863CA419B9C7A78BE7D87B9A6 /* LZCameraToastViewController.m */; };
-		03D956D860F130066AEC8D727316A126 /* LZCameraMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 06B8B10467197999AD39683CB8ACBFAA /* LZCameraMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		06CD7EB61A76C818FFA0EA91E48D4B1E /* LZCameraController.h in Headers */ = {isa = PBXBuildFile; fileRef = F610F4ADBC3E9085F17F3CAD30E5E68F /* LZCameraController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0E6A96801AF8BEDA21E787DA0910CB35 /* LZCameraCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FEF95BA010B5F3D8E26B4AC2949D78 /* LZCameraCodeController.m */; };
-		0F406F3058B4CD119CC8F1550C8F92ED /* LZCamera-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 492147DF412FDA5CB7D9840EB83E7528 /* LZCamera-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FB61754542F315CCC67E37F31663A9E /* LZCameraCodeScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = F710745878532F28419A620F102AC7C7 /* LZCameraCodeScanView.m */; };
-		1894A8074A0A4D6D227E415E6A38A093 /* LZCameraCodePreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = A271188404CBBE07D7E14D50F67B4A6E /* LZCameraCodePreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B682B84B75D2AFDE62AF6C7B89B3529 /* LZCameraToolkit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B6222157D7A51DCCAE0424F500A58F0 /* LZCameraToolkit.m */; };
-		2546210AA9D73B1F03248F3F85A98809 /* LZCameraEditorVideoThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 663A26385232E991DE1A19C6F539FA6A /* LZCameraEditorVideoThumbnailCell.m */; };
-		25E504668BBAD28DEEAB8652DA2D8139 /* LZCameraCaptureLongVideoButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 50883EBD4B5C453B53AB5917322777C9 /* LZCameraCaptureLongVideoButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		27A7DA8E1C44508983007D9BBA099D7D /* LZCameraVideoEditMusicViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E42C0BB9B5495120D8454AEF36387F4C /* LZCameraVideoEditMusicViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2B1ACD42B5150CE6ACF0DB0B216357FC /* LZCameraMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09B71798B6695F657BD3982B04E94991 /* LZCameraMediaViewController.m */; };
-		2B46B21EA1AEFED2316F612261B73E1D /* LZCameraDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = AD397D3BDD0116197C2A1AB539BCFB0B /* LZCameraDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2BEEFAA33F0E3B9E308FDE0F3BD083C9 /* LZCameraEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7D70CE6D7A8F75F96D25ECB2791D437 /* LZCameraEditor.bundle */; };
-		2C0391496EFAE83D1674D048BF38EA09 /* LZCameraCaptureProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B161249838416A53706CFCA0EEF8F75 /* LZCameraCaptureProgressView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2F6006B70A1F06C9774DD2141F19ACCA /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B170C0B2C766CAFE372D6D13176175FA /* Photos.framework */; };
-		35C2D17AEB47E6602B62A353EEBDE7CA /* LZWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DE43A8E96FB940A1ACF4063A39A43EA2 /* LZWeakTimer.m */; };
-		36B65F86680F6393B663CA94866CE9D3 /* LZCameraMediaStatusView.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5A42196AF38FACC5B7E19C818344E9 /* LZCameraMediaStatusView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		37D994EA5EF2E8D4FAD826A9FB74E42B /* LZCameraCaptureLongVideoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ECF0F08CDC5B209D859C23E3A7D777 /* LZCameraCaptureLongVideoButton.m */; };
-		3D241385527E2E5D31D6E502477D9115 /* LZCameraEditorMusicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37910A0A2D18846F6B8B66CCDECB491F /* LZCameraEditorMusicModel.m */; };
-		41CE37A76F80CA02A3037651BD7A20C5 /* LZDependencyToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A684186E94B540F3ADD4A15141BA1B24 /* LZDependencyToolkit.framework */; };
-		468EF3CD8907ACBD4D4171502F96560B /* LZCameraMediaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = DF30907CAD16EC83E5D3E5F2452FCC94 /* LZCameraMediaStatusView.m */; };
-		47C6B7475871FB2216E7BACF8CA3EBB8 /* LZCameraMediaModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9AB3231D0B7DC4F434DF7B1BE0E4B1F /* LZCameraMediaModelView.m */; };
-		4865049266DFC7564FE7924470BA22EE /* LZCameraEditorVideoThumbnailCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 042E7BCE37FB4BA238CF80AAEECE9437 /* LZCameraEditorVideoThumbnailCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		00F7CC087FFE56C71C79413ED8C29771 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB53E2190C16B04EC30136711C36FBA /* CoreMedia.framework */; };
+		0AC12215D80208FC2C4EE3FCCE9671BA /* LZCameraVideoEditMusicViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A15DDBE02DB6D87836AE280EC6EA382 /* LZCameraVideoEditMusicViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0B989AFFC91EDA5BA04DADEDA6959CC4 /* LZCamera-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7903FDCF0BC891984E607FDFF0B03FBE /* LZCamera-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1198E7CC8AF5564CE770B29C4A14337C /* LZCameraCaptureLongVideoButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B28F21D50911302DFD15972DAEF061E5 /* LZCameraCaptureLongVideoButton.m */; };
+		1478E8596DB28C61D46E588C1E985AE7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99023883CB15774D0FE64627FAF35008 /* AVFoundation.framework */; };
+		17B42DFD89E5502FB7726DA29ED3FBA3 /* LZDependencyToolkit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 735F4FBBCE650C827A8C3732D4A73483 /* LZDependencyToolkit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		199E99D3E0B05C375842545618D9A231 /* LZCameraVideoEditMusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8775CAB09BC302864F542387A154700B /* LZCameraVideoEditMusicViewController.m */; };
+		1C4CAFF4BDBF16071512EAEBA9332FA1 /* LZCameraVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD682B46813CD1F96621F6D996694057 /* LZCameraVideoEditorViewController.m */; };
+		1E2CFC44313EB72C17B41FB8C899EDF8 /* LZCameraLoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 887AD222161F6E46D02139B66F04E882 /* LZCameraLoadingButton.m */; };
+		21401571C0911158AAD35CBB8E6BE35A /* LZCameraEditorVideoThumbnailCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E63030D126A615E2385DB85F0A938D5 /* LZCameraEditorVideoThumbnailCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		231BD53E63858B8C66D3B5A0BE7611A3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
+		252ABD3223BBA2680DCDA50C6A405C3C /* LZCameraEditorMusicModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D5D229D62394A47B6BAFA1F338D60A1 /* LZCameraEditorMusicModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		25D60251539129EA692111DDAE99B7FD /* LZCameraCodePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 99C8132DADB19029C4DEE6F5676B0317 /* LZCameraCodePreviewView.m */; };
+		27AC1E76709BF2FF2E99C27B4AB28D32 /* LZCameraPreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = 64021BFB20FB32A81C2377A91EDEF43B /* LZCameraPreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29A84172730ACB89D0819704C48080D7 /* LZCameraEditorVideoMusicContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B5B27649D79C0E814FA7F0D89B431FC /* LZCameraEditorVideoMusicContainerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2AA1DCCB2D3358A02F60AEBBFED05DEB /* LZCameraPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 438A4B39989F18D527E89957D7ADBE9B /* LZCameraPlayer.m */; };
+		2E48A138705387A5D3F3CD6E36799049 /* LZCameraEditorMusicThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB949C4FD8F593E8BCD8B61A958AB89 /* LZCameraEditorMusicThumbnailCell.m */; };
+		2E4F6595779D8372AB5C773BF2346E29 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E50EFE8203F9A6789CDD969590D82E7 /* CoreGraphics.framework */; };
+		2E51B285449216DE5EE1C13BDDB465DB /* LZCameraEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 40872173A2693124806FCD88AAD65192 /* LZCameraEditor.bundle */; };
+		369AE3EFD972F2FF59F5C878C1895851 /* LZCameraVideoEditorViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D80F54DB4E3C181B2EBD40A660E40126 /* LZCameraVideoEditorViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3A4EDFBE52343DA6EA53F3706C381E17 /* LZCameraConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = EA6722F8A3C8480A658D7DEA7DFEC5B5 /* LZCameraConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FB2F049564625B9E938A30D686D394A /* LZCameraCaptureFlashControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BAB5E9BCB853C2563C19847BF802C26A /* LZCameraCaptureFlashControl.m */; };
+		41072BF26EBB1903C593CF2886BA18D7 /* LZCameraVideoEditMusicViewController.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = 29539DC7CB3340353421A821DDAC3E0F /* LZCameraVideoEditMusicViewController.storyboard */; };
+		410820ED33ABA2E7A1A4B4F8BD9A3315 /* LZCameraCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 7483A955CCAE602D5E85F6285D5AD792 /* LZCameraCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		43EB7949F0EC94C651C45FB518D53744 /* LZCameraCodeScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC4C2EBFCE3E535BF7FC41D64C9B5D0 /* LZCameraCodeScanView.m */; };
+		490713704BE088BF91E85259BE31442C /* LZCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C7B9CC36DFE57C5F3593035641FF61 /* LZCameraController.m */; };
 		4D0FE3796FF3DB7DB7F98B20D325EDED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
-		4E755110EDCBD98BE150F8CD6E9E738D /* LZCameraPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A851FE999A7A3059AC9623A046BD084 /* LZCameraPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E8C5FBE4BB7E7CDA5DEFA2B3A84F0AE /* LZCameraCaptureFlashControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 474790C7FAA80C426CC0095C048531FB /* LZCameraCaptureFlashControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		50E046DB2B19B0BD3E23F61B715E1C02 /* LZCameraDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C92917902E18B815DFA780C6EE41FC /* LZCameraDefine.m */; };
-		529DDB3BA362A02B6D5D6BDB78703382 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB53E2190C16B04EC30136711C36FBA /* CoreMedia.framework */; };
-		535C84C497A3B53A4D1A49FB7079E04C /* LZCameraConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = F97DE1C39815EB9E8A85BF47CB5EE906 /* LZCameraConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		55110ABC8614C92A2F25E594A0E74593 /* LZCameraMediaModelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 702CCAF95BF3919453F7B8D57800150B /* LZCameraMediaModelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		55F9FFB47A6EA4CBD7CBABBB276B29FB /* LZCameraCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97C5C4A2610601B95E01C12CC0F04653 /* LZCameraCodeViewController.m */; };
-		608ED15B7883CA035903DC0DD55C4C46 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
-		623EF6F968B6FDD94E3AFDBD60C7B1F0 /* LZCameraMediaViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 27EF3346C78C6E8684118EC346EEC2DA /* LZCameraMediaViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		63EC10A184626CA5730094FF203BE6A7 /* LZCameraEditorMusicThumbnailCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B54E20FBC55BC2453F85288F6ECB92D /* LZCameraEditorMusicThumbnailCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6519F2B6B90B3903980652CC7127A95B /* LZCameraCode.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 99815D51D6EED2ADB7DE818F32FA7AD7 /* LZCameraCode.bundle */; };
-		66680CC04FB54B39CFADBD9D1F0C6C6E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E50EFE8203F9A6789CDD969590D82E7 /* CoreGraphics.framework */; };
-		666D6B287DB75E9C815BC4B09DED7E8C /* LZCameraEditorMusicModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CD41966EDE72774F3C95167319A60E4 /* LZCameraEditorMusicModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		67D26C0C96D6B59F144E03BB28493A42 /* LZCameraPreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = 37B9DA841FA00F0278EB7049E0033461 /* LZCameraPreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		699A8DB6603752C6016A1651391E5AE7 /* LZCameraToolkit.h in Headers */ = {isa = PBXBuildFile; fileRef = FA56E42B12E0B6B67036131133B2EA13 /* LZCameraToolkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6C4A5C2F77EA3A2DB9D4C4A8009452B4 /* LZCameraCodePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A74A333FA329CD0F26DA9F127B143C /* LZCameraCodePreviewView.m */; };
+		4EF3D84899940974020AFB466531AE9C /* LZCameraCode.h in Headers */ = {isa = PBXBuildFile; fileRef = B515DC74D19DE143C9DCE0643B5FC4AC /* LZCameraCode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F31D2058539F9A315A7D516A3CB50C7 /* LZCameraCaptureLongVideoButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F671F3A8C7DC8C4EB29A8B87A9577B5C /* LZCameraCaptureLongVideoButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		502D2103AA93B6975A6F4AB423C508D1 /* LZCameraEditorVideoThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C12C7CC110D98B35A2BDA7FC09771735 /* LZCameraEditorVideoThumbnailCell.m */; };
+		507DA1ECA758640565BA60FF64EDCCDC /* LZCameraCaptureProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = C7196A3FF3CE9C36BF8BFD17DD18FCE1 /* LZCameraCaptureProgressView.m */; };
+		522A0A08B23ED60A4A37AE8F8FEB7E19 /* LZCameraPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CB0DDBBB8F7EF01FD3321BEF80E8272 /* LZCameraPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		53AEB21FD0B5DE89458513DCA282245A /* LZCameraCodePreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = EF707D05C276C66C99E316F9C32BC610 /* LZCameraCodePreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		56DFC3630EDBFD49C24EB332AD202EF3 /* LZCameraEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A62771DEF6FF5E17DB53ADF456A30F5 /* LZCameraEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59F9FBF3E6BD84EDF2A0D0DCB6DDC120 /* LZWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DE43A8E96FB940A1ACF4063A39A43EA2 /* LZWeakTimer.m */; };
+		62306B7463E081A4E83B02DEAE3307B1 /* LZCameraCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7902097E7ADE18D938B77AF6441C559D /* LZCameraCodeController.m */; };
+		66631B55A7E16A9C39B5CB384E9939F0 /* LZCameraDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CF2427922B03D86AED416A5641B9157 /* LZCameraDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66D58338921B9BE8B8562B67DF4C089D /* LZCameraMediaStatusView.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B39FF5400801A3B0EE01858A4647D5 /* LZCameraMediaStatusView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6C9086277FBF736EC3DCA20C104D14A2 /* LZCameraCode.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1D81618461F9D9FDAD023B1A77EC709B /* LZCameraCode.bundle */; };
 		6EBB43CB0D3D6A57C4964B33E3238E56 /* Pods-LZCamera_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD459869678895AEADA95FE9E0B147B8 /* Pods-LZCamera_Example-dummy.m */; };
-		7128E16C4DA136296F6A473AF3246D33 /* LZCameraVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68AA30636F3C4E62C08F6983DC56E12 /* LZCameraVideoEditorViewController.m */; };
-		75C77C25FD180E2D4BBB9DB77522895C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8571D8375660167AAEC06B40A7531F1B /* CoreServices.framework */; };
-		771A41E49781132B9BA822E45F574E15 /* LZCameraEditorVideoMusicContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F18DA876A7E2A698E7736AB635D426 /* LZCameraEditorVideoMusicContainerView.m */; };
-		77AFC04CB430129633943D51454662EF /* LZCameraMediaPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CD84323F5CD2787E40CE8B5F850668 /* LZCameraMediaPreviewView.m */; };
-		7861E16A77CC9435F02CF9BE79DF03B5 /* LZCameraCore.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37A5E137726720B299B2125E35B1611E /* LZCameraCore.bundle */; };
-		7F0F96667C40A6135360E6CDA8670556 /* LZCameraCodeViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1621C47C8DF823D13FFC15AAB42D9DBF /* LZCameraCodeViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7FD8EB7CC2E5980E96AACF9DBD342EC4 /* LZCameraCode.h in Headers */ = {isa = PBXBuildFile; fileRef = 158E5ACD8798F89731FECD062C8BC50C /* LZCameraCode.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		804025E59D2F12BC6C0C7E0748172FEF /* LZCameraCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 55D56A694261127181B1256F34F32C11 /* LZCameraCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F3DDF741BA22CBF4A166ADE5EC4B008 /* LZCameraConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 9671C1CEF29613422D11B5BDA5417949 /* LZCameraConfig.m */; };
+		7067B2EF41D7D70821BA4929CC01D7C4 /* LZCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B14E5EEFCB94EFC61E8E1899B65B274 /* LZCamera.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7665E7436A253169133FF1A002E0C377 /* LZCameraCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4356945428DDB5C12F41BC0441F2875 /* LZCameraCodeViewController.m */; };
+		78428E558B2C194BE912F5D5B3A3C796 /* LZCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D6640D2B9E10DE8EFD911CD6F1B2059F /* LZCameraPreviewView.m */; };
+		7885BB4FE0C5FA3A65336E9AAA9C558D /* LZCameraMediaViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 42BA6C5D33ED23BA8BAE535FAFCE0EAB /* LZCameraMediaViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7EA0F0F87A7E9E8E474E62EEF07345D8 /* LZObject.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D63AC6BFF83E8227C1E4BB57B2C9D3 /* LZObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7EBD2A8C0CC6A716CC84907B15F6CFDE /* LZCameraMediaStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB38CE9EE2E611023348CE66A176116F /* LZCameraMediaStatusView.m */; };
 		8073F5943CD6D693EADADBB993477798 /* Pods-LZCamera_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 64462983F71A3137C6CF749B1A7E1891 /* Pods-LZCamera_Tests-dummy.m */; };
-		87824C5CE003BA216314C15ED9B33068 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99023883CB15774D0FE64627FAF35008 /* AVFoundation.framework */; };
-		899E03BACF92B5428B2C8860C8F674B0 /* LZCamera-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8783446EFF6A0BB2C9ABBBBF807534 /* LZCamera-dummy.m */; };
-		9746B22C529320A305EF19DB204FDA18 /* LZCameraMediaPreviewViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 38A6917B60A0BD1AB5C3CEA04486E1B8 /* LZCameraMediaPreviewViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98EF4C9787789B8846D08738D9C7ACF9 /* LZCameraLoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AC794350A0FC5F5BD3AE4A2C395AE874 /* LZCameraLoadingButton.m */; };
-		9FBABB290D5EB27A5DC7447DE6058433 /* LZCameraVideoEditorViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA9640EDC193BBF81F27BDCD7274F8E /* LZCameraVideoEditorViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A1252EFD0FEAC3791C4B7B1EBF8BF72C /* LZCameraEditorMusicThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B5A5B324A9CE30C2387FE834AB068D /* LZCameraEditorMusicThumbnailCell.m */; };
-		A173D7E9ED2D9208BD49F91B66BB6C02 /* LZCameraConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B75AD7A557A380DD463310A6AA95515 /* LZCameraConfig.m */; };
-		A26D44B68C42D3F87C2805F0E8899742 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7B0C329FB9ADEE2DBB5BD732228085B /* UIKit.framework */; };
+		84CF136B89872EA1167EAFA13DDDBA81 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8571D8375660167AAEC06B40A7531F1B /* CoreServices.framework */; };
+		854D415941E60E4FAF1BA77C50BCDC04 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7B0C329FB9ADEE2DBB5BD732228085B /* UIKit.framework */; };
+		868AFD2594C4BE3D7DB62C30A3F24106 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
+		875AED93E0AC7F6A7EF468313F0FB56E /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B170C0B2C766CAFE372D6D13176175FA /* Photos.framework */; };
+		8D3A5C5317D0FA33BB6DB94934AC0849 /* LZCameraCodeViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E05935C2A2C8ABA062E414591B38652D /* LZCameraCodeViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E4E27AC937FDCBBBA0897CAF0975743 /* LZWeakTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 00978DA7440D0892EB541AF3A236A1AD /* LZWeakTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		909F47C2CBD98DEA7B2F0FF08C981D83 /* LZCameraEditorVideoMusicContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 06BF217303DA76BA034D860D80807EB9 /* LZCameraEditorVideoMusicContainerView.m */; };
+		935B2441C16D1C22CFD034444F1A327D /* LZCameraMediaPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF08257D0AA10FFE0B1C588EB6BCD6D7 /* LZCameraMediaPreviewView.m */; };
+		940A3EF7533B72CDB7D0B1BB93AFCF0C /* LZCameraToolkit.h in Headers */ = {isa = PBXBuildFile; fileRef = 471457741EE2A926DE3268EC480E0A9D /* LZCameraToolkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9690E8E1AFB2C6D350ECD7E51025D80F /* LZCameraMediaModelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 614F594A9844CE946595A1596B8F9C13 /* LZCameraMediaModelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		991498D200F094D5984CCFD5C2D2DDAB /* LZDependencyToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A684186E94B540F3ADD4A15141BA1B24 /* LZDependencyToolkit.framework */; };
+		9D6C542797C14CAF616E138FA3D2C883 /* LZCameraMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 651FA1A0758A5251ABB1FEFB890A6CE3 /* LZCameraMediaViewController.m */; };
+		A0E06D41B15A61CA5352060CA59E2257 /* LZCameraDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 448DFDC8F9B3028899A58757A94FB9EE /* LZCameraDefine.m */; };
 		A49DC43FC09F2A503DFA3E6F9E3B1880 /* Pods-LZCamera_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 66AE0013168DB79583DBBB8B60C1E27D /* Pods-LZCamera_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A4AAE2E89D0B562A6A4DDA472B81DF2B /* LZCameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FB7793F130959FD319986540B82D49 /* LZCameraController.m */; };
-		A8697BD800B248BC39D2373A984703F7 /* LZCameraMedia.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A67C0B2B62DA595723B9E4CA9511F13 /* LZCameraMedia.bundle */; };
-		A905D5F6999518B42C7CE9FD48E01173 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7B0C329FB9ADEE2DBB5BD732228085B /* UIKit.framework */; };
-		ABFF0BC97B7BDB2139BE963471F58942 /* LZCameraPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF2767B5852FA70E985724A6A701A2D /* LZCameraPlayer.m */; };
+		A4B216CC81E6F00AB1C4B53D67416E19 /* LZCameraVideoEditorViewController.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = 29263BA6A2A428C1F3D27ABD4342577F /* LZCameraVideoEditorViewController.storyboard */; };
+		A671EDCE6679DD5C4F6D9182F83D6FEB /* LZCameraMediaPreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = 721BE8F9B5127E972CB40B0B36E77BD8 /* LZCameraMediaPreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AD53765B9D88700B75CBC4D66B420E06 /* LZCameraCodeScanView.h in Headers */ = {isa = PBXBuildFile; fileRef = BEEBED6A82F89FBB030E8DE512523DD5 /* LZCameraCodeScanView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B445264C73DE65BA63478532921099F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
-		B6256988B2F6E15D25B38AFF16A890DE /* LZCameraEditorVideoContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = EBEDD403BE9DCEE0374F0EEF30771EE6 /* LZCameraEditorVideoContainerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B72E7FC0AE11966643ACD82A07E355B7 /* LZCameraMediaDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 304C417D71D0680C21E9251DB19ED53B /* LZCameraMediaDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BFD623744CD41CAE4AFE4742D02BA1A5 /* LZCameraCaptureProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BCF45A136FA646E33949281CB0E205 /* LZCameraCaptureProgressView.m */; };
-		C23C780E52EAB54E34724C8B05042553 /* LZCameraVideoEditMusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7F93F99FDBC3E24E00F2B1E558CC687 /* LZCameraVideoEditMusicViewController.m */; };
-		C61DCCCEA692AEB2DBC529B49343D6A0 /* LZCameraEditorVideoMusicContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 252FA7AF5627418EF27A810CA26E8E71 /* LZCameraEditorVideoMusicContainerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D25349B1F147BEFF210769AD699215BE /* LZCameraControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 924C41AFF768F42339125E4588D5A213 /* LZCameraControllerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D2875997B5D5100A8A8AD69FD83CFAB7 /* LZCameraPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A82F5C0318669E4801ACEA4190D59A0 /* LZCameraPreviewView.m */; };
-		D4E34DD8C8A41DA7B898BBFF1CD5AD54 /* LZDependencyToolkit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4ECD049FEB8181A98F9DEEF0E6C86A5 /* LZDependencyToolkit-dummy.m */; };
-		D53BB02E72D08084A7315C39C9E3E840 /* LZCameraLoadingButton.h in Headers */ = {isa = PBXBuildFile; fileRef = D9236468C336684AD342A56FD74AAB7F /* LZCameraLoadingButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D5CFBFB7EB34BFFF72423785673CF351 /* LZCameraMediaPreviewView.h in Headers */ = {isa = PBXBuildFile; fileRef = 75A1BE76A35EA056F58EED302D7BA0BF /* LZCameraMediaPreviewView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7ABAAF22A967EE3D8EE789B4FCAC91B /* LZCameraCodeController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4477B76EFEC001C5FE712865056629FF /* LZCameraCodeController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBAF8F333A55ADED3EF97F1E7D97B820 /* LZCameraCodeScanView.h in Headers */ = {isa = PBXBuildFile; fileRef = C5888C79012C48DE8E3F72D6E1DBCBF1 /* LZCameraCodeScanView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DC9D5298E5F05091B4E7957DAC7EB1CD /* LZCameraEditorVideoContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F7D862440DEA8C2268B4A2CA60A04B /* LZCameraEditorVideoContainerView.m */; };
-		E6ADCB68786CC50164690304700F25FE /* LZCameraMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 500B6A0F7689EB81B556A8CAA7C07204 /* LZCameraMediaPreviewViewController.m */; };
-		EBE8C866ED1F18F5CDC28EA080D556CE /* LZCameraToastViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AD291FF8A75A54EA38014112A3BF2B0C /* LZCameraToastViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EBEB830CEF0ADF56033392C5F7509702 /* LZObject.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D63AC6BFF83E8227C1E4BB57B2C9D3 /* LZObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EC3C12EB35F0B22C3E1122798142004D /* LZCameraCaptureFlashControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FBF065B92C0044BC96E7F38355EA72 /* LZCameraCaptureFlashControl.m */; };
-		F1192097F8F9D8A4B840FBA1D83B550C /* LZDependencyToolkit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 735F4FBBCE650C827A8C3732D4A73483 /* LZDependencyToolkit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F27302F3EEE1A6EA518B6C058771861B /* LZCameraEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5540453A6DA1243F3B372190D7CAF5D4 /* LZCameraEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F69350ADBE2DA045F7F5A9FAEB5DDBEC /* LZCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 34A1010917977B57414EF3884215070E /* LZCamera.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F93E4808DAFBA834ED3978E21BDF765A /* LZWeakTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 00978DA7440D0892EB541AF3A236A1AD /* LZWeakTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FA456ECDF1BDAF5B4AF865EC8FF21564 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */; };
+		B45D68BAE6F5ECEBE4C12A54B4B20BDF /* LZCameraMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 498BAC47B7909FBABDB1C92FD454D708 /* LZCameraMediaPreviewViewController.m */; };
+		B51C0045FA58A5F975FD1AE256F62E69 /* LZCameraControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = AE530874CAAAF8BF2C383FFC2426DE7E /* LZCameraControllerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B730BC4B15C19D525E98178701ED65AB /* LZCameraMediaPreviewViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = EA6EB4BA7188EC756D86948C3CFFAB85 /* LZCameraMediaPreviewViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BFDBEFEF30E391E7DD7D1932AF8A38EA /* LZCameraEditorMusicThumbnailCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 246769F682247B3AE2579FDA9AD945E0 /* LZCameraEditorMusicThumbnailCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C28A5FDAAA6A7688C88949B78AAB85B7 /* LZCameraToolkit.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2D43501FF5D2CBD62BBAC5B6D6A0B7 /* LZCameraToolkit.m */; };
+		C5B22F3E778702009025A4DE1FB2FEAA /* LZCameraEditorMusicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F42173600C52B02945EB21F85AACC57D /* LZCameraEditorMusicModel.m */; };
+		CDBB4B1B980242457B55053A57EA9953 /* LZDependencyToolkit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4ECD049FEB8181A98F9DEEF0E6C86A5 /* LZDependencyToolkit-dummy.m */; };
+		CDD6AC87A8BE25CAFBEFB69C437C2927 /* LZCameraEditorVideoContainerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5082497871097D485F3B777663DDA639 /* LZCameraEditorVideoContainerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0246EF25672AB872628FA02AEF50D49 /* LZCameraCodeController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2533D4301F125F334728C1CD3467E914 /* LZCameraCodeController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D4C3FE9676C885F6F62205A6E0F40AD3 /* LZCameraCaptureProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3521069CB15CDFBE60AF79D8AD760437 /* LZCameraCaptureProgressView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD89B5328C111E4BEF5B83B1A6684C07 /* LZCameraLoadingButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E68D101539E4194CA64F91EEF70C2DF1 /* LZCameraLoadingButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E196E92F2989E47F3A6A7775BA19AD05 /* LZCameraMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 86774BA42BFBADE5E401B79F5D7D023A /* LZCameraMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E310541B11AFFB54063A655BBE062D42 /* LZCameraMedia.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 43A0AFE05BDE5786AFD71871B614809E /* LZCameraMedia.bundle */; };
+		E416F5E4D4020F4D2E76EAB28759EFCE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7B0C329FB9ADEE2DBB5BD732228085B /* UIKit.framework */; };
+		ED6792C64508633A5E97E1970FA09D90 /* LZCameraMediaModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A50E1405F2BE9BC22F5C5B7FC0006C /* LZCameraMediaModelView.m */; };
+		EF50C647560E3FEB7A380139EAE8E01D /* LZCamera-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E77A78D389393DDCF3A73CF7C1C1C1 /* LZCamera-dummy.m */; };
+		F1475EE02812454E6D262E79DACC440F /* LZCameraMediaDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1022F2B73110F0C64917C3ADA3AC20A9 /* LZCameraMediaDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6678D1C6DDBE3B5A75E10CE71DDB621 /* LZCameraCaptureFlashControl.h in Headers */ = {isa = PBXBuildFile; fileRef = B08FAA90F05AE66B1A815DD71C335085 /* LZCameraCaptureFlashControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F70E1E3EB16489FB90A9DC05C35C3E29 /* LZCameraController.h in Headers */ = {isa = PBXBuildFile; fileRef = 83CC6BF7ACD8B3A941D344F5167F58A6 /* LZCameraController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FBF9AD1309D6EF0AD9952A44731D495D /* Pods-LZCamera_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ED0ACA67F578AB397610151AF84D01D /* Pods-LZCamera_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC8DFCB6C93CA1449B2C62E13DA694F9 /* LZCameraEditorVideoContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A15EEB8CD845770297C98B4B36090B88 /* LZCameraEditorVideoContainerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +104,7 @@
 			remoteGlobalIDString = 2424F24C2BDE8A1B1B0460371CC62160;
 			remoteInfo = LZCamera;
 		};
-		85338D09A31C6BA9D383E8CA0C99AEB1 /* PBXContainerItemProxy */ = {
+		1E634AF617E778A7B32E6E93AA8469E1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -130,118 +129,117 @@
 
 /* Begin PBXFileReference section */
 		00978DA7440D0892EB541AF3A236A1AD /* LZWeakTimer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZWeakTimer.h; path = LZDependencyToolkit/Classes/Object/LZWeakTimer.h; sourceTree = "<group>"; };
-		042E7BCE37FB4BA238CF80AAEECE9437 /* LZCameraEditorVideoThumbnailCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoThumbnailCell.h; sourceTree = "<group>"; };
 		0648B8DE1E354386FB1A2B91B652FA45 /* Pods-LZCamera_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-LZCamera_Example.modulemap"; sourceTree = "<group>"; };
-		06B8B10467197999AD39683CB8ACBFAA /* LZCameraMedia.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraMedia.h; path = LZCamera/Classes/Media/LZCameraMedia.h; sourceTree = "<group>"; };
-		09B71798B6695F657BD3982B04E94991 /* LZCameraMediaViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaViewController.m; sourceTree = "<group>"; };
+		06BF217303DA76BA034D860D80807EB9 /* LZCameraEditorVideoMusicContainerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoMusicContainerView.m; sourceTree = "<group>"; };
 		0A2309482C2651BDD5B4221B3CC9A38E /* Pods_LZCamera_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_LZCamera_Tests.framework; path = "Pods-LZCamera_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		158E5ACD8798F89731FECD062C8BC50C /* LZCameraCode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraCode.h; path = LZCamera/Classes/Code/LZCameraCode.h; sourceTree = "<group>"; };
-		1621C47C8DF823D13FFC15AAB42D9DBF /* LZCameraCodeViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeViewController.h; sourceTree = "<group>"; };
-		162CEB63579F4AB0D6E77E1D89093B14 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		22F18DA876A7E2A698E7736AB635D426 /* LZCameraEditorVideoMusicContainerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoMusicContainerView.m; sourceTree = "<group>"; };
+		0A62771DEF6FF5E17DB53ADF456A30F5 /* LZCameraEditor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraEditor.h; path = LZCamera/Classes/Editor/LZCameraEditor.h; sourceTree = "<group>"; };
+		1022F2B73110F0C64917C3ADA3AC20A9 /* LZCameraMediaDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaDefine.h; sourceTree = "<group>"; };
+		14DA033C9FC5B4E1409C30010FA2E57E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		1C6C3F5DF6FE847DE9225701CFE2A8AA /* LZCamera.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = LZCamera.modulemap; sourceTree = "<group>"; };
+		1D81618461F9D9FDAD023B1A77EC709B /* LZCameraCode.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraCode.bundle; path = LZCamera/Classes/Code/Resources/LZCameraCode.bundle; sourceTree = "<group>"; };
+		1E2D43501FF5D2CBD62BBAC5B6D6A0B7 /* LZCameraToolkit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraToolkit.m; path = LZCamera/Classes/Core/LZCameraToolkit.m; sourceTree = "<group>"; };
 		240131272AA303F2EB60F2EE9310FD41 /* Pods_LZCamera_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_LZCamera_Example.framework; path = "Pods-LZCamera_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		252FA7AF5627418EF27A810CA26E8E71 /* LZCameraEditorVideoMusicContainerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoMusicContainerView.h; sourceTree = "<group>"; };
-		26ECF0F08CDC5B209D859C23E3A7D777 /* LZCameraCaptureLongVideoButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureLongVideoButton.m; sourceTree = "<group>"; };
-		27EF3346C78C6E8684118EC346EEC2DA /* LZCameraMediaViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaViewController.h; sourceTree = "<group>"; };
-		28C5BF46FF0C4E25D3D65EBB2FB2B256 /* LZCamera-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LZCamera-Info.plist"; sourceTree = "<group>"; };
-		304C417D71D0680C21E9251DB19ED53B /* LZCameraMediaDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaDefine.h; sourceTree = "<group>"; };
-		3233ECA5988903BC6B30FCB4168FB828 /* LZCamera.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = LZCamera.modulemap; sourceTree = "<group>"; };
-		34A1010917977B57414EF3884215070E /* LZCamera.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCamera.h; path = LZCamera/Classes/LZCamera.h; sourceTree = "<group>"; };
-		37910A0A2D18846F6B8B66CCDECB491F /* LZCameraEditorMusicModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorMusicModel.m; sourceTree = "<group>"; };
-		37A5E137726720B299B2125E35B1611E /* LZCameraCore.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraCore.bundle; path = LZCamera/Classes/Core/Resources/LZCameraCore.bundle; sourceTree = "<group>"; };
-		37B9DA841FA00F0278EB7049E0033461 /* LZCameraPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraPreviewView.h; path = LZCamera/Classes/Core/LZCameraPreviewView.h; sourceTree = "<group>"; };
-		38A6917B60A0BD1AB5C3CEA04486E1B8 /* LZCameraMediaPreviewViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaPreviewViewController.h; sourceTree = "<group>"; };
-		3EF2767B5852FA70E985724A6A701A2D /* LZCameraPlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraPlayer.m; path = LZCamera/Classes/Core/LZCameraPlayer.m; sourceTree = "<group>"; };
-		4477B76EFEC001C5FE712865056629FF /* LZCameraCodeController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeController.h; sourceTree = "<group>"; };
-		44B5A5B324A9CE30C2387FE834AB068D /* LZCameraEditorMusicThumbnailCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorMusicThumbnailCell.m; sourceTree = "<group>"; };
+		246769F682247B3AE2579FDA9AD945E0 /* LZCameraEditorMusicThumbnailCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorMusicThumbnailCell.h; sourceTree = "<group>"; };
+		2533D4301F125F334728C1CD3467E914 /* LZCameraCodeController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeController.h; sourceTree = "<group>"; };
+		29263BA6A2A428C1F3D27ABD4342577F /* LZCameraVideoEditorViewController.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = LZCameraVideoEditorViewController.storyboard; sourceTree = "<group>"; };
+		29539DC7CB3340353421A821DDAC3E0F /* LZCameraVideoEditMusicViewController.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; path = LZCameraVideoEditMusicViewController.storyboard; sourceTree = "<group>"; };
+		304009DF5C11D4C2836498BC181ACE3A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		3521069CB15CDFBE60AF79D8AD760437 /* LZCameraCaptureProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureProgressView.h; sourceTree = "<group>"; };
+		3E63030D126A615E2385DB85F0A938D5 /* LZCameraEditorVideoThumbnailCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoThumbnailCell.h; sourceTree = "<group>"; };
+		40872173A2693124806FCD88AAD65192 /* LZCameraEditor.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraEditor.bundle; path = LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle; sourceTree = "<group>"; };
+		42BA6C5D33ED23BA8BAE535FAFCE0EAB /* LZCameraMediaViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaViewController.h; sourceTree = "<group>"; };
+		438A4B39989F18D527E89957D7ADBE9B /* LZCameraPlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraPlayer.m; path = LZCamera/Classes/Core/LZCameraPlayer.m; sourceTree = "<group>"; };
+		43A0AFE05BDE5786AFD71871B614809E /* LZCameraMedia.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraMedia.bundle; path = LZCamera/Classes/Media/Resources/LZCameraMedia.bundle; sourceTree = "<group>"; };
+		448DFDC8F9B3028899A58757A94FB9EE /* LZCameraDefine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraDefine.m; path = LZCamera/Classes/Core/LZCameraDefine.m; sourceTree = "<group>"; };
 		4558B65136866009682999D1F645A63E /* Pods-LZCamera_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LZCamera_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		45FEF95BA010B5F3D8E26B4AC2949D78 /* LZCameraCodeController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeController.m; sourceTree = "<group>"; };
-		474790C7FAA80C426CC0095C048531FB /* LZCameraCaptureFlashControl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureFlashControl.h; sourceTree = "<group>"; };
-		492147DF412FDA5CB7D9840EB83E7528 /* LZCamera-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZCamera-umbrella.h"; sourceTree = "<group>"; };
-		4A851FE999A7A3059AC9623A046BD084 /* LZCameraPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraPlayer.h; path = LZCamera/Classes/Core/LZCameraPlayer.h; sourceTree = "<group>"; };
-		4B54E20FBC55BC2453F85288F6ECB92D /* LZCameraEditorMusicThumbnailCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorMusicThumbnailCell.h; sourceTree = "<group>"; };
+		471457741EE2A926DE3268EC480E0A9D /* LZCameraToolkit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraToolkit.h; path = LZCamera/Classes/Core/LZCameraToolkit.h; sourceTree = "<group>"; };
+		498BAC47B7909FBABDB1C92FD454D708 /* LZCameraMediaPreviewViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaPreviewViewController.m; sourceTree = "<group>"; };
+		4B5B27649D79C0E814FA7F0D89B431FC /* LZCameraEditorVideoMusicContainerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoMusicContainerView.h; sourceTree = "<group>"; };
 		4CB53E2190C16B04EC30136711C36FBA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
-		500B6A0F7689EB81B556A8CAA7C07204 /* LZCameraMediaPreviewViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaPreviewViewController.m; sourceTree = "<group>"; };
-		50883EBD4B5C453B53AB5917322777C9 /* LZCameraCaptureLongVideoButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureLongVideoButton.h; sourceTree = "<group>"; };
-		54A74A333FA329CD0F26DA9F127B143C /* LZCameraCodePreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodePreviewView.m; sourceTree = "<group>"; };
-		5540453A6DA1243F3B372190D7CAF5D4 /* LZCameraEditor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraEditor.h; path = LZCamera/Classes/Editor/LZCameraEditor.h; sourceTree = "<group>"; };
-		55D56A694261127181B1256F34F32C11 /* LZCameraCore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraCore.h; path = LZCamera/Classes/Core/LZCameraCore.h; sourceTree = "<group>"; };
-		5D8783446EFF6A0BB2C9ABBBBF807534 /* LZCamera-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LZCamera-dummy.m"; sourceTree = "<group>"; };
+		5082497871097D485F3B777663DDA639 /* LZCameraEditorVideoContainerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoContainerView.h; sourceTree = "<group>"; };
+		5A15DDBE02DB6D87836AE280EC6EA382 /* LZCameraVideoEditMusicViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraVideoEditMusicViewController.h; sourceTree = "<group>"; };
 		5E50EFE8203F9A6789CDD969590D82E7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		614F594A9844CE946595A1596B8F9C13 /* LZCameraMediaModelView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaModelView.h; sourceTree = "<group>"; };
 		61F5CD0311AA761E824B3166E06FAD80 /* Pods-LZCamera_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-LZCamera_Tests.modulemap"; sourceTree = "<group>"; };
-		61FBF065B92C0044BC96E7F38355EA72 /* LZCameraCaptureFlashControl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureFlashControl.m; sourceTree = "<group>"; };
 		62E509BBFBCF37D725D0927C95D8516B /* LZDependencyToolkit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZDependencyToolkit-prefix.pch"; sourceTree = "<group>"; };
+		64021BFB20FB32A81C2377A91EDEF43B /* LZCameraPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraPreviewView.h; path = LZCamera/Classes/Core/LZCameraPreviewView.h; sourceTree = "<group>"; };
 		64462983F71A3137C6CF749B1A7E1891 /* Pods-LZCamera_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LZCamera_Tests-dummy.m"; sourceTree = "<group>"; };
-		663A26385232E991DE1A19C6F539FA6A /* LZCameraEditorVideoThumbnailCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoThumbnailCell.m; sourceTree = "<group>"; };
+		651FA1A0758A5251ABB1FEFB890A6CE3 /* LZCameraMediaViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaViewController.m; sourceTree = "<group>"; };
 		66AE0013168DB79583DBBB8B60C1E27D /* Pods-LZCamera_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LZCamera_Example-umbrella.h"; sourceTree = "<group>"; };
 		6714EA6953B156CB49DA72F3C5C5EB3A /* LZDependencyToolkit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = LZDependencyToolkit.modulemap; sourceTree = "<group>"; };
 		67D2C19253C4D2985751D5E28E990A63 /* Pods-LZCamera_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LZCamera_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		6A82F5C0318669E4801ACEA4190D59A0 /* LZCameraPreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraPreviewView.m; path = LZCamera/Classes/Core/LZCameraPreviewView.m; sourceTree = "<group>"; };
-		702CCAF95BF3919453F7B8D57800150B /* LZCameraMediaModelView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaModelView.h; sourceTree = "<group>"; };
-		71FB7793F130959FD319986540B82D49 /* LZCameraController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraController.m; path = LZCamera/Classes/Core/LZCameraController.m; sourceTree = "<group>"; };
+		6B14E5EEFCB94EFC61E8E1899B65B274 /* LZCamera.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCamera.h; path = LZCamera/Classes/LZCamera.h; sourceTree = "<group>"; };
+		6D5D229D62394A47B6BAFA1F338D60A1 /* LZCameraEditorMusicModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorMusicModel.h; sourceTree = "<group>"; };
+		721BE8F9B5127E972CB40B0B36E77BD8 /* LZCameraMediaPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaPreviewView.h; sourceTree = "<group>"; };
 		735F4FBBCE650C827A8C3732D4A73483 /* LZDependencyToolkit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZDependencyToolkit-umbrella.h"; sourceTree = "<group>"; };
-		74512EB53AEAC9FCEA1670C4422F6218 /* LZCamera.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LZCamera.xcconfig; sourceTree = "<group>"; };
-		75A1BE76A35EA056F58EED302D7BA0BF /* LZCameraMediaPreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaPreviewView.h; sourceTree = "<group>"; };
-		7A67C0B2B62DA595723B9E4CA9511F13 /* LZCameraMedia.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraMedia.bundle; path = LZCamera/Classes/Media/Resources/LZCameraMedia.bundle; sourceTree = "<group>"; };
-		7B161249838416A53706CFCA0EEF8F75 /* LZCameraCaptureProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureProgressView.h; sourceTree = "<group>"; };
-		7B6222157D7A51DCCAE0424F500A58F0 /* LZCameraToolkit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraToolkit.m; path = LZCamera/Classes/Core/LZCameraToolkit.m; sourceTree = "<group>"; };
-		7CD41966EDE72774F3C95167319A60E4 /* LZCameraEditorMusicModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorMusicModel.h; sourceTree = "<group>"; };
+		7483A955CCAE602D5E85F6285D5AD792 /* LZCameraCore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraCore.h; path = LZCamera/Classes/Core/LZCameraCore.h; sourceTree = "<group>"; };
+		74B39FF5400801A3B0EE01858A4647D5 /* LZCameraMediaStatusView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaStatusView.h; sourceTree = "<group>"; };
+		7902097E7ADE18D938B77AF6441C559D /* LZCameraCodeController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeController.m; sourceTree = "<group>"; };
+		7903FDCF0BC891984E607FDFF0B03FBE /* LZCamera-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZCamera-umbrella.h"; sourceTree = "<group>"; };
+		83CC6BF7ACD8B3A941D344F5167F58A6 /* LZCameraController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraController.h; path = LZCamera/Classes/Core/LZCameraController.h; sourceTree = "<group>"; };
 		850287859D00FE19E31B5061A1109D8A /* LZCamera.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LZCamera.framework; path = LZCamera.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8571D8375660167AAEC06B40A7531F1B /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		86774BA42BFBADE5E401B79F5D7D023A /* LZCameraMedia.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraMedia.h; path = LZCamera/Classes/Media/LZCameraMedia.h; sourceTree = "<group>"; };
+		8775CAB09BC302864F542387A154700B /* LZCameraVideoEditMusicViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraVideoEditMusicViewController.m; sourceTree = "<group>"; };
+		887AD222161F6E46D02139B66F04E882 /* LZCameraLoadingButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraLoadingButton.m; sourceTree = "<group>"; };
 		88D9B11D32488CAB0D2F265E5943968F /* LZDependencyToolkit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LZDependencyToolkit-Info.plist"; sourceTree = "<group>"; };
-		8B75AD7A557A380DD463310A6AA95515 /* LZCameraConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraConfig.m; path = LZCamera/Classes/Core/LZCameraConfig.m; sourceTree = "<group>"; };
-		8BA9640EDC193BBF81F27BDCD7274F8E /* LZCameraVideoEditorViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraVideoEditorViewController.h; sourceTree = "<group>"; };
-		8D41240F36A368DC7BACA14F35254E35 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		8CB0DDBBB8F7EF01FD3321BEF80E8272 /* LZCameraPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraPlayer.h; path = LZCamera/Classes/Core/LZCameraPlayer.h; sourceTree = "<group>"; };
 		8ED0ACA67F578AB397610151AF84D01D /* Pods-LZCamera_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LZCamera_Tests-umbrella.h"; sourceTree = "<group>"; };
-		924C41AFF768F42339125E4588D5A213 /* LZCameraControllerDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraControllerDelegate.h; path = LZCamera/Classes/Core/LZCameraControllerDelegate.h; sourceTree = "<group>"; };
-		92BCF45A136FA646E33949281CB0E205 /* LZCameraCaptureProgressView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureProgressView.m; sourceTree = "<group>"; };
-		97C5C4A2610601B95E01C12CC0F04653 /* LZCameraCodeViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeViewController.m; sourceTree = "<group>"; };
+		9671C1CEF29613422D11B5BDA5417949 /* LZCameraConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraConfig.m; path = LZCamera/Classes/Core/LZCameraConfig.m; sourceTree = "<group>"; };
 		99023883CB15774D0FE64627FAF35008 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		99725CDF26D9C4D1285D4CAA72EF3911 /* Pods-LZCamera_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LZCamera_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		99815D51D6EED2ADB7DE818F32FA7AD7 /* LZCameraCode.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraCode.bundle; path = LZCamera/Classes/Code/Resources/LZCameraCode.bundle; sourceTree = "<group>"; };
+		99C8132DADB19029C4DEE6F5676B0317 /* LZCameraCodePreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodePreviewView.m; sourceTree = "<group>"; };
+		9CF2427922B03D86AED416A5641B9157 /* LZCameraDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraDefine.h; path = LZCamera/Classes/Core/LZCameraDefine.h; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A271188404CBBE07D7E14D50F67B4A6E /* LZCameraCodePreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodePreviewView.h; sourceTree = "<group>"; };
+		A15EEB8CD845770297C98B4B36090B88 /* LZCameraEditorVideoContainerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoContainerView.m; sourceTree = "<group>"; };
 		A3BC88C8C98752324CD30057E88CFED9 /* Pods-LZCamera_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LZCamera_Example-Info.plist"; sourceTree = "<group>"; };
-		A5567C3B9B9CD4281923C530F4C13B67 /* LZCamera.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LZCamera.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A5C92917902E18B815DFA780C6EE41FC /* LZCameraDefine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraDefine.m; path = LZCamera/Classes/Core/LZCameraDefine.m; sourceTree = "<group>"; };
-		A5CD84323F5CD2787E40CE8B5F850668 /* LZCameraMediaPreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaPreviewView.m; sourceTree = "<group>"; };
+		A3E77A78D389393DDCF3A73CF7C1C1C1 /* LZCamera-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LZCamera-dummy.m"; sourceTree = "<group>"; };
 		A684186E94B540F3ADD4A15141BA1B24 /* LZDependencyToolkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LZDependencyToolkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A68AA30636F3C4E62C08F6983DC56E12 /* LZCameraVideoEditorViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraVideoEditorViewController.m; sourceTree = "<group>"; };
-		AC794350A0FC5F5BD3AE4A2C395AE874 /* LZCameraLoadingButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraLoadingButton.m; sourceTree = "<group>"; };
-		AD291FF8A75A54EA38014112A3BF2B0C /* LZCameraToastViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraToastViewController.h; path = LZCamera/Classes/Core/LZCameraToastViewController.h; sourceTree = "<group>"; };
-		AD397D3BDD0116197C2A1AB539BCFB0B /* LZCameraDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraDefine.h; path = LZCamera/Classes/Core/LZCameraDefine.h; sourceTree = "<group>"; };
+		AE530874CAAAF8BF2C383FFC2426DE7E /* LZCameraControllerDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraControllerDelegate.h; path = LZCamera/Classes/Core/LZCameraControllerDelegate.h; sourceTree = "<group>"; };
+		B08FAA90F05AE66B1A815DD71C335085 /* LZCameraCaptureFlashControl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureFlashControl.h; sourceTree = "<group>"; };
 		B170C0B2C766CAFE372D6D13176175FA /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Photos.framework; sourceTree = DEVELOPER_DIR; };
+		B1C7B9CC36DFE57C5F3593035641FF61 /* LZCameraController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraController.m; path = LZCamera/Classes/Core/LZCameraController.m; sourceTree = "<group>"; };
+		B28F21D50911302DFD15972DAEF061E5 /* LZCameraCaptureLongVideoButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureLongVideoButton.m; sourceTree = "<group>"; };
+		B4A50E1405F2BE9BC22F5C5B7FC0006C /* LZCameraMediaModelView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaModelView.m; sourceTree = "<group>"; };
 		B4ECD049FEB8181A98F9DEEF0E6C86A5 /* LZDependencyToolkit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LZDependencyToolkit-dummy.m"; sourceTree = "<group>"; };
+		B515DC74D19DE143C9DCE0643B5FC4AC /* LZCameraCode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraCode.h; path = LZCamera/Classes/Code/LZCameraCode.h; sourceTree = "<group>"; };
 		B5268E006E6F53B39AC7F57973C1B4B2 /* Pods-LZCamera_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LZCamera_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		BA085722D5BFC8691C663A79EDD9DB7C /* Pods-LZCamera_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LZCamera_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		BAB5E9BCB853C2563C19847BF802C26A /* LZCameraCaptureFlashControl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureFlashControl.m; sourceTree = "<group>"; };
 		BE8F0669E6F7750EC8D0EE876E2E89CC /* Pods-LZCamera_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LZCamera_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		BEEBED6A82F89FBB030E8DE512523DD5 /* LZCameraCodeScanView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeScanView.h; sourceTree = "<group>"; };
 		BFDABF84227CDD9A443238BC87A3B9E5 /* Pods-LZCamera_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LZCamera_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		C5888C79012C48DE8E3F72D6E1DBCBF1 /* LZCameraCodeScanView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeScanView.h; sourceTree = "<group>"; };
+		C12C7CC110D98B35A2BDA7FC09771735 /* LZCameraEditorVideoThumbnailCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoThumbnailCell.m; sourceTree = "<group>"; };
+		C7196A3FF3CE9C36BF8BFD17DD18FCE1 /* LZCameraCaptureProgressView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCaptureProgressView.m; sourceTree = "<group>"; };
+		CAD9A3834BCA2F3E59B8ACFDC0FDF26C /* LZCamera.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = LZCamera.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		CB38CE9EE2E611023348CE66A176116F /* LZCameraMediaStatusView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaStatusView.m; sourceTree = "<group>"; };
 		D58C5D53696C81320154286AF1F1E22D /* Pods-LZCamera_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LZCamera_Tests-Info.plist"; sourceTree = "<group>"; };
 		D5BFDE434D0924578CA79FBEF1552C4B /* Pods-LZCamera_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LZCamera_Example-frameworks.sh"; sourceTree = "<group>"; };
-		D9236468C336684AD342A56FD74AAB7F /* LZCameraLoadingButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraLoadingButton.h; sourceTree = "<group>"; };
-		D9F7D862440DEA8C2268B4A2CA60A04B /* LZCameraEditorVideoContainerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorVideoContainerView.m; sourceTree = "<group>"; };
+		D6353D69FA202114A4A9D05EFBDFFF78 /* LZCamera-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZCamera-prefix.pch"; sourceTree = "<group>"; };
+		D6640D2B9E10DE8EFD911CD6F1B2059F /* LZCameraPreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraPreviewView.m; path = LZCamera/Classes/Core/LZCameraPreviewView.m; sourceTree = "<group>"; };
+		D80F54DB4E3C181B2EBD40A660E40126 /* LZCameraVideoEditorViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraVideoEditorViewController.h; sourceTree = "<group>"; };
 		DD459869678895AEADA95FE9E0B147B8 /* Pods-LZCamera_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LZCamera_Example-dummy.m"; sourceTree = "<group>"; };
+		DDB949C4FD8F593E8BCD8B61A958AB89 /* LZCameraEditorMusicThumbnailCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorMusicThumbnailCell.m; sourceTree = "<group>"; };
 		DE43A8E96FB940A1ACF4063A39A43EA2 /* LZWeakTimer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZWeakTimer.m; path = LZDependencyToolkit/Classes/Object/LZWeakTimer.m; sourceTree = "<group>"; };
-		DF30907CAD16EC83E5D3E5F2452FCC94 /* LZCameraMediaStatusView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaStatusView.m; sourceTree = "<group>"; };
+		E05935C2A2C8ABA062E414591B38652D /* LZCameraCodeViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodeViewController.h; sourceTree = "<group>"; };
 		E2E8749BD7D138C0DB38F66577FDA5EC /* Pods-LZCamera_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LZCamera_Example.release.xcconfig"; sourceTree = "<group>"; };
-		E42C0BB9B5495120D8454AEF36387F4C /* LZCameraVideoEditMusicViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraVideoEditMusicViewController.h; sourceTree = "<group>"; };
-		E783FBC863CA419B9C7A78BE7D87B9A6 /* LZCameraToastViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LZCameraToastViewController.m; path = LZCamera/Classes/Core/LZCameraToastViewController.m; sourceTree = "<group>"; };
+		E4356945428DDB5C12F41BC0441F2875 /* LZCameraCodeViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeViewController.m; sourceTree = "<group>"; };
+		E68D101539E4194CA64F91EEF70C2DF1 /* LZCameraLoadingButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraLoadingButton.h; sourceTree = "<group>"; };
+		E6A3D9075DCB056F39D1E8CEEC3002C5 /* LZCamera.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LZCamera.xcconfig; sourceTree = "<group>"; };
 		E7B0C329FB9ADEE2DBB5BD732228085B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		E7D70CE6D7A8F75F96D25ECB2791D437 /* LZCameraEditor.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = LZCameraEditor.bundle; path = LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle; sourceTree = "<group>"; };
-		E7F93F99FDBC3E24E00F2B1E558CC687 /* LZCameraVideoEditMusicViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraVideoEditMusicViewController.m; sourceTree = "<group>"; };
-		E837C0D8B5374A701017877454C0482A /* LZCamera-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LZCamera-prefix.pch"; sourceTree = "<group>"; };
-		E9AB3231D0B7DC4F434DF7B1BE0E4B1F /* LZCameraMediaModelView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaModelView.m; sourceTree = "<group>"; };
-		EBEDD403BE9DCEE0374F0EEF30771EE6 /* LZCameraEditorVideoContainerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraEditorVideoContainerView.h; sourceTree = "<group>"; };
+		EA6722F8A3C8480A658D7DEA7DFEC5B5 /* LZCameraConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraConfig.h; path = LZCamera/Classes/Core/LZCameraConfig.h; sourceTree = "<group>"; };
+		EA6EB4BA7188EC756D86948C3CFFAB85 /* LZCameraMediaPreviewViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaPreviewViewController.h; sourceTree = "<group>"; };
+		EAC4C2EBFCE3E535BF7FC41D64C9B5D0 /* LZCameraCodeScanView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeScanView.m; sourceTree = "<group>"; };
+		EF707D05C276C66C99E316F9C32BC610 /* LZCameraCodePreviewView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCodePreviewView.h; sourceTree = "<group>"; };
+		F0AFC1C00405F6EF4889FB62CDA40F1E /* LZCamera-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "LZCamera-Info.plist"; sourceTree = "<group>"; };
+		F42173600C52B02945EB21F85AACC57D /* LZCameraEditorMusicModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraEditorMusicModel.m; sourceTree = "<group>"; };
 		F49CAF93FBC00632B527917FDB9690B2 /* LZDependencyToolkit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = LZDependencyToolkit.xcconfig; sourceTree = "<group>"; };
 		F5D63AC6BFF83E8227C1E4BB57B2C9D3 /* LZObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZObject.h; path = LZDependencyToolkit/Classes/Object/LZObject.h; sourceTree = "<group>"; };
-		F610F4ADBC3E9085F17F3CAD30E5E68F /* LZCameraController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraController.h; path = LZCamera/Classes/Core/LZCameraController.h; sourceTree = "<group>"; };
-		F710745878532F28419A620F102AC7C7 /* LZCameraCodeScanView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraCodeScanView.m; sourceTree = "<group>"; };
-		F97DE1C39815EB9E8A85BF47CB5EE906 /* LZCameraConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraConfig.h; path = LZCamera/Classes/Core/LZCameraConfig.h; sourceTree = "<group>"; };
-		FA56E42B12E0B6B67036131133B2EA13 /* LZCameraToolkit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LZCameraToolkit.h; path = LZCamera/Classes/Core/LZCameraToolkit.h; sourceTree = "<group>"; };
+		F671F3A8C7DC8C4EB29A8B87A9577B5C /* LZCameraCaptureLongVideoButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraCaptureLongVideoButton.h; sourceTree = "<group>"; };
 		FC47A3F2FE8189D30708DAF304E699A0 /* LZDependencyToolkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = LZDependencyToolkit.framework; path = LZDependencyToolkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD0FE8FD2787CE64C5FB81943C91549A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		FD5A42196AF38FACC5B7E19C818344E9 /* LZCameraMediaStatusView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LZCameraMediaStatusView.h; sourceTree = "<group>"; };
+		FD682B46813CD1F96621F6D996694057 /* LZCameraVideoEditorViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraVideoEditorViewController.m; sourceTree = "<group>"; };
+		FF08257D0AA10FFE0B1C588EB6BCD6D7 /* LZCameraMediaPreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LZCameraMediaPreviewView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,27 +251,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C1D4D2FDEFE0BE8E0747BDEED4018524 /* Frameworks */ = {
+		B89CE5BB013DB7955BD24ABEC56EF381 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66680CC04FB54B39CFADBD9D1F0C6C6E /* CoreGraphics.framework in Frameworks */,
-				608ED15B7883CA035903DC0DD55C4C46 /* Foundation.framework in Frameworks */,
-				A26D44B68C42D3F87C2805F0E8899742 /* UIKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DD01EB799C1128927C7297F5C9C57BA9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				87824C5CE003BA216314C15ED9B33068 /* AVFoundation.framework in Frameworks */,
-				529DDB3BA362A02B6D5D6BDB78703382 /* CoreMedia.framework in Frameworks */,
-				75C77C25FD180E2D4BBB9DB77522895C /* CoreServices.framework in Frameworks */,
-				FA456ECDF1BDAF5B4AF865EC8FF21564 /* Foundation.framework in Frameworks */,
-				41CE37A76F80CA02A3037651BD7A20C5 /* LZDependencyToolkit.framework in Frameworks */,
-				2F6006B70A1F06C9774DD2141F19ACCA /* Photos.framework in Frameworks */,
-				A905D5F6999518B42C7CE9FD48E01173 /* UIKit.framework in Frameworks */,
+				1478E8596DB28C61D46E588C1E985AE7 /* AVFoundation.framework in Frameworks */,
+				00F7CC087FFE56C71C79413ED8C29771 /* CoreMedia.framework in Frameworks */,
+				84CF136B89872EA1167EAFA13DDDBA81 /* CoreServices.framework in Frameworks */,
+				231BD53E63858B8C66D3B5A0BE7611A3 /* Foundation.framework in Frameworks */,
+				991498D200F094D5984CCFD5C2D2DDAB /* LZDependencyToolkit.framework in Frameworks */,
+				875AED93E0AC7F6A7EF468313F0FB56E /* Photos.framework in Frameworks */,
+				E416F5E4D4020F4D2E76EAB28759EFCE /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +270,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D0FE3796FF3DB7DB7F98B20D325EDED /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC6D39C32C4FD07063F53D90F40CBA94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E4F6595779D8372AB5C773BF2346E29 /* CoreGraphics.framework in Frameworks */,
+				868AFD2594C4BE3D7DB62C30A3F24106 /* Foundation.framework in Frameworks */,
+				854D415941E60E4FAF1BA77C50BCDC04 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,38 +296,54 @@
 			name = Object;
 			sourceTree = "<group>";
 		};
-		18D93C53A8A9FDDC46662D53074D01B5 /* View */ = {
+		260B3A4AD3B6B4AAAF721BBB88E89C4D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4B54E20FBC55BC2453F85288F6ECB92D /* LZCameraEditorMusicThumbnailCell.h */,
-				44B5A5B324A9CE30C2387FE834AB068D /* LZCameraEditorMusicThumbnailCell.m */,
-				EBEDD403BE9DCEE0374F0EEF30771EE6 /* LZCameraEditorVideoContainerView.h */,
-				D9F7D862440DEA8C2268B4A2CA60A04B /* LZCameraEditorVideoContainerView.m */,
-				252FA7AF5627418EF27A810CA26E8E71 /* LZCameraEditorVideoMusicContainerView.h */,
-				22F18DA876A7E2A698E7736AB635D426 /* LZCameraEditorVideoMusicContainerView.m */,
-				042E7BCE37FB4BA238CF80AAEECE9437 /* LZCameraEditorVideoThumbnailCell.h */,
-				663A26385232E991DE1A19C6F539FA6A /* LZCameraEditorVideoThumbnailCell.m */,
-				D9236468C336684AD342A56FD74AAB7F /* LZCameraLoadingButton.h */,
-				AC794350A0FC5F5BD3AE4A2C395AE874 /* LZCameraLoadingButton.m */,
+				EF707D05C276C66C99E316F9C32BC610 /* LZCameraCodePreviewView.h */,
+				99C8132DADB19029C4DEE6F5676B0317 /* LZCameraCodePreviewView.m */,
+				BEEBED6A82F89FBB030E8DE512523DD5 /* LZCameraCodeScanView.h */,
+				EAC4C2EBFCE3E535BF7FC41D64C9B5D0 /* LZCameraCodeScanView.m */,
 			);
 			name = View;
-			path = LZCamera/Classes/Editor/View;
+			path = LZCamera/Classes/Code/View;
 			sourceTree = "<group>";
 		};
-		28E984D185C6C428BE0EA0EE38D5475E /* Resources */ = {
+		28E95FD55E0F49ED07AC11FEFFD79FD2 /* LZCamera */ = {
 			isa = PBXGroup;
 			children = (
-				99815D51D6EED2ADB7DE818F32FA7AD7 /* LZCameraCode.bundle */,
+				6B14E5EEFCB94EFC61E8E1899B65B274 /* LZCamera.h */,
+				B5949BF031F37957EC10DF1C7301E86D /* CodeCapture */,
+				7B85F0FAC967E8BE66ED4CA2483E09A8 /* Core */,
+				EAB0EDFFBF5C57E1675E1A2657A35C5E /* Editor */,
+				F7516C9BB72699CD3033F55976EA705E /* MediaCapture */,
+				C1B603AC6DCA463C2415E21B7B08AF6B /* Pod */,
+				7A665804DF4F3AF8F7C3DDDCDEECB98A /* Support Files */,
 			);
-			name = Resources;
+			name = LZCamera;
+			path = ../..;
 			sourceTree = "<group>";
 		};
-		321983559B1BBF9CC462DD00C5C1AD47 /* Resources */ = {
+		3339E93E53D0864902BA5E0694BA7306 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				37A5E137726720B299B2125E35B1611E /* LZCameraCore.bundle */,
+				6D5D229D62394A47B6BAFA1F338D60A1 /* LZCameraEditorMusicModel.h */,
+				F42173600C52B02945EB21F85AACC57D /* LZCameraEditorMusicModel.m */,
 			);
-			name = Resources;
+			name = Model;
+			path = LZCamera/Classes/Editor/Model;
+			sourceTree = "<group>";
+		};
+		397CFD41C4EAC013A7982899D778B275 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1022F2B73110F0C64917C3ADA3AC20A9 /* LZCameraMediaDefine.h */,
+				EA6EB4BA7188EC756D86948C3CFFAB85 /* LZCameraMediaPreviewViewController.h */,
+				498BAC47B7909FBABDB1C92FD454D708 /* LZCameraMediaPreviewViewController.m */,
+				42BA6C5D33ED23BA8BAE535FAFCE0EAB /* LZCameraMediaViewController.h */,
+				651FA1A0758A5251ABB1FEFB890A6CE3 /* LZCameraMediaViewController.m */,
+			);
+			name = Controller;
+			path = LZCamera/Classes/Media/Controller;
 			sourceTree = "<group>";
 		};
 		3F32F18A29F8E968271D923070A5C063 /* Pods */ = {
@@ -349,47 +363,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		456318190280B2D4392817EA9A882493 /* CodeCapture */ = {
+		49C1B737A26C58A78C35212717914C6A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				158E5ACD8798F89731FECD062C8BC50C /* LZCameraCode.h */,
-				B31645F4D0FFA558863CAD167903459A /* Controller */,
-				28E984D185C6C428BE0EA0EE38D5475E /* Resources */,
-				C6FB0FD99688D4B1DA35C447FBC4D1A8 /* View */,
+				43A0AFE05BDE5786AFD71871B614809E /* LZCameraMedia.bundle */,
 			);
-			name = CodeCapture;
-			sourceTree = "<group>";
-		};
-		4AE4339E36B398CD086C258923228B3E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				474790C7FAA80C426CC0095C048531FB /* LZCameraCaptureFlashControl.h */,
-				61FBF065B92C0044BC96E7F38355EA72 /* LZCameraCaptureFlashControl.m */,
-				50883EBD4B5C453B53AB5917322777C9 /* LZCameraCaptureLongVideoButton.h */,
-				26ECF0F08CDC5B209D859C23E3A7D777 /* LZCameraCaptureLongVideoButton.m */,
-				7B161249838416A53706CFCA0EEF8F75 /* LZCameraCaptureProgressView.h */,
-				92BCF45A136FA646E33949281CB0E205 /* LZCameraCaptureProgressView.m */,
-				702CCAF95BF3919453F7B8D57800150B /* LZCameraMediaModelView.h */,
-				E9AB3231D0B7DC4F434DF7B1BE0E4B1F /* LZCameraMediaModelView.m */,
-				75A1BE76A35EA056F58EED302D7BA0BF /* LZCameraMediaPreviewView.h */,
-				A5CD84323F5CD2787E40CE8B5F850668 /* LZCameraMediaPreviewView.m */,
-				FD5A42196AF38FACC5B7E19C818344E9 /* LZCameraMediaStatusView.h */,
-				DF30907CAD16EC83E5D3E5F2452FCC94 /* LZCameraMediaStatusView.m */,
-			);
-			name = View;
-			path = LZCamera/Classes/Media/View;
-			sourceTree = "<group>";
-		};
-		4BB0E04995B4029A5382E90EA547A0C0 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E42C0BB9B5495120D8454AEF36387F4C /* LZCameraVideoEditMusicViewController.h */,
-				E7F93F99FDBC3E24E00F2B1E558CC687 /* LZCameraVideoEditMusicViewController.m */,
-				8BA9640EDC193BBF81F27BDCD7274F8E /* LZCameraVideoEditorViewController.h */,
-				A68AA30636F3C4E62C08F6983DC56E12 /* LZCameraVideoEditorViewController.m */,
-			);
-			name = Controller;
-			path = LZCamera/Classes/Editor/Controller;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		4E4C61D60E5ED84ECECBC55DCCCFF579 /* Products */ = {
@@ -403,19 +382,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5AE4A46F4B5F12F2D272E64B961FDDAC /* LZCamera */ = {
+		55440346966E24EF851AAC874E5B7E1D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				34A1010917977B57414EF3884215070E /* LZCamera.h */,
-				456318190280B2D4392817EA9A882493 /* CodeCapture */,
-				A1FFBB78D073756FD40E72BDDB44C950 /* Core */,
-				E7F6708FA6CE9B3D5C08EE97F2926C56 /* Editor */,
-				D98A094240FBAE19D473E802AB98F1C4 /* MediaCapture */,
-				6C27C34D5E96992181B5C7D853CE3742 /* Pod */,
-				D335CE3F74973B019C2B7D1488B3179E /* Support Files */,
+				246769F682247B3AE2579FDA9AD945E0 /* LZCameraEditorMusicThumbnailCell.h */,
+				DDB949C4FD8F593E8BCD8B61A958AB89 /* LZCameraEditorMusicThumbnailCell.m */,
+				5082497871097D485F3B777663DDA639 /* LZCameraEditorVideoContainerView.h */,
+				A15EEB8CD845770297C98B4B36090B88 /* LZCameraEditorVideoContainerView.m */,
+				4B5B27649D79C0E814FA7F0D89B431FC /* LZCameraEditorVideoMusicContainerView.h */,
+				06BF217303DA76BA034D860D80807EB9 /* LZCameraEditorVideoMusicContainerView.m */,
+				3E63030D126A615E2385DB85F0A938D5 /* LZCameraEditorVideoThumbnailCell.h */,
+				C12C7CC110D98B35A2BDA7FC09771735 /* LZCameraEditorVideoThumbnailCell.m */,
+				E68D101539E4194CA64F91EEF70C2DF1 /* LZCameraLoadingButton.h */,
+				887AD222161F6E46D02139B66F04E882 /* LZCameraLoadingButton.m */,
 			);
-			name = LZCamera;
-			path = ../..;
+			name = View;
+			path = LZCamera/Classes/Editor/View;
 			sourceTree = "<group>";
 		};
 		5F3C116A0E6B23BE0435BD0C19FFA21A /* iOS */ = {
@@ -448,32 +430,55 @@
 			path = "Target Support Files/Pods-LZCamera_Tests";
 			sourceTree = "<group>";
 		};
-		6C27C34D5E96992181B5C7D853CE3742 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				162CEB63579F4AB0D6E77E1D89093B14 /* LICENSE */,
-				A5567C3B9B9CD4281923C530F4C13B67 /* LZCamera.podspec */,
-				8D41240F36A368DC7BACA14F35254E35 /* README.md */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
 		7457BD54A9B43360B45152C93ED4884C /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5AE4A46F4B5F12F2D272E64B961FDDAC /* LZCamera */,
+				28E95FD55E0F49ED07AC11FEFFD79FD2 /* LZCamera */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
 		};
-		9A599B060B2A8C28CD4E8ECE7E70E2ED /* Model */ = {
+		7A665804DF4F3AF8F7C3DDDCDEECB98A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				7CD41966EDE72774F3C95167319A60E4 /* LZCameraEditorMusicModel.h */,
-				37910A0A2D18846F6B8B66CCDECB491F /* LZCameraEditorMusicModel.m */,
+				1C6C3F5DF6FE847DE9225701CFE2A8AA /* LZCamera.modulemap */,
+				E6A3D9075DCB056F39D1E8CEEC3002C5 /* LZCamera.xcconfig */,
+				A3E77A78D389393DDCF3A73CF7C1C1C1 /* LZCamera-dummy.m */,
+				F0AFC1C00405F6EF4889FB62CDA40F1E /* LZCamera-Info.plist */,
+				D6353D69FA202114A4A9D05EFBDFFF78 /* LZCamera-prefix.pch */,
+				7903FDCF0BC891984E607FDFF0B03FBE /* LZCamera-umbrella.h */,
 			);
-			name = Model;
-			path = LZCamera/Classes/Editor/Model;
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/LZCamera";
+			sourceTree = "<group>";
+		};
+		7B85F0FAC967E8BE66ED4CA2483E09A8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				EA6722F8A3C8480A658D7DEA7DFEC5B5 /* LZCameraConfig.h */,
+				9671C1CEF29613422D11B5BDA5417949 /* LZCameraConfig.m */,
+				83CC6BF7ACD8B3A941D344F5167F58A6 /* LZCameraController.h */,
+				B1C7B9CC36DFE57C5F3593035641FF61 /* LZCameraController.m */,
+				AE530874CAAAF8BF2C383FFC2426DE7E /* LZCameraControllerDelegate.h */,
+				7483A955CCAE602D5E85F6285D5AD792 /* LZCameraCore.h */,
+				9CF2427922B03D86AED416A5641B9157 /* LZCameraDefine.h */,
+				448DFDC8F9B3028899A58757A94FB9EE /* LZCameraDefine.m */,
+				8CB0DDBBB8F7EF01FD3321BEF80E8272 /* LZCameraPlayer.h */,
+				438A4B39989F18D527E89957D7ADBE9B /* LZCameraPlayer.m */,
+				64021BFB20FB32A81C2377A91EDEF43B /* LZCameraPreviewView.h */,
+				D6640D2B9E10DE8EFD911CD6F1B2059F /* LZCameraPreviewView.m */,
+				471457741EE2A926DE3268EC480E0A9D /* LZCameraToolkit.h */,
+				1E2D43501FF5D2CBD62BBAC5B6D6A0B7 /* LZCameraToolkit.m */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		82A580631E355D6C437DAEF093DD85CB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				40872173A2693124806FCD88AAD65192 /* LZCameraEditor.bundle */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		9BB038E3ECBA42DFD9F5DEB17A1568B3 /* Pods-LZCamera_Example */ = {
@@ -493,38 +498,6 @@
 			path = "Target Support Files/Pods-LZCamera_Example";
 			sourceTree = "<group>";
 		};
-		A1FFBB78D073756FD40E72BDDB44C950 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				F97DE1C39815EB9E8A85BF47CB5EE906 /* LZCameraConfig.h */,
-				8B75AD7A557A380DD463310A6AA95515 /* LZCameraConfig.m */,
-				F610F4ADBC3E9085F17F3CAD30E5E68F /* LZCameraController.h */,
-				71FB7793F130959FD319986540B82D49 /* LZCameraController.m */,
-				924C41AFF768F42339125E4588D5A213 /* LZCameraControllerDelegate.h */,
-				55D56A694261127181B1256F34F32C11 /* LZCameraCore.h */,
-				AD397D3BDD0116197C2A1AB539BCFB0B /* LZCameraDefine.h */,
-				A5C92917902E18B815DFA780C6EE41FC /* LZCameraDefine.m */,
-				4A851FE999A7A3059AC9623A046BD084 /* LZCameraPlayer.h */,
-				3EF2767B5852FA70E985724A6A701A2D /* LZCameraPlayer.m */,
-				37B9DA841FA00F0278EB7049E0033461 /* LZCameraPreviewView.h */,
-				6A82F5C0318669E4801ACEA4190D59A0 /* LZCameraPreviewView.m */,
-				AD291FF8A75A54EA38014112A3BF2B0C /* LZCameraToastViewController.h */,
-				E783FBC863CA419B9C7A78BE7D87B9A6 /* LZCameraToastViewController.m */,
-				FA56E42B12E0B6B67036131133B2EA13 /* LZCameraToolkit.h */,
-				7B6222157D7A51DCCAE0424F500A58F0 /* LZCameraToolkit.m */,
-				321983559B1BBF9CC462DD00C5C1AD47 /* Resources */,
-			);
-			name = Core;
-			sourceTree = "<group>";
-		};
-		ACFAA9F027789F745563D7331AFE9E19 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E7D70CE6D7A8F75F96D25ECB2791D437 /* LZCameraEditor.bundle */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		B27813A1E42FFE1E5B9259B0401734BE /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,16 +507,37 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		B31645F4D0FFA558863CAD167903459A /* Controller */ = {
+		B522BF5F4F24E2734CFE0415FBFA4A7B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				4477B76EFEC001C5FE712865056629FF /* LZCameraCodeController.h */,
-				45FEF95BA010B5F3D8E26B4AC2949D78 /* LZCameraCodeController.m */,
-				1621C47C8DF823D13FFC15AAB42D9DBF /* LZCameraCodeViewController.h */,
-				97C5C4A2610601B95E01C12CC0F04653 /* LZCameraCodeViewController.m */,
+				2533D4301F125F334728C1CD3467E914 /* LZCameraCodeController.h */,
+				7902097E7ADE18D938B77AF6441C559D /* LZCameraCodeController.m */,
+				E05935C2A2C8ABA062E414591B38652D /* LZCameraCodeViewController.h */,
+				E4356945428DDB5C12F41BC0441F2875 /* LZCameraCodeViewController.m */,
 			);
 			name = Controller;
 			path = LZCamera/Classes/Code/Controller;
+			sourceTree = "<group>";
+		};
+		B5949BF031F37957EC10DF1C7301E86D /* CodeCapture */ = {
+			isa = PBXGroup;
+			children = (
+				B515DC74D19DE143C9DCE0643B5FC4AC /* LZCameraCode.h */,
+				B522BF5F4F24E2734CFE0415FBFA4A7B /* Controller */,
+				D5D5B04B42932802B55DA0EFFBE5F923 /* Resources */,
+				260B3A4AD3B6B4AAAF721BBB88E89C4D /* View */,
+			);
+			name = CodeCapture;
+			sourceTree = "<group>";
+		};
+		C1B603AC6DCA463C2415E21B7B08AF6B /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				304009DF5C11D4C2836498BC181ACE3A /* LICENSE */,
+				CAD9A3834BCA2F3E59B8ACFDC0FDF26C /* LZCamera.podspec */,
+				14DA033C9FC5B4E1409C30010FA2E57E /* README.md */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		C6850ECEF461AE8E04E509F6B474B903 /* Support Files */ = {
@@ -558,31 +552,6 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/LZDependencyToolkit";
-			sourceTree = "<group>";
-		};
-		C6FB0FD99688D4B1DA35C447FBC4D1A8 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				A271188404CBBE07D7E14D50F67B4A6E /* LZCameraCodePreviewView.h */,
-				54A74A333FA329CD0F26DA9F127B143C /* LZCameraCodePreviewView.m */,
-				C5888C79012C48DE8E3F72D6E1DBCBF1 /* LZCameraCodeScanView.h */,
-				F710745878532F28419A620F102AC7C7 /* LZCameraCodeScanView.m */,
-			);
-			name = View;
-			path = LZCamera/Classes/Code/View;
-			sourceTree = "<group>";
-		};
-		C91C3AFF4F040B82544355BDDC2D0C01 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				304C417D71D0680C21E9251DB19ED53B /* LZCameraMediaDefine.h */,
-				38A6917B60A0BD1AB5C3CEA04486E1B8 /* LZCameraMediaPreviewViewController.h */,
-				500B6A0F7689EB81B556A8CAA7C07204 /* LZCameraMediaPreviewViewController.m */,
-				27EF3346C78C6E8684118EC346EEC2DA /* LZCameraMediaViewController.h */,
-				09B71798B6695F657BD3982B04E94991 /* LZCameraMediaViewController.m */,
-			);
-			name = Controller;
-			path = LZCamera/Classes/Media/Controller;
 			sourceTree = "<group>";
 		};
 		CC6DAF986DA438BDA3E72DFD54253BD8 /* LZDependencyToolkit */ = {
@@ -607,54 +576,84 @@
 			);
 			sourceTree = "<group>";
 		};
-		D335CE3F74973B019C2B7D1488B3179E /* Support Files */ = {
+		D5D5B04B42932802B55DA0EFFBE5F923 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3233ECA5988903BC6B30FCB4168FB828 /* LZCamera.modulemap */,
-				74512EB53AEAC9FCEA1670C4422F6218 /* LZCamera.xcconfig */,
-				5D8783446EFF6A0BB2C9ABBBBF807534 /* LZCamera-dummy.m */,
-				28C5BF46FF0C4E25D3D65EBB2FB2B256 /* LZCamera-Info.plist */,
-				E837C0D8B5374A701017877454C0482A /* LZCamera-prefix.pch */,
-				492147DF412FDA5CB7D9840EB83E7528 /* LZCamera-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/LZCamera";
-			sourceTree = "<group>";
-		};
-		D730D96FA5AAAA4929E25250E4708577 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				7A67C0B2B62DA595723B9E4CA9511F13 /* LZCameraMedia.bundle */,
+				1D81618461F9D9FDAD023B1A77EC709B /* LZCameraCode.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		D98A094240FBAE19D473E802AB98F1C4 /* MediaCapture */ = {
+		EAB0EDFFBF5C57E1675E1A2657A35C5E /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				06B8B10467197999AD39683CB8ACBFAA /* LZCameraMedia.h */,
-				C91C3AFF4F040B82544355BDDC2D0C01 /* Controller */,
-				D730D96FA5AAAA4929E25250E4708577 /* Resources */,
-				4AE4339E36B398CD086C258923228B3E /* View */,
-			);
-			name = MediaCapture;
-			sourceTree = "<group>";
-		};
-		E7F6708FA6CE9B3D5C08EE97F2926C56 /* Editor */ = {
-			isa = PBXGroup;
-			children = (
-				5540453A6DA1243F3B372190D7CAF5D4 /* LZCameraEditor.h */,
-				4BB0E04995B4029A5382E90EA547A0C0 /* Controller */,
-				9A599B060B2A8C28CD4E8ECE7E70E2ED /* Model */,
-				ACFAA9F027789F745563D7331AFE9E19 /* Resources */,
-				18D93C53A8A9FDDC46662D53074D01B5 /* View */,
+				0A62771DEF6FF5E17DB53ADF456A30F5 /* LZCameraEditor.h */,
+				F411C24A141412BE8F7F4443CA13C67E /* Controller */,
+				3339E93E53D0864902BA5E0694BA7306 /* Model */,
+				82A580631E355D6C437DAEF093DD85CB /* Resources */,
+				55440346966E24EF851AAC874E5B7E1D /* View */,
 			);
 			name = Editor;
+			sourceTree = "<group>";
+		};
+		F411C24A141412BE8F7F4443CA13C67E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5A15DDBE02DB6D87836AE280EC6EA382 /* LZCameraVideoEditMusicViewController.h */,
+				8775CAB09BC302864F542387A154700B /* LZCameraVideoEditMusicViewController.m */,
+				29539DC7CB3340353421A821DDAC3E0F /* LZCameraVideoEditMusicViewController.storyboard */,
+				D80F54DB4E3C181B2EBD40A660E40126 /* LZCameraVideoEditorViewController.h */,
+				FD682B46813CD1F96621F6D996694057 /* LZCameraVideoEditorViewController.m */,
+				29263BA6A2A428C1F3D27ABD4342577F /* LZCameraVideoEditorViewController.storyboard */,
+			);
+			name = Controller;
+			path = LZCamera/Classes/Editor/Controller;
+			sourceTree = "<group>";
+		};
+		F5853CAB240549668A23FA20F9A18B37 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B08FAA90F05AE66B1A815DD71C335085 /* LZCameraCaptureFlashControl.h */,
+				BAB5E9BCB853C2563C19847BF802C26A /* LZCameraCaptureFlashControl.m */,
+				F671F3A8C7DC8C4EB29A8B87A9577B5C /* LZCameraCaptureLongVideoButton.h */,
+				B28F21D50911302DFD15972DAEF061E5 /* LZCameraCaptureLongVideoButton.m */,
+				3521069CB15CDFBE60AF79D8AD760437 /* LZCameraCaptureProgressView.h */,
+				C7196A3FF3CE9C36BF8BFD17DD18FCE1 /* LZCameraCaptureProgressView.m */,
+				614F594A9844CE946595A1596B8F9C13 /* LZCameraMediaModelView.h */,
+				B4A50E1405F2BE9BC22F5C5B7FC0006C /* LZCameraMediaModelView.m */,
+				721BE8F9B5127E972CB40B0B36E77BD8 /* LZCameraMediaPreviewView.h */,
+				FF08257D0AA10FFE0B1C588EB6BCD6D7 /* LZCameraMediaPreviewView.m */,
+				74B39FF5400801A3B0EE01858A4647D5 /* LZCameraMediaStatusView.h */,
+				CB38CE9EE2E611023348CE66A176116F /* LZCameraMediaStatusView.m */,
+			);
+			name = View;
+			path = LZCamera/Classes/Media/View;
+			sourceTree = "<group>";
+		};
+		F7516C9BB72699CD3033F55976EA705E /* MediaCapture */ = {
+			isa = PBXGroup;
+			children = (
+				86774BA42BFBADE5E401B79F5D7D023A /* LZCameraMedia.h */,
+				397CFD41C4EAC013A7982899D778B275 /* Controller */,
+				49C1B737A26C58A78C35212717914C6A /* Resources */,
+				F5853CAB240549668A23FA20F9A18B37 /* View */,
+			);
+			name = MediaCapture;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		03672CA8DDE1DB4E182EAB49369E15F5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17B42DFD89E5502FB7726DA29ED3FBA3 /* LZDependencyToolkit-umbrella.h in Headers */,
+				7EA0F0F87A7E9E8E474E62EEF07345D8 /* LZObject.h in Headers */,
+				8E4E27AC937FDCBBBA0897CAF0975743 /* LZWeakTimer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4639D0FA3D3543682DC855C73D36EC63 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -663,45 +662,44 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		99A76993E2C3A5CDBAA62F90D990FEF3 /* Headers */ = {
+		6664AC8112568A936BDA9A25550A24F3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F406F3058B4CD119CC8F1550C8F92ED /* LZCamera-umbrella.h in Headers */,
-				F69350ADBE2DA045F7F5A9FAEB5DDBEC /* LZCamera.h in Headers */,
-				4E8C5FBE4BB7E7CDA5DEFA2B3A84F0AE /* LZCameraCaptureFlashControl.h in Headers */,
-				25E504668BBAD28DEEAB8652DA2D8139 /* LZCameraCaptureLongVideoButton.h in Headers */,
-				2C0391496EFAE83D1674D048BF38EA09 /* LZCameraCaptureProgressView.h in Headers */,
-				7FD8EB7CC2E5980E96AACF9DBD342EC4 /* LZCameraCode.h in Headers */,
-				D7ABAAF22A967EE3D8EE789B4FCAC91B /* LZCameraCodeController.h in Headers */,
-				1894A8074A0A4D6D227E415E6A38A093 /* LZCameraCodePreviewView.h in Headers */,
-				DBAF8F333A55ADED3EF97F1E7D97B820 /* LZCameraCodeScanView.h in Headers */,
-				7F0F96667C40A6135360E6CDA8670556 /* LZCameraCodeViewController.h in Headers */,
-				535C84C497A3B53A4D1A49FB7079E04C /* LZCameraConfig.h in Headers */,
-				06CD7EB61A76C818FFA0EA91E48D4B1E /* LZCameraController.h in Headers */,
-				D25349B1F147BEFF210769AD699215BE /* LZCameraControllerDelegate.h in Headers */,
-				804025E59D2F12BC6C0C7E0748172FEF /* LZCameraCore.h in Headers */,
-				2B46B21EA1AEFED2316F612261B73E1D /* LZCameraDefine.h in Headers */,
-				F27302F3EEE1A6EA518B6C058771861B /* LZCameraEditor.h in Headers */,
-				666D6B287DB75E9C815BC4B09DED7E8C /* LZCameraEditorMusicModel.h in Headers */,
-				63EC10A184626CA5730094FF203BE6A7 /* LZCameraEditorMusicThumbnailCell.h in Headers */,
-				B6256988B2F6E15D25B38AFF16A890DE /* LZCameraEditorVideoContainerView.h in Headers */,
-				C61DCCCEA692AEB2DBC529B49343D6A0 /* LZCameraEditorVideoMusicContainerView.h in Headers */,
-				4865049266DFC7564FE7924470BA22EE /* LZCameraEditorVideoThumbnailCell.h in Headers */,
-				D53BB02E72D08084A7315C39C9E3E840 /* LZCameraLoadingButton.h in Headers */,
-				03D956D860F130066AEC8D727316A126 /* LZCameraMedia.h in Headers */,
-				B72E7FC0AE11966643ACD82A07E355B7 /* LZCameraMediaDefine.h in Headers */,
-				55110ABC8614C92A2F25E594A0E74593 /* LZCameraMediaModelView.h in Headers */,
-				D5CFBFB7EB34BFFF72423785673CF351 /* LZCameraMediaPreviewView.h in Headers */,
-				9746B22C529320A305EF19DB204FDA18 /* LZCameraMediaPreviewViewController.h in Headers */,
-				36B65F86680F6393B663CA94866CE9D3 /* LZCameraMediaStatusView.h in Headers */,
-				623EF6F968B6FDD94E3AFDBD60C7B1F0 /* LZCameraMediaViewController.h in Headers */,
-				4E755110EDCBD98BE150F8CD6E9E738D /* LZCameraPlayer.h in Headers */,
-				67D26C0C96D6B59F144E03BB28493A42 /* LZCameraPreviewView.h in Headers */,
-				EBE8C866ED1F18F5CDC28EA080D556CE /* LZCameraToastViewController.h in Headers */,
-				699A8DB6603752C6016A1651391E5AE7 /* LZCameraToolkit.h in Headers */,
-				27A7DA8E1C44508983007D9BBA099D7D /* LZCameraVideoEditMusicViewController.h in Headers */,
-				9FBABB290D5EB27A5DC7447DE6058433 /* LZCameraVideoEditorViewController.h in Headers */,
+				0B989AFFC91EDA5BA04DADEDA6959CC4 /* LZCamera-umbrella.h in Headers */,
+				7067B2EF41D7D70821BA4929CC01D7C4 /* LZCamera.h in Headers */,
+				F6678D1C6DDBE3B5A75E10CE71DDB621 /* LZCameraCaptureFlashControl.h in Headers */,
+				4F31D2058539F9A315A7D516A3CB50C7 /* LZCameraCaptureLongVideoButton.h in Headers */,
+				D4C3FE9676C885F6F62205A6E0F40AD3 /* LZCameraCaptureProgressView.h in Headers */,
+				4EF3D84899940974020AFB466531AE9C /* LZCameraCode.h in Headers */,
+				D0246EF25672AB872628FA02AEF50D49 /* LZCameraCodeController.h in Headers */,
+				53AEB21FD0B5DE89458513DCA282245A /* LZCameraCodePreviewView.h in Headers */,
+				AD53765B9D88700B75CBC4D66B420E06 /* LZCameraCodeScanView.h in Headers */,
+				8D3A5C5317D0FA33BB6DB94934AC0849 /* LZCameraCodeViewController.h in Headers */,
+				3A4EDFBE52343DA6EA53F3706C381E17 /* LZCameraConfig.h in Headers */,
+				F70E1E3EB16489FB90A9DC05C35C3E29 /* LZCameraController.h in Headers */,
+				B51C0045FA58A5F975FD1AE256F62E69 /* LZCameraControllerDelegate.h in Headers */,
+				410820ED33ABA2E7A1A4B4F8BD9A3315 /* LZCameraCore.h in Headers */,
+				66631B55A7E16A9C39B5CB384E9939F0 /* LZCameraDefine.h in Headers */,
+				56DFC3630EDBFD49C24EB332AD202EF3 /* LZCameraEditor.h in Headers */,
+				252ABD3223BBA2680DCDA50C6A405C3C /* LZCameraEditorMusicModel.h in Headers */,
+				BFDBEFEF30E391E7DD7D1932AF8A38EA /* LZCameraEditorMusicThumbnailCell.h in Headers */,
+				CDD6AC87A8BE25CAFBEFB69C437C2927 /* LZCameraEditorVideoContainerView.h in Headers */,
+				29A84172730ACB89D0819704C48080D7 /* LZCameraEditorVideoMusicContainerView.h in Headers */,
+				21401571C0911158AAD35CBB8E6BE35A /* LZCameraEditorVideoThumbnailCell.h in Headers */,
+				DD89B5328C111E4BEF5B83B1A6684C07 /* LZCameraLoadingButton.h in Headers */,
+				E196E92F2989E47F3A6A7775BA19AD05 /* LZCameraMedia.h in Headers */,
+				F1475EE02812454E6D262E79DACC440F /* LZCameraMediaDefine.h in Headers */,
+				9690E8E1AFB2C6D350ECD7E51025D80F /* LZCameraMediaModelView.h in Headers */,
+				A671EDCE6679DD5C4F6D9182F83D6FEB /* LZCameraMediaPreviewView.h in Headers */,
+				B730BC4B15C19D525E98178701ED65AB /* LZCameraMediaPreviewViewController.h in Headers */,
+				66D58338921B9BE8B8562B67DF4C089D /* LZCameraMediaStatusView.h in Headers */,
+				7885BB4FE0C5FA3A65336E9AAA9C558D /* LZCameraMediaViewController.h in Headers */,
+				522A0A08B23ED60A4A37AE8F8FEB7E19 /* LZCameraPlayer.h in Headers */,
+				27AC1E76709BF2FF2E99C27B4AB28D32 /* LZCameraPreviewView.h in Headers */,
+				940A3EF7533B72CDB7D0B1BB93AFCF0C /* LZCameraToolkit.h in Headers */,
+				0AC12215D80208FC2C4EE3FCCE9671BA /* LZCameraVideoEditMusicViewController.h in Headers */,
+				369AE3EFD972F2FF59F5C878C1895851 /* LZCameraVideoEditorViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,32 +711,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ADB31689E7B2BC039E2E672304051D34 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F1192097F8F9D8A4B840FBA1D83B550C /* LZDependencyToolkit-umbrella.h in Headers */,
-				EBEB830CEF0ADF56033392C5F7509702 /* LZObject.h in Headers */,
-				F93E4808DAFBA834ED3978E21BDF765A /* LZWeakTimer.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		2424F24C2BDE8A1B1B0460371CC62160 /* LZCamera */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 09AE1822E3303231D1495D29215F2962 /* Build configuration list for PBXNativeTarget "LZCamera" */;
+			buildConfigurationList = 4769BA5C03A828A2C428DD32D338F091 /* Build configuration list for PBXNativeTarget "LZCamera" */;
 			buildPhases = (
-				99A76993E2C3A5CDBAA62F90D990FEF3 /* Headers */,
-				F469FAEF50F769528ED730402C0627EB /* Sources */,
-				DD01EB799C1128927C7297F5C9C57BA9 /* Frameworks */,
-				9B1FAD92CF8D8CC65675815854670C73 /* Resources */,
+				6664AC8112568A936BDA9A25550A24F3 /* Headers */,
+				8891AE9B662DB52D7611D8AB7F7EB929 /* Sources */,
+				B89CE5BB013DB7955BD24ABEC56EF381 /* Frameworks */,
+				05236CE3D65671435791B79C60ABD3D2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B5174E67764B871D9FA69C1269C70671 /* PBXTargetDependency */,
+				E611DB875200FF28550125F3692EF2E4 /* PBXTargetDependency */,
 			);
 			name = LZCamera;
 			productName = LZCamera;
@@ -786,12 +774,12 @@
 		};
 		8522BCB1C9046588DB1D5181F3E00968 /* LZDependencyToolkit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 127662E642EEA1462E24CD5CCA15ECA0 /* Build configuration list for PBXNativeTarget "LZDependencyToolkit" */;
+			buildConfigurationList = 143EFE965B5236AE92E60880BCC3C113 /* Build configuration list for PBXNativeTarget "LZDependencyToolkit" */;
 			buildPhases = (
-				ADB31689E7B2BC039E2E672304051D34 /* Headers */,
-				A39AE910CBCD48BAB9E53C8F5AC7CA11 /* Sources */,
-				C1D4D2FDEFE0BE8E0747BDEED4018524 /* Frameworks */,
-				5F31F22AE8CDDE3C3AE5B7E6430140B1 /* Resources */,
+				03672CA8DDE1DB4E182EAB49369E15F5 /* Headers */,
+				5A03D7220621D6DF21DE1B7FCFBC6D90 /* Sources */,
+				FC6D39C32C4FD07063F53D90F40CBA94 /* Frameworks */,
+				A3900E043DB6E86DA9943039A30B619C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -832,10 +820,13 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5F31F22AE8CDDE3C3AE5B7E6430140B1 /* Resources */ = {
+		05236CE3D65671435791B79C60ABD3D2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C9086277FBF736EC3DCA20C104D14A2 /* LZCameraCode.bundle in Resources */,
+				2E51B285449216DE5EE1C13BDDB465DB /* LZCameraEditor.bundle in Resources */,
+				E310541B11AFFB54063A655BBE062D42 /* LZCameraMedia.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,14 +837,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9B1FAD92CF8D8CC65675815854670C73 /* Resources */ = {
+		A3900E043DB6E86DA9943039A30B619C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6519F2B6B90B3903980652CC7127A95B /* LZCameraCode.bundle in Resources */,
-				7861E16A77CC9435F02CF9BE79DF03B5 /* LZCameraCore.bundle in Resources */,
-				2BEEFAA33F0E3B9E308FDE0F3BD083C9 /* LZCameraEditor.bundle in Resources */,
-				A8697BD800B248BC39D2373A984703F7 /* LZCameraMedia.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,12 +854,48 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A39AE910CBCD48BAB9E53C8F5AC7CA11 /* Sources */ = {
+		5A03D7220621D6DF21DE1B7FCFBC6D90 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4E34DD8C8A41DA7B898BBFF1CD5AD54 /* LZDependencyToolkit-dummy.m in Sources */,
-				35C2D17AEB47E6602B62A353EEBDE7CA /* LZWeakTimer.m in Sources */,
+				CDBB4B1B980242457B55053A57EA9953 /* LZDependencyToolkit-dummy.m in Sources */,
+				59F9FBF3E6BD84EDF2A0D0DCB6DDC120 /* LZWeakTimer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8891AE9B662DB52D7611D8AB7F7EB929 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF50C647560E3FEB7A380139EAE8E01D /* LZCamera-dummy.m in Sources */,
+				3FB2F049564625B9E938A30D686D394A /* LZCameraCaptureFlashControl.m in Sources */,
+				1198E7CC8AF5564CE770B29C4A14337C /* LZCameraCaptureLongVideoButton.m in Sources */,
+				507DA1ECA758640565BA60FF64EDCCDC /* LZCameraCaptureProgressView.m in Sources */,
+				62306B7463E081A4E83B02DEAE3307B1 /* LZCameraCodeController.m in Sources */,
+				25D60251539129EA692111DDAE99B7FD /* LZCameraCodePreviewView.m in Sources */,
+				43EB7949F0EC94C651C45FB518D53744 /* LZCameraCodeScanView.m in Sources */,
+				7665E7436A253169133FF1A002E0C377 /* LZCameraCodeViewController.m in Sources */,
+				6F3DDF741BA22CBF4A166ADE5EC4B008 /* LZCameraConfig.m in Sources */,
+				490713704BE088BF91E85259BE31442C /* LZCameraController.m in Sources */,
+				A0E06D41B15A61CA5352060CA59E2257 /* LZCameraDefine.m in Sources */,
+				C5B22F3E778702009025A4DE1FB2FEAA /* LZCameraEditorMusicModel.m in Sources */,
+				2E48A138705387A5D3F3CD6E36799049 /* LZCameraEditorMusicThumbnailCell.m in Sources */,
+				FC8DFCB6C93CA1449B2C62E13DA694F9 /* LZCameraEditorVideoContainerView.m in Sources */,
+				909F47C2CBD98DEA7B2F0FF08C981D83 /* LZCameraEditorVideoMusicContainerView.m in Sources */,
+				502D2103AA93B6975A6F4AB423C508D1 /* LZCameraEditorVideoThumbnailCell.m in Sources */,
+				1E2CFC44313EB72C17B41FB8C899EDF8 /* LZCameraLoadingButton.m in Sources */,
+				ED6792C64508633A5E97E1970FA09D90 /* LZCameraMediaModelView.m in Sources */,
+				935B2441C16D1C22CFD034444F1A327D /* LZCameraMediaPreviewView.m in Sources */,
+				B45D68BAE6F5ECEBE4C12A54B4B20BDF /* LZCameraMediaPreviewViewController.m in Sources */,
+				7EBD2A8C0CC6A716CC84907B15F6CFDE /* LZCameraMediaStatusView.m in Sources */,
+				9D6C542797C14CAF616E138FA3D2C883 /* LZCameraMediaViewController.m in Sources */,
+				2AA1DCCB2D3358A02F60AEBBFED05DEB /* LZCameraPlayer.m in Sources */,
+				78428E558B2C194BE912F5D5B3A3C796 /* LZCameraPreviewView.m in Sources */,
+				C28A5FDAAA6A7688C88949B78AAB85B7 /* LZCameraToolkit.m in Sources */,
+				199E99D3E0B05C375842545618D9A231 /* LZCameraVideoEditMusicViewController.m in Sources */,
+				41072BF26EBB1903C593CF2886BA18D7 /* LZCameraVideoEditMusicViewController.storyboard in Sources */,
+				1C4CAFF4BDBF16071512EAEBA9332FA1 /* LZCameraVideoEditorViewController.m in Sources */,
+				A4B216CC81E6F00AB1C4B53D67416E19 /* LZCameraVideoEditorViewController.storyboard in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -892,41 +915,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F469FAEF50F769528ED730402C0627EB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				899E03BACF92B5428B2C8860C8F674B0 /* LZCamera-dummy.m in Sources */,
-				EC3C12EB35F0B22C3E1122798142004D /* LZCameraCaptureFlashControl.m in Sources */,
-				37D994EA5EF2E8D4FAD826A9FB74E42B /* LZCameraCaptureLongVideoButton.m in Sources */,
-				BFD623744CD41CAE4AFE4742D02BA1A5 /* LZCameraCaptureProgressView.m in Sources */,
-				0E6A96801AF8BEDA21E787DA0910CB35 /* LZCameraCodeController.m in Sources */,
-				6C4A5C2F77EA3A2DB9D4C4A8009452B4 /* LZCameraCodePreviewView.m in Sources */,
-				0FB61754542F315CCC67E37F31663A9E /* LZCameraCodeScanView.m in Sources */,
-				55F9FFB47A6EA4CBD7CBABBB276B29FB /* LZCameraCodeViewController.m in Sources */,
-				A173D7E9ED2D9208BD49F91B66BB6C02 /* LZCameraConfig.m in Sources */,
-				A4AAE2E89D0B562A6A4DDA472B81DF2B /* LZCameraController.m in Sources */,
-				50E046DB2B19B0BD3E23F61B715E1C02 /* LZCameraDefine.m in Sources */,
-				3D241385527E2E5D31D6E502477D9115 /* LZCameraEditorMusicModel.m in Sources */,
-				A1252EFD0FEAC3791C4B7B1EBF8BF72C /* LZCameraEditorMusicThumbnailCell.m in Sources */,
-				DC9D5298E5F05091B4E7957DAC7EB1CD /* LZCameraEditorVideoContainerView.m in Sources */,
-				771A41E49781132B9BA822E45F574E15 /* LZCameraEditorVideoMusicContainerView.m in Sources */,
-				2546210AA9D73B1F03248F3F85A98809 /* LZCameraEditorVideoThumbnailCell.m in Sources */,
-				98EF4C9787789B8846D08738D9C7ACF9 /* LZCameraLoadingButton.m in Sources */,
-				47C6B7475871FB2216E7BACF8CA3EBB8 /* LZCameraMediaModelView.m in Sources */,
-				77AFC04CB430129633943D51454662EF /* LZCameraMediaPreviewView.m in Sources */,
-				E6ADCB68786CC50164690304700F25FE /* LZCameraMediaPreviewViewController.m in Sources */,
-				468EF3CD8907ACBD4D4171502F96560B /* LZCameraMediaStatusView.m in Sources */,
-				2B1ACD42B5150CE6ACF0DB0B216357FC /* LZCameraMediaViewController.m in Sources */,
-				ABFF0BC97B7BDB2139BE963471F58942 /* LZCameraPlayer.m in Sources */,
-				D2875997B5D5100A8A8AD69FD83CFAB7 /* LZCameraPreviewView.m in Sources */,
-				01EE7512A9610B454503A86FD4ECB48D /* LZCameraToastViewController.m in Sources */,
-				1B682B84B75D2AFDE62AF6C7B89B3529 /* LZCameraToolkit.m in Sources */,
-				C23C780E52EAB54E34724C8B05042553 /* LZCameraVideoEditMusicViewController.m in Sources */,
-				7128E16C4DA136296F6A473AF3246D33 /* LZCameraVideoEditorViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -942,21 +930,82 @@
 			target = 2424F24C2BDE8A1B1B0460371CC62160 /* LZCamera */;
 			targetProxy = 12F0F94A73A6571A9EFDE7761819DD22 /* PBXContainerItemProxy */;
 		};
-		B5174E67764B871D9FA69C1269C70671 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LZDependencyToolkit;
-			target = 8522BCB1C9046588DB1D5181F3E00968 /* LZDependencyToolkit */;
-			targetProxy = 85338D09A31C6BA9D383E8CA0C99AEB1 /* PBXContainerItemProxy */;
-		};
 		BB3D1B0810334801FEE4EC628AC782D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-LZCamera_Example";
 			target = 62681703857914B31A8AE18E846B5B08 /* Pods-LZCamera_Example */;
 			targetProxy = AC86A64F437571F11141F5F006A4D269 /* PBXContainerItemProxy */;
 		};
+		E611DB875200FF28550125F3692EF2E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LZDependencyToolkit;
+			target = 8522BCB1C9046588DB1D5181F3E00968 /* LZDependencyToolkit */;
+			targetProxy = 1E634AF617E778A7B32E6E93AA8469E1 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3B243F7AB003908D49E71ECA92022659 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F49CAF93FBC00632B527917FDB9690B2 /* LZDependencyToolkit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit.modulemap";
+				PRODUCT_MODULE_NAME = LZDependencyToolkit;
+				PRODUCT_NAME = LZDependencyToolkit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		43F337F2AE845924BF9E181F2ABB54E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F49CAF93FBC00632B527917FDB9690B2 /* LZDependencyToolkit.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit.modulemap";
+				PRODUCT_MODULE_NAME = LZDependencyToolkit;
+				PRODUCT_NAME = LZDependencyToolkit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		4D8A2D455F548210108179FC36047A5C /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 67D2C19253C4D2985751D5E28E990A63 /* Pods-LZCamera_Tests.release.xcconfig */;
@@ -991,9 +1040,9 @@
 			};
 			name = Release;
 		};
-		7310F40E52CA6642314906DF3B520D14 /* Debug */ = {
+		6C70099C84B2EA34920DF2A18BDF5465 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74512EB53AEAC9FCEA1670C4422F6218 /* LZCamera.xcconfig */;
+			baseConfigurationReference = E6A3D9075DCB056F39D1E8CEEC3002C5 /* LZCamera.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1016,10 +1065,11 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		8F17DC3A99F99FBAD606CE6963886315 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1078,37 +1128,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
-		8FF041D1D60A7C034D71FCDCD04A2E0F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74512EB53AEAC9FCEA1670C4422F6218 /* LZCamera.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/LZCamera/LZCamera-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/LZCamera/LZCamera-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/LZCamera/LZCamera.modulemap";
-				PRODUCT_MODULE_NAME = LZCamera;
-				PRODUCT_NAME = LZCamera;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1176,9 +1195,9 @@
 			};
 			name = Debug;
 		};
-		9E3C2A07CE96623132A590E1C70BEB42 /* Debug */ = {
+		9F9B01E277E63A793B561D668745DA2B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F49CAF93FBC00632B527917FDB9690B2 /* LZDependencyToolkit.xcconfig */;
+			baseConfigurationReference = E6A3D9075DCB056F39D1E8CEEC3002C5 /* LZCamera.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -1189,14 +1208,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/LZCamera/LZCamera-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/LZCamera/LZCamera-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit.modulemap";
-				PRODUCT_MODULE_NAME = LZDependencyToolkit;
-				PRODUCT_NAME = LZDependencyToolkit;
+				MODULEMAP_FILE = "Target Support Files/LZCamera/LZCamera.modulemap";
+				PRODUCT_MODULE_NAME = LZCamera;
+				PRODUCT_NAME = LZCamera;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -1306,54 +1325,14 @@
 			};
 			name = Release;
 		};
-		DBF4B60240D11022E9E5524459911E4B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F49CAF93FBC00632B527917FDB9690B2 /* LZDependencyToolkit.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/LZDependencyToolkit/LZDependencyToolkit.modulemap";
-				PRODUCT_MODULE_NAME = LZDependencyToolkit;
-				PRODUCT_NAME = LZDependencyToolkit;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		09AE1822E3303231D1495D29215F2962 /* Build configuration list for PBXNativeTarget "LZCamera" */ = {
+		143EFE965B5236AE92E60880BCC3C113 /* Build configuration list for PBXNativeTarget "LZDependencyToolkit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7310F40E52CA6642314906DF3B520D14 /* Debug */,
-				8FF041D1D60A7C034D71FCDCD04A2E0F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		127662E642EEA1462E24CD5CCA15ECA0 /* Build configuration list for PBXNativeTarget "LZDependencyToolkit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9E3C2A07CE96623132A590E1C70BEB42 /* Debug */,
-				DBF4B60240D11022E9E5524459911E4B /* Release */,
+				43F337F2AE845924BF9E181F2ABB54E9 /* Debug */,
+				3B243F7AB003908D49E71ECA92022659 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1363,6 +1342,15 @@
 			buildConfigurations = (
 				A2578CC16D1BEC15B81743CAF4E8770D /* Debug */,
 				4D8A2D455F548210108179FC36047A5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4769BA5C03A828A2C428DD32D338F091 /* Build configuration list for PBXNativeTarget "LZCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F9B01E277E63A793B561D668745DA2B /* Debug */,
+				6C70099C84B2EA34920DF2A18BDF5465 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

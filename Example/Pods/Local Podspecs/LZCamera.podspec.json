@@ -63,7 +63,10 @@
     },
     {
       "name": "Editor",
-      "source_files": "LZCamera/Classes/Editor/**/*.{h,m}",
+      "source_files": [
+        "LZCamera/Classes/Editor/**/*.{h,m}",
+        "LZCamera/Classes/Editor/Controller/*.storyboard"
+      ],
       "public_header_files": "LZCamera/Classes/Editor/**/*.h",
       "resources": "LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle",
       "dependencies": {

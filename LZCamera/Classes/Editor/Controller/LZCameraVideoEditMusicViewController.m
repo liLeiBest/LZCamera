@@ -7,11 +7,10 @@
 
 #import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
-#import "LZCameraToastViewController.h"
 #import "LZCameraLoadingButton.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
-#import <LZDependencyToolkit/LZObject.h>
+#import <LZDependencyToolkit/LZWeakTimer.h>
 
 /** 背景音音量 */
 static CGFloat BGMVolume = 0.5f;
@@ -20,6 +19,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 @interface LZCameraVideoEditMusicViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 @property (weak, nonatomic) IBOutlet LZCameraEditorVideoMusicContainerView *musicView;
 
 /** 时长是否改变 */
@@ -107,10 +107,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 							}
 							[[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
 						} else {
-#warning 这里需要改
-							LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
-							[ctr showMessage:@"编辑失败，请重试"];
-							[self presentViewController:ctr animated:YES completion:nil];
+							[self showEditTip:@"编辑失败，请重试"];
 						}
 					}];
 	[self scheduledTimer];
@@ -120,9 +117,10 @@ static NSString * const AssetProgressKeyPath = @"progress";
 - (void)setupUI {
 	
 	self.title = @"加音乐";
+	self.tipLabel.hidden = YES;
+	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.videoURL];
 	[self configNavigationItem];
 	[self configEditorMusicContainerView];
-	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.videoURL];
 	[self buildPlayer];
 }
 
@@ -199,6 +197,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 									   CGFloat exportProgress = strongSelf.exportSession.progress;
 									   [strongSelf.musicView updateEditProgress:exportProgress];
 								   }];
+	[self.timer fire];
 }
 
 - (void)syncPlayBGMusic {
@@ -279,6 +278,31 @@ static NSString * const AssetProgressKeyPath = @"progress";
 	[self.timer invalidate];
 	[self.videoPlayer pause];
 	[self.BGMPlayer pause];
+}
+
+- (void)showEditTip:(NSString *)tipMessage {
+	
+	if (!tipMessage || tipMessage.length == 0) {
+		[self hideEditTip];
+		return;
+	}
+	
+	NSShadow *shadow = [[NSShadow alloc] init];
+	shadow.shadowBlurRadius = 10.0f;
+	shadow.shadowOffset = CGSizeMake(0, 0);
+	shadow.shadowColor = [UIColor blackColor];
+	NSDictionary *attributes = @{NSShadowAttributeName : shadow};
+	NSMutableAttributedString *attributedString =
+	[[NSMutableAttributedString alloc] initWithString:tipMessage attributes:attributes];
+	self.tipLabel.hidden = NO;
+	self.tipLabel.attributedText = attributedString;
+	if ([self canPerformAction:@selector(hideEditTip) withSender:nil]) {	
+		[self performSelector:@selector(hideEditTip) withObject:nil afterDelay:2.0f];
+	}
+}
+
+- (void)hideEditTip {
+	self.tipLabel.hidden = YES;
 }
 
 @end

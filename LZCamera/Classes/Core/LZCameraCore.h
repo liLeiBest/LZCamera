@@ -11,7 +11,6 @@
 #import "LZCameraController.h"
 #import "LZCameraPreviewView.h"
 #import "LZCameraPlayer.h"
-#import "LZCameraToastViewController.h"
 #import "LZCameraToolkit.h"
 
 #endif /* LZCameraCore_h */
