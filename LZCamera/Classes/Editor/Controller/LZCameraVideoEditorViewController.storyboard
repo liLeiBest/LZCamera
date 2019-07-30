@@ -19,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRJ-jD-dVG">
-                                <rect key="frame" x="0.0" y="44" width="414" height="713.5"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="708"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zuG-np-pGw">
-                                <rect key="frame" x="0.0" y="757.5" width="414" height="138.5"/>
+                                <rect key="frame" x="0.0" y="752" width="414" height="144"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Cw-N0-jme" customClass="LZCameraEditorVideoContainerView">
-                                <rect key="frame" x="0.0" y="757.5" width="414" height="104.5"/>
+                                <rect key="frame" x="0.0" y="752" width="414" height="110"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r0I-t1-vWL">
                                         <rect key="frame" x="10" y="10" width="394" height="60"/>
@@ -165,7 +165,10 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="拖动剪辑框可裁剪视频" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ff-PU-RaX">
-                                        <rect key="frame" x="10" y="80" width="394" height="14.5"/>
+                                        <rect key="frame" x="10" y="80" width="394" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="lbL-62-Ybz"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <color key="textColor" red="0.74901960784313726" green="0.74901960784313726" blue="0.74901960784313726" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
