@@ -22,6 +22,8 @@ static NSString * const AssetProgressKeyPath = @"progress";
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @property (weak, nonatomic) IBOutlet LZCameraEditorVideoMusicContainerView *musicView;
 
+/** 时长是否改变 */
+@property (assign, nonatomic) BOOL timeRangeChange;
 /** 视频播放器 */
 @property (strong, nonatomic) LZCameraPlayer *videoPlayer;
 /** 背景音乐播放器 */
@@ -103,7 +105,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 							if (self.VideoEditCallback) {
 								self.VideoEditCallback(outputFileURL);
 							}
-							[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+							[[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
 						} else {
 #warning 这里需要改
 							LZCameraToastViewController *ctr = [LZCameraToastViewController instance];
@@ -248,10 +250,17 @@ static NSString * const AssetProgressKeyPath = @"progress";
 		[self.videoPlayer.playerLayer removeFromSuperlayer];
 	}
 	self.videoPlayer = [LZCameraPlayer playerWithURL:self.videoURL];
+	
+	AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+	CMTimeRange assetTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
 	if (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIMERANGE_IS_INVALID(self.timeRange)) {
 		
-		AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
-		self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+		self.timeRange = assetTimeRange;
+		self.timeRangeChange = NO;
+	} else if (CMTimeRangeEqual(assetTimeRange, self.timeRange)) {
+		self.timeRangeChange = NO;
+	} else {
+		self.timeRangeChange = YES;
 	}
 	self.videoPlayer.timeRange = self.timeRange;
 	self.videoPlayer.playerLayer.frame = self.previewImgView.frame;

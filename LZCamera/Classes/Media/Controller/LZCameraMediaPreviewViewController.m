@@ -7,6 +7,7 @@
 
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraVideoEditorViewController.h"
+#import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 
@@ -92,18 +93,34 @@
 
 - (IBAction)sureDidClick:(id)sender {
 	
-	if (self.autoSaveToAlbum) {
-		if (self.editVideoURL) {
+	if (self.editVideoURL) {
+		if (self.autoSaveToAlbum) {
 			[LZCameraToolkit saveVideoToAblum:self.editVideoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
-				[self sureHandlerOnMainThread];
-			}];
-		} else if (self.editImage) {
-			[LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
-				[self sureHandlerOnMainThread];
 			}];
 		}
-	} else {
-		[self sureHandlerOnMainThread];
+		LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
+		ctr.videoURL = self.previewVideoURL;
+		ctr.timeRange = kCMTimeRangeZero;
+		__weak typeof(self) weakSelf = self;
+		ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
+			
+			typeof(weakSelf) strongSelf = weakSelf;
+			strongSelf.editVideoURL = editedVideoURL;
+			if (self.TapToSureHandler) {
+				self.TapToSureHandler(nil, self.editVideoURL);
+			}
+		};
+		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+		[self presentViewController:nav animated:YES completion:nil];
+	} else if (self.editImage) {
+		if (self.autoSaveToAlbum) {
+			[LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+			}];
+		}
+		if (self.TapToSureHandler) {
+			self.TapToSureHandler(self.editImage, nil);
+		}
+		[[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
 	}
 }
 
@@ -128,7 +145,8 @@
 	UIImage *editlImg = [self imageInBundle:@"media_preview_edit"];
 	[self.editBtn setImage:editlImg forState:UIControlStateNormal];
 	self.editBtn.layer.cornerRadius = 30.0f;
-	//	self.editBtn.backgroundColor = [UIColor clearColor];
+	self.editBtn.backgroundColor = [UIColor clearColor];
+	self.editBtn.hidden = YES;
 	
 	UIImage *surelImg = [self imageInBundle:@"media_preview_done"];
 	[self.sureBtn setImage:surelImg forState:UIControlStateNormal];
@@ -153,16 +171,6 @@
     NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
     UIImage *image = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
     return image;
-}
-
-- (void)sureHandlerOnMainThread {
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (self.TapToSureHandler) {
-			self.TapToSureHandler(self.editImage ,self.editVideoURL);
-		}
-		[self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-	});
 }
 
 @end

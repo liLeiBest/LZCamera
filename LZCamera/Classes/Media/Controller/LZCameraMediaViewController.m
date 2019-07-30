@@ -11,7 +11,7 @@
 #import "LZCameraMediaModelView.h"
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
-#import "LZCameraToolkit.h"
+#import "LZCameraVideoEditorViewController.h"
 #import <CoreServices/CoreServices.h>
 
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
@@ -54,6 +54,7 @@
     [self configCameraController];
     [self setupView];
     [self configCaptureTipView];
+	[self registerObserver];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,7 +71,6 @@
 }
 
 - (void)dealloc {
-    [self.cameraController stopSession];
     LZCameraLog();
 }
 
@@ -83,7 +83,7 @@
         ctr.previewVideoURL = self.videoURL;
 		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
         __weak typeof(self) weakSelf = self;
-		ctr.TapToSureHandler = ^(UIImage * _Nonnull editedImage, NSURL * _Nonnull editedVideoURL) {
+		ctr.TapToSureHandler = ^(UIImage * _Nullable editedImage, NSURL * _Nullable editedVideoURL) {
 			
             typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf.videoURL) {
@@ -120,7 +120,7 @@
     if (self.captureModel == LZCameraCaptureModelShortVideo || self.captureModel == LZCameraCaptureModelStillImageAndShortVideo) {
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
     }
-	cameraConfig.minVideoFreeDiskSpaceLimit = 1500000000;
+	cameraConfig.minVideoFreeDiskSpaceLimit = 150000000; // 150M
     self.cameraController = [LZCameraController cameraControllerWithConfig:cameraConfig];
     self.cameraController.delegate = self;
     NSError *error;
@@ -386,6 +386,12 @@
     self.captureTipLabel.hidden = YES;
 }
 
+- (void)registerObserver {
+	
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self selector:@selector(cameraDone) name:LZCameraObserver_Complete object:nil];
+}
+
 - (void)alertMessage:(NSString *)message handler:(void (^)(UIAlertAction *action))handler {
     
     UIAlertController *alertCtr =
@@ -396,6 +402,14 @@
                                                  style:UIAlertActionStyleDefault
                                                handler:handler]];
     [self presentViewController:alertCtr animated:YES completion:nil];
+}
+
+// MARK: - Observer
+- (void)cameraDone {
+	
+	[self.cameraController stopSession];
+	[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 // MARK: - Delegate
@@ -421,10 +435,22 @@
 	if (nil == error) {
 		
 		self.videoURL = destURL;
-		[self performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+		LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
+		ctr.videoURL = destURL;
+		ctr.videoMaximumDuration = 60.0f;
+		__weak typeof(self) weakSelf = self;
+		ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
+			
+			typeof(weakSelf) strongSelf = weakSelf;
+			if (strongSelf.CameraVideoCompletionHandler) {
+				
+				UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
+				strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
+			}
+		};
+		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+		[self presentViewController:nav animated:YES completion:nil];
 	}
-	
-	return;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

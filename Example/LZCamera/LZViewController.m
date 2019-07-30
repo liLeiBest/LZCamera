@@ -84,15 +84,8 @@
         
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.previewImgView.image = thumbnailImage;
-		NSString *videoSizeBefore = [LZCameraToolkit sizeForFile:videoURL.relativePath];
-		[LZCameraToolkit exportVideoAsset:videoURL
-							   presetName:AVAssetExportPresetMediumQuality
-						completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
-			
-							// 更新一下显示包的大小
-							NSString *videoSizeAfter = [LZCameraToolkit sizeForFile:videoURL.relativePath];
-							strongSelf.messageLabel.text = [NSString stringWithFormat:@"视频压缩前文件大小:%@\n视频压缩后文件大小:%@", videoSizeBefore, videoSizeAfter];
-						}];
+		NSString *videosize = [LZCameraToolkit sizeForFile:videoURL.relativePath];
+		strongSelf.messageLabel.text = [NSString stringWithFormat:@"视频文件大小:%@", videosize];
     };
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
 }

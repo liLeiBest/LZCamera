@@ -42,6 +42,8 @@ typedef NS_ENUM(NSUInteger, LZCameraAssetType) {
 
 /** 错误域标识 */
 FOUNDATION_EXPORT NSString * _Nullable const LZCameraErrorDomain;
+/** 监听完成 */
+FOUNDATION_EXPORT NSString * _Nullable const LZCameraObserver_Complete;
 
 /** 捕捉静态图片完成回调 */
 typedef void(^LZCameraCaptureStillImageCompletionHandler)(UIImage * _Nonnull stillImage, NSError * _Nullable error);

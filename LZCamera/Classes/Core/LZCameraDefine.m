@@ -6,6 +6,7 @@
 //
 
 NSString * const LZCameraErrorDomain = @"com.lzcamera.LZCameraErrorDomain";
+NSString * const LZCameraObserver_Complete = @"lzcamera_observer_complete";
 
 void lzPlaySound(NSString *soundName, NSString *inBundle) {
     

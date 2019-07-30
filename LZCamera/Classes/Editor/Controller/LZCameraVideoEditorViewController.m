@@ -8,7 +8,6 @@
 #import "LZCameraVideoEditorViewController.h"
 #import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraVideoEditMusicViewController.h"
-#import "LZCameraToastViewController.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 

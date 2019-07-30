@@ -191,7 +191,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	NSMutableArray *thumbnails = [NSMutableArray array];
 	
 	__block NSUInteger thumbnailCount = 0;
-	__block NSUInteger failCount = 0;
 	AVAssetImageGeneratorCompletionHandler generatorHandler = ^(CMTime requestedTime, CGImageRef  _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
 		
 		switch (result) {
@@ -204,7 +203,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 			case AVAssetImageGeneratorFailed: {
 				
 				LZCameraLog(@"第 %lu 张缩略图获取失败:%@", (unsigned long)thumbnailCount, error.localizedDescription);
-				failCount++;
 			}
 				break;
 			case AVAssetImageGeneratorCancelled: {
@@ -221,13 +219,13 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 			});
 		}
 		thumbnailCount ++;
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (thumbnailCount + failCount == times.count) {
-				if (completionHandler) {
+		if (thumbnailCount == times.count) {
+			if (completionHandler) {
+				dispatch_async(dispatch_get_main_queue(), ^{
 					completionHandler(thumbnails);
-				}
+				});
 			}
-		});
+		}
 	};
 	[assetImageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:generatorHandler];
 	return assetImageGenerator;
