@@ -86,6 +86,7 @@
         strongSelf.previewImgView.image = thumbnailImage;
 		NSString *videosize = [LZCameraToolkit sizeForFile:videoURL.relativePath];
 		strongSelf.messageLabel.text = [NSString stringWithFormat:@"视频文件大小:%@", videosize];
+		[LZCameraToolkit deleteFile:videoURL];
     };
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
 }

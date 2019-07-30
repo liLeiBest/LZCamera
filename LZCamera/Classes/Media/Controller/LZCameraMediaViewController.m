@@ -410,6 +410,7 @@
 	[self.cameraController stopSession];
 	[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[LZCameraToolkit deleteFile:self.videoURL];
 }
 
 // MARK: - Delegate
