@@ -7,7 +7,6 @@
 
 #import "LZCameraVideoEditMusicViewController.h"
 #import "LZCameraEditorVideoMusicContainerView.h"
-#import "LZCameraLoadingButton.h"
 #import "LZCameraPlayer.h"
 #import "LZCameraToolkit.h"
 #import <LZDependencyToolkit/LZWeakTimer.h>
@@ -32,8 +31,6 @@ static NSString * const AssetProgressKeyPath = @"progress";
 @property (strong, nonatomic) LZCameraEditorMusicModel *musicModel;
 /** 导出会话 */
 @property (strong, nonatomic) AVAssetExportSession *exportSession;
-/** 加载视图 */
-@property (weak, nonatomic) LZCameraLoadingButton *doneLoadingItem;
 /** 计时器 */
 @property (strong, nonatomic) LZWeakTimer *timer;
 
@@ -85,6 +82,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 
 - (void)doneDidClick {
 	
+	self.navigationItem.rightBarButtonItem.enabled = NO;
 	[self stopPlay];
 	[self.musicView updateEditEnable:NO];
 	self.exportSession =
@@ -97,7 +95,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 						   presetName:AVAssetExportPresetMediumQuality
 					completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
 						
-						[self.doneLoadingItem animationFinish];
+						self.navigationItem.rightBarButtonItem.enabled = YES;
 						[self.timer invalidate];
 						[self.musicView updateEditProgress:1.0f];
 						[self.musicView updateEditEnable:YES];
@@ -135,27 +133,11 @@ static NSString * const AssetProgressKeyPath = @"progress";
 									 style:UIBarButtonItemStylePlain
 									target:self
 									action:@selector(popDidClick)];
-	
-	NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-	UIColor *titleColor = nil;
-	if (nil == attributes) {
-		
-		titleColor = self.navigationController.navigationBar.tintColor ?:[UIColor blackColor];
-		attributes = attributes?:@{NSFontAttributeName : [UIFont systemFontOfSize:17],
-								   NSForegroundColorAttributeName :  titleColor,
-								   };
-	} else {
-		titleColor = [attributes objectForKey:NSForegroundColorAttributeName];
-	}
-	NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"完成" attributes:attributes];
-	CGSize size = title.size;
-	LZCameraLoadingButton *loadingBtn = [[LZCameraLoadingButton alloc] initWithTitle:title shapColor:[UIColor clearColor] frame:CGRectMake(0, 0, size.width + 5, 30)];
-	loadingBtn.circleColor = titleColor;
-	loadingBtn.maskColor = [UIColor clearColor];
-	loadingBtn.loadColor = titleColor;
-	[loadingBtn addTarget:self action:@selector(doneDidClick)];
-	self.doneLoadingItem = loadingBtn;
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadingBtn];
+	self.navigationItem.rightBarButtonItem =
+	[[UIBarButtonItem alloc] initWithTitle:@"完成"
+									 style:UIBarButtonItemStylePlain
+									target:self
+									action:@selector(doneDidClick)];
 }
 
 - (void)configEditorMusicContainerView {
