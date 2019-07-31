@@ -41,22 +41,19 @@
 - (void)updateEditProgress:(CGFloat)progress {
 	
 	NSLog(@"进度:%f", progress);
-	UIViewAnimationOptions options = UIViewAnimationOptionRepeat | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
-	[UIView animateWithDuration:1.0f
+	UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+	[UIView animateWithDuration:0.5f
 						  delay:.0
 						options:options
 					 animations:^{
 						 [self->progressView setProgress:progress animated:YES];
 					 } completion:^(BOOL finished) {
-						 if (finished) {
-							 if (1 <= progress) {
-								 [UIView animateWithDuration:0.25 animations:^{
-								 } completion:^(BOOL finished) {
-									 self->progressView.progress = 0.0;
-								 }];
-							 }
-						 }
 					 }];
+	if (1 <= progress) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			[self->progressView setProgress:0.0 animated:NO];
+		});
+	}
 }
 
 - (void)updateEditEnable:(BOOL)enable {
