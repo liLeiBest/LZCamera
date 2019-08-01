@@ -40,6 +40,23 @@ typedef NS_ENUM(NSUInteger, LZCameraAssetType) {
 	LZCameraAssetTypeM4A,
 };
 
+/**
+ 水印位置
+
+ - LZCameraWatermarkLocationCenter: 中心，默认
+ - LZCameraWatermarkLocationLeftTop: 左上
+ - LZCameraWatermarkLocationLeftBottom: 左下
+ - LZCameraWatermarkLocationRightTop: 右上
+ - LZCameraWatermarkLocationRightBottom: 右下
+ */
+typedef NS_ENUM(NSUInteger, LZCameraWatermarkLocation) {
+	LZCameraWatermarkLocationCenter,
+	LZCameraWatermarkLocationLeftTop,
+	LZCameraWatermarkLocationLeftBottom,
+	LZCameraWatermarkLocationRightBottom,
+	LZCameraWatermarkLocationRightTop,
+};
+
 /** 错误域标识 */
 FOUNDATION_EXPORT NSString * _Nullable const LZCameraErrorDomain;
 /** 监听完成 */

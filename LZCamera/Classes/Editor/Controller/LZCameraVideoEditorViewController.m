@@ -158,7 +158,7 @@
 	[LZCameraToolkit thumbnailBySecondForVideoAsset:self.editVideoURL
 										   interval:interval
 											maxSize:CGSizeMake(60, 0)
-									progressHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
+									progressHandler:^(NSArray<UIImage *> * _Nullable thumbnails, CGFloat progress) {
 										
 										typeof(weakSelf) strongSelf = weakSelf;
 										[strongSelf.videoClipView updateVideoThumbnails:thumbnails complete:NO];

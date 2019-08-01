@@ -40,17 +40,20 @@
 // MARK: - Public
 - (void)updateEditProgress:(CGFloat)progress {
 	
-	NSLog(@"进度:%f", progress);
-	UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+	LZCameraLog(@"视频合成进度:%f", progress);
+	UIViewAnimationOptions options =
+	UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
 	[UIView animateWithDuration:0.5f
 						  delay:.0
 						options:options
 					 animations:^{
-						 [self->progressView setProgress:progress animated:YES];
+						 
+						 BOOL animated = progress > 0;
+						 [self->progressView setProgress:progress animated:animated];
 					 } completion:^(BOOL finished) {
 					 }];
 	if (1 <= progress) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 			[self->progressView setProgress:0.0 animated:NO];
 		});
 	}

@@ -12,7 +12,9 @@
 #import <LZDependencyToolkit/LZWeakTimer.h>
 
 /** 背景音音量 */
-static CGFloat BGMVolume = 0.5f;
+static CGFloat BGMVolume = 1.0f;
+/** 原音音量 */
+static CGFloat VoiceVolume = 0.5f;
 /** 监听资源导出进度的 Key */
 static NSString * const AssetProgressKeyPath = @"progress";
 @interface LZCameraVideoEditMusicViewController ()
@@ -85,12 +87,13 @@ static NSString * const AssetProgressKeyPath = @"progress";
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 	[self stopPlay];
 	[self.musicView updateEditEnable:NO];
+	[self cancelExport];
 	self.exportSession =
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
 						 audioPathURL:[self fetchBGMURL]
 						originalAudio:YES
-					   originalVolume:1.0
+					   originalVolume:VoiceVolume
 						  audioVolume:BGMVolume
 						   presetName:AVAssetExportPresetMediumQuality
 					completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
@@ -185,18 +188,19 @@ static NSString * const AssetProgressKeyPath = @"progress";
 - (void)syncPlayBGMusic {
 	
 	[self stopPlay];
+	[self cancelExport];
 	[self.musicView updateEditEnable:NO];
 	self.exportSession =
 	[LZCameraToolkit cutAsset:[self fetchBGMURL]
 						 type:LZCameraAssetTypeM4A
 					 timeRane:CMTimeRangeMake(kCMTimeZero, self.timeRange.duration)
 			completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
-				
-				[self.timer invalidate];
-				[self.musicView updateEditProgress:1.0f];
+
 				[self.musicView updateEditEnable:YES];
 				if (success) {
 					
+					[self.timer invalidate];
+					[self.musicView updateEditProgress:1.0f];
 					NSError *error;
 					self.BGMPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:outputFileURL error:&error];
 					if (error == nil) {
@@ -206,9 +210,20 @@ static NSString * const AssetProgressKeyPath = @"progress";
 						[self.BGMPlayer prepareToPlay];
 						[self startPlay];
 					}
+				} else {
+					[self.musicView updateEditProgress:0.0f];
 				}
 			}];
 	[self scheduledTimer];
+}
+
+- (void)cancelExport {
+	
+	if (self.exportSession &&
+		(self.exportSession.status ==  AVAssetExportSessionStatusWaiting ||
+		 self.exportSession.status == AVAssetExportSessionStatusExporting)) {
+			[self.exportSession cancelExport];
+	}
 }
 
 - (NSURL *)fetchBGMURL {

@@ -54,7 +54,7 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 + (AVAssetImageGenerator *)thumbnailBySecondForVideoAsset:(NSURL *)assetURL
 												 interval:(CMTimeValue)interval
 												  maxSize:(CGSize)maxSize
-										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))progressHandler
+										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails, CGFloat progress))progressHandler
 								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable thumbnails))completionHandler;
 
 /**
@@ -104,6 +104,24 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 							   audioVolume:(CGFloat)audioVolume
 								presetName:(NSString *)presetName
 						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable outputFileURL, BOOL success))completionHandler;
+
+/**
+ 水印
+
+ @param assetURL 视频原文件
+ @param watermarkText 水印文本
+ @param textLocation 文本位置
+ @param watermarkImage 水印图片
+ @param imageLocation 图片位置
+ @param completionHandler 完成回调
+ @return AVAssetExportSession
+ */
++ (AVAssetExportSession *)watermarkForVideoAsset:(NSURL *)assetURL
+								   watermarkText:(NSAttributedString * _Nullable)watermarkText
+									textLocation:(LZCameraWatermarkLocation)textLocation
+								  watermarkImage:(UIImage * _Nullable)watermarkImage
+								   imageLocation:(LZCameraWatermarkLocation)imageLocation
+							   completionHandler:(void (^ _Nullable)(NSURL * _Nullable outputFileURL, BOOL success))completionHandler;
 
 /**
  生成唯一的视频文件路径

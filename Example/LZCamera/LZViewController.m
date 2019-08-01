@@ -13,6 +13,11 @@
 @interface LZViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *previewImgView;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+
+/** 视频播放器 */
+@property (strong, nonatomic) LZCameraPlayer *videoPlayer;
+@property (strong, nonatomic) NSURL *videoURL;
+
 @end
 
 @implementation LZViewController
@@ -23,9 +28,33 @@
 	
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	
+	[self.videoPlayer pause];
+}
+
 // MARK: - UI Action
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
 	
+	NSDictionary *attrubutes = @{NSFontAttributeName : [UIFont systemFontOfSize:30],
+								 NSForegroundColorAttributeName : [UIColor whiteColor],
+								 };
+	NSAttributedString *attributedString =
+	[[NSAttributedString alloc] initWithString:@"猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁" attributes:attrubutes];
+	UIImage *image = [UIImage imageNamed:@"editor_origin_music"
+								inBundle:[NSBundle mainBundle]
+		   compatibleWithTraitCollection:nil];
+	[LZCameraToolkit watermarkForVideoAsset:self.videoURL
+							  watermarkText:attributedString
+							   textLocation:LZCameraWatermarkLocationLeftTop
+							 watermarkImage:image
+							  imageLocation:LZCameraWatermarkLocationLeftTop
+						  completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
+		
+							  self.videoURL = outputFileURL;
+							  [self buildVideoPlayer];
+						  }];
 }
 
 - (IBAction)scanCodeDidClick:(id)sender {
@@ -83,12 +112,27 @@
     ctr.CameraVideoCompletionHandler = ^(UIImage * _Nonnull thumbnailImage, NSURL * _Nonnull videoURL) {
         
         typeof(weakSelf) strongSelf = weakSelf;
+		strongSelf.videoURL = videoURL;
         strongSelf.previewImgView.image = thumbnailImage;
 		NSString *videosize = [LZCameraToolkit sizeForFile:videoURL.relativePath];
 		strongSelf.messageLabel.text = [NSString stringWithFormat:@"视频文件大小:%@", videosize];
-		[LZCameraToolkit deleteFile:videoURL];
+		[strongSelf buildVideoPlayer];
     };
     [self.navigationController presentViewController:ctr animated:YES completion:nil];
 }
 
+- (void)buildVideoPlayer {
+	
+	if (self.videoPlayer) {
+		
+		[self.videoPlayer pause];
+		[self.videoPlayer.playerLayer removeFromSuperlayer];
+	}
+	self.videoPlayer = [LZCameraPlayer playerWithURL:self.videoURL];
+	AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+	self.videoPlayer.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+	self.videoPlayer.playerLayer.frame = self.previewImgView.frame;
+	[self.view.layer insertSublayer:self.videoPlayer.playerLayer above:self.previewImgView.layer];
+	[self.videoPlayer play];
+}
 @end

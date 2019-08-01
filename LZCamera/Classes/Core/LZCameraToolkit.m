@@ -167,7 +167,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 + (AVAssetImageGenerator *)thumbnailBySecondForVideoAsset:(NSURL *)assetURL
 												 interval:(CMTimeValue)interval
 												  maxSize:(CGSize)maxSize
-										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))progressHandler
+										  progressHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable, CGFloat))progressHandler
 								   		completionHandler:(void (^ _Nullable)(NSArray<UIImage *> * _Nullable))completionHandler {
 	
 	AVAsset *asset = asset = [AVAsset assetWithURL:assetURL];
@@ -213,8 +213,11 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		}
 		
 		if (progressHandler) {
+			
+			CGFloat progress = thumbnails.count * 1.0f / times.count;
+			LZCameraLog(@"视频缩略图生成进度:%f", progress);
 			dispatch_async(dispatch_get_main_queue(), ^{
-				progressHandler(thumbnails);
+				progressHandler(thumbnails, progress);
 			});
 		}
 		thumbnailCount ++;
@@ -280,19 +283,27 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 						 completionHandler:(void (^ _Nullable)(NSURL * _Nullable, BOOL))completionHandler {
 	
 	AVAsset *asset = [AVAsset assetWithURL:assetURL];
-	AVMutableComposition *composition = [self composingAudioToAsset:asset
-														  timeRange:timeRange
-														   audioURL:audioPathURL
-														   mixAudio:originalAudio
-													 originalVolume:originalVolume
-														audioVolume:audioVolume];
+	AVMutableComposition *composition =
+	[self composingAudioToAsset:asset
+					  timeRange:timeRange
+					   audioURL:audioPathURL
+					   mixAudio:originalAudio
+				 originalVolume:originalVolume
+					audioVolume:audioVolume];
 	
-	AVMutableVideoComposition *videoComposition = [self videoCompositionWithComposition:composition asset:asset];
+	AVMutableVideoComposition *videoComposition =
+	[self videoCompositionWithComposition:composition asset:asset];
 	
 	AVAudioMix *audioMix = nil;
-	NSArray *audioCompositionTracks = [composition tracksWithMediaType:AVMediaTypeAudio];
-	if (1 < audioCompositionTracks.count) {
-		audioMix = [self audioMixWithAudioCompositionTracks:audioCompositionTracks originalVolume:originalVolume audioVolume:audioVolume atTime:kCMTimeZero];
+	if (originalAudio) {
+		
+		NSArray *audioCompositionTracks = [composition tracksWithMediaType:AVMediaTypeAudio];
+		if (1 < audioCompositionTracks.count) {
+			audioMix = [self audioMixWithAudioCompositionTracks:audioCompositionTracks
+												 originalVolume:originalVolume
+													audioVolume:audioVolume
+														 atTime:kCMTimeZero];
+		}
 	}
 	
 	return [self exportAsset:composition
@@ -301,6 +312,38 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 					audioMix:audioMix
 				   timeRange:timeRange
 				  presetName:presetName
+		   completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
+			   if (completionHandler) {
+				   completionHandler(outputFileURL, success);
+			   }
+		   }];
+}
+
++ (AVAssetExportSession *)watermarkForVideoAsset:(NSURL *)assetURL
+								   watermarkText:(NSAttributedString * _Nullable)watermarkText
+									textLocation:(LZCameraWatermarkLocation)textLocation
+								  watermarkImage:(UIImage * _Nullable)watermarkImage
+								   imageLocation:(LZCameraWatermarkLocation)imageLocation
+							   completionHandler:(void (^)(NSURL * _Nullable, BOOL))completionHandler {
+	
+	AVAsset *asset = [AVAsset assetWithURL:assetURL];
+	AVMutableComposition *composition = [self compositionForAsset:asset];
+	
+	AVMutableVideoComposition *videoComposition =
+	[self videoCompositionWithComposition:composition asset:asset];
+	
+	videoComposition = [self watermarkWithVideoComposition:videoComposition
+											 watermarkText:watermarkText
+											  textLocation:textLocation
+											watermarkImage:watermarkImage
+											 imageLocation:imageLocation];
+	
+	return [self exportAsset:composition
+						type:LZCameraAssetTypeMov
+			videoComposition:videoComposition
+					audioMix:nil
+				   timeRange:CMTimeRangeMake(kCMTimeZero, asset.duration)
+				  presetName:AVAssetExportPresetMediumQuality
 		   completionHandler:^(NSURL * _Nonnull outputFileURL, BOOL success, NSError * _Nullable error) {
 			   if (completionHandler) {
 				   completionHandler(outputFileURL, success);
@@ -559,33 +602,18 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 								 originalVolume:(CGFloat)originalVolume
 									audioVolume:(CGFloat)audioVolume {
 	
-	NSArray *videoAssetTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-	AVAssetTrack *videoAssetTrack = nil;
-	if (0 < videoAssetTracks.count) {
-		videoAssetTrack = [videoAssetTracks firstObject];
-	}
-	
-	AVMutableComposition *assetComposition = [AVMutableComposition composition];
-	NSError *error = nil;
-	
-	CMTimeRange assetTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
-	if (videoAssetTrack) {
+	AVMutableComposition *assetComposition = [self compositionForAsset:asset];
+	if (NO == mixAudio) {
 		
-		AVMutableCompositionTrack *videoCompositionTrack =
-		[assetComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-		[videoCompositionTrack insertTimeRange:assetTimeRange ofTrack:videoAssetTrack atTime:kCMTimeZero error:&error];
-		if (error) {
-			LZCameraLog(@"资源合成-添加原视频轨道失败:%@", error);
+		NSArray *audioCompositionTracks = [assetComposition tracksWithMediaType:AVMediaTypeAudio];
+		for (AVMutableCompositionTrack *audioCompositionTrack in audioCompositionTracks) {
+			[assetComposition removeTrack:audioCompositionTrack];
 		}
 	}
 	
 	AVAsset *audioAsset = [AVAsset assetWithURL:audioURL];
 	NSArray *audioAssetTracks = [audioAsset tracksWithMediaType:AVMediaTypeAudio];
-	AVAssetTrack *audioAssetTrack = nil;
 	if (0 < audioAssetTracks.count) {
-		audioAssetTrack = [audioAssetTracks firstObject];
-	}
-	if (audioAssetTrack) {
 		
 		CMTime assetTime = timeRange.duration;
 		CMTime audioTime = audioAsset.duration;
@@ -593,8 +621,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		CMTimeShow(assetTime);
 		CMTimeShow(audioTime);
 #endif
-		
-		// 特殊处理视频比音频长的情况
 		CMTime tmpTime = kCMTimeZero;
 		static int32_t multi = 0;
 		do {
@@ -608,6 +634,9 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		AVMutableCompositionTrack *audioCompositionTrack =
 		[assetComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
 		audioCompositionTrack.preferredVolume = audioVolume;
+		NSError *error = nil;
+		
+		AVAssetTrack *audioAssetTrack = [audioAssetTracks firstObject];
 		for (int i = 0; i < multi; i++) {
 			
 			CMTime start = 0 == i ? timeRange.start : kCMTimeInvalid;
@@ -623,17 +652,35 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		}
 		multi = 0;
 	}
+	return assetComposition;
+}
+
++ (AVMutableComposition *)compositionForAsset:(AVAsset *)asset {
 	
-	if (mixAudio) {
-		
-		NSArray *audioAssetTracks = [asset tracksWithMediaType:AVMediaTypeAudio];
-		if (0 < audioAssetTracks.count) {
+	AVMutableComposition *assetComposition = [AVMutableComposition composition];
+	CMTimeRange assetTimeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+	NSError *error = nil;
+	
+	NSArray *videoAssetTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+	if (0 < videoAssetTracks.count) {
+		for (AVAssetTrack *videoAssetTrack in videoAssetTracks) {
 			
-			AVAssetTrack *originalAudioAssetTrack = [audioAssetTracks firstObject];
+			AVMutableCompositionTrack *videoCompositionTrack =
+			[assetComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+			[videoCompositionTrack insertTimeRange:assetTimeRange ofTrack:videoAssetTrack atTime:kCMTimeZero error:&error];
+			if (error) {
+				LZCameraLog(@"资源合成-添加原视频轨道失败:%@", error);
+			}
+		}
+	}
+	
+	NSArray *audioAssetTracks = [asset tracksWithMediaType:AVMediaTypeAudio];
+	if (0 < audioAssetTracks.count) {
+		for (AVAssetTrack *originalAudioAssetTrack in audioAssetTracks) {
+			
 			AVMutableCompositionTrack *originalAudioCompositionTrack =
 			[assetComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
 			[originalAudioCompositionTrack insertTimeRange:assetTimeRange ofTrack:originalAudioAssetTrack atTime:kCMTimeZero error:&error];
-				originalAudioCompositionTrack.preferredVolume = originalVolume;
 			if (error) {
 				LZCameraLog(@"资源合成-添加原音音轨失败:%@", error);
 			}
@@ -646,12 +693,10 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 														 asset:(AVAsset *)asset {
 	
 	AVMutableVideoComposition *videoComposition = nil;
-	
+
 	NSArray *compositionTranks = [composition tracksWithMediaType:AVMediaTypeVideo];
 	if (0 < compositionTranks.count) {
-		
-		AVMutableCompositionTrack *videoCompositionTrack = [compositionTranks firstObject];
-		
+
 		CGFloat degree = 0.0f;
 		NSArray *videoAssetTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
 		if (0 < videoAssetTracks.count) {
@@ -659,64 +704,33 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 			AVAssetTrack *videoAssetTrack = [videoAssetTracks firstObject];
 			degree = [self getVideoDegree:videoAssetTrack];
 		}
-		CGSize naturalSize = videoCompositionTrack.naturalSize;
 		CGSize renderSize = CGSizeMake(MAXFLOAT, MAXFLOAT);
-		CGFloat videoWidth = (degree == 0 || degree == M_PI) ? naturalSize.width : naturalSize.height;
-		CGFloat videoHeight = (degree == 0 || degree == M_PI) ? naturalSize.height : naturalSize.width;
-		CGSize cropSize = CGSizeMake(MIN(videoWidth, renderSize.width), MIN(videoHeight, renderSize.height));
-		CGAffineTransform mixedTransform = [self assetTransformByDegree:degree naturalSize:naturalSize renderSize:cropSize];
-		
-		AVMutableVideoCompositionLayerInstruction *layerInstruction =
-		[AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
-		[layerInstruction setOpacity:0.0 atTime:composition.duration];
-		[layerInstruction setTransform:mixedTransform atTime:kCMTimeZero];
-		
-		AVMutableVideoCompositionInstruction *instruction =
-		[AVMutableVideoCompositionInstruction videoCompositionInstruction];
-		instruction.timeRange = CMTimeRangeMake(kCMTimeZero, composition.duration);
-		instruction.layerInstructions = @[layerInstruction];
-		
-		videoComposition = [AVMutableVideoComposition videoComposition];
-		videoComposition.frameDuration = CMTimeMake(1, 30);
-		videoComposition.renderScale = 1.0;
-		videoComposition.renderSize = cropSize;
-		videoComposition.instructions = @[instruction];
-		
-//		/** 水印 */
-//		CGSize videoSize = cropSize;
-//		CATextLayer *textLayer = [CATextLayer layer];
-//
-//		textLayer.backgroundColor = [UIColor redColor].CGColor;
-//		textLayer.string = @"123456";
-//		textLayer.foregroundColor = [UIColor whiteColor].CGColor;
-//		textLayer.bounds = CGRectMake(0, 0, videoSize.width * 0.5, videoSize.height * 0.5);
-//
-//		CALayer *baseLayer = [CALayer layer];
-//		[baseLayer addSublayer:textLayer];
-//		baseLayer.position = CGPointMake(videoComposition.renderSize.width/2, videoComposition.renderSize.height/2);
-//
-//		CALayer *videoLayer = [CALayer layer];
-//		videoLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-//		CALayer *parentLayer = [CALayer layer];
-//		parentLayer.frame = CGRectMake(0, 0, videoSize.width, videoSize.height);
-//
-//		[parentLayer addSublayer:videoLayer];
-//		[parentLayer addSublayer:baseLayer];
-//		AVVideoCompositionCoreAnimationTool *animalTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
-//
-//		CABasicAnimation *baseAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
-//		baseAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(100, 100)];
-//		baseAnimation.toValue = [NSValue valueWithCGPoint:CGPointMake(200, 200)];
-//		baseAnimation.repeatCount = 5;
-//		baseAnimation.beginTime = AVCoreAnimationBeginTimeAtZero;
-//		baseAnimation.duration = 1;
-//		baseAnimation.removedOnCompletion = NO;
-//		[textLayer addAnimation:baseAnimation forKey:@"hehe"];
-//		
-//		videoComposition.animationTool = animalTool;
+		for (AVMutableCompositionTrack *videoCompositionTrack in compositionTranks) {
+			
+			CGSize naturalSize = videoCompositionTrack.naturalSize;
+			CGFloat videoWidth = (degree == 0 || degree == M_PI) ? naturalSize.width : naturalSize.height;
+			CGFloat videoHeight = (degree == 0 || degree == M_PI) ? naturalSize.height : naturalSize.width;
+			CGSize cropSize = CGSizeMake(MIN(videoWidth, renderSize.width), MIN(videoHeight, renderSize.height));
+			CGAffineTransform mixedTransform = [self assetTransformByDegree:degree naturalSize:naturalSize renderSize:cropSize];
+			
+			AVMutableVideoCompositionLayerInstruction *layerInstruction =
+			[AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
+			[layerInstruction setOpacity:0.0 atTime:composition.duration];
+			[layerInstruction setTransform:mixedTransform atTime:kCMTimeZero];
+			
+			AVMutableVideoCompositionInstruction *instruction =
+			[AVMutableVideoCompositionInstruction videoCompositionInstruction];
+			instruction.timeRange = CMTimeRangeMake(kCMTimeZero, composition.duration);
+			instruction.layerInstructions = @[layerInstruction];
+			
+			videoComposition = [AVMutableVideoComposition videoComposition];
+			videoComposition.frameDuration = CMTimeMake(1, 30);
+			videoComposition.renderScale = 1.0;
+			videoComposition.renderSize = cropSize;
+			videoComposition.instructions = @[instruction];
+		}
 	}
 	return videoComposition;
-	
 }
 
 + (CGFloat)getVideoDegree:(AVAssetTrack *)videoTrack {
@@ -783,6 +797,182 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		mixedTransform = CGAffineTransformMakeTranslation(x, y);
 	}
 	return mixedTransform;
+}
+
++ (AVMutableVideoComposition *)watermarkWithVideoComposition:(AVMutableVideoComposition *)videoComposition
+											   watermarkText:(NSAttributedString *)watermarkText
+												textLocation:(LZCameraWatermarkLocation)textLocation
+											  watermarkImage:(UIImage *)watermarkImage
+											   imageLocation:(LZCameraWatermarkLocation)imageLocation {
+	
+	CGSize videoSize = videoComposition.renderSize;
+	
+	CATextLayer *textLayer = nil;
+	if (watermarkText && watermarkText.length) {
+		
+		textLayer = [CATextLayer layer];
+		textLayer.truncationMode = kCATruncationEnd;
+		textLayer.wrapped = NO;
+		textLayer.backgroundColor = [UIColor clearColor].CGColor;
+		textLayer.string = watermarkText;
+	}
+	
+	CALayer *imageLayer = nil;
+	if (watermarkImage) {
+		
+		imageLayer = [CALayer layer];
+		imageLayer.contents = (id)watermarkImage.CGImage;
+	}
+	
+	CALayer *overlayLayer = [CALayer layer];
+	overlayLayer.frame = (CGRect){CGPointZero, videoSize};
+	if (textLayer) {
+		[overlayLayer addSublayer:textLayer];
+	}
+	if (imageLayer) {
+		[overlayLayer addSublayer:imageLayer];
+	}
+	
+	CGFloat margin = 10.0f;
+	CGFloat spacing = 10.0;
+	CGFloat x,y,w,h; // 坐标起点为左下角，向右为x正，向上为y正
+	if (imageLayer) {
+		
+		w = watermarkImage.size.width;
+		h = watermarkImage.size.height;
+		switch (imageLocation) {
+			case LZCameraWatermarkLocationLeftTop:
+				
+				x = margin;
+				y = videoSize.height - h - margin;
+				imageLayer.frame = CGRectMake(x, y, w, h);
+				break;
+			case LZCameraWatermarkLocationLeftBottom:
+				
+				x = margin;
+				y = margin;
+				imageLayer.frame = CGRectMake(x, y, w, h);
+				break;
+			case LZCameraWatermarkLocationRightBottom:
+				
+				x = videoSize.width - w - margin;
+				y = margin;
+				imageLayer.frame = CGRectMake(x, y, w, h);
+				break;
+			case LZCameraWatermarkLocationRightTop:
+				
+				x = videoSize.width - w - margin;
+				y = videoSize.height - h - margin;
+				imageLayer.frame = CGRectMake(x, y, w, h);
+				break;
+			default:
+				
+				x = (videoSize.width - w) * 0.5f;
+				y = (videoSize.height - h) * 0.5f;
+				imageLayer.frame = CGRectMake(x, y, w, h);
+				break;
+		}
+	}
+	if (textLayer) {
+		
+		NSStringDrawingOptions options =
+		NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine;
+		switch (textLocation) {
+			case LZCameraWatermarkLocationLeftTop:
+			case LZCameraWatermarkLocationRightTop: {
+				
+				CGFloat textMaxWidth = videoSize.width - 2 * margin;
+				x = margin;
+				if (imageLayer && (imageLocation == LZCameraWatermarkLocationLeftTop || imageLocation == LZCameraWatermarkLocationRightTop)) {
+					
+					textMaxWidth = textMaxWidth - spacing - CGRectGetWidth(imageLayer.frame);
+					x = imageLocation == LZCameraWatermarkLocationRightTop ? margin : (CGRectGetMaxX(imageLayer.frame) + spacing);
+				}
+				CGSize textSize = watermarkText.size;
+				
+				w = textMaxWidth;
+				h = ceil(textSize.height);
+				y = videoSize.height - h - margin;
+				textLayer.frame = CGRectMake(x, y, w, h);
+			}
+				break;
+			case LZCameraWatermarkLocationLeftBottom:
+			case LZCameraWatermarkLocationRightBottom: {
+				
+				CGFloat textMaxWidth = videoSize.width - 2 * margin;
+				x = margin;
+				if (imageLayer && (imageLocation == LZCameraWatermarkLocationLeftBottom || imageLocation == LZCameraWatermarkLocationRightBottom)) {
+					
+					textMaxWidth = textMaxWidth - spacing - CGRectGetWidth(imageLayer.frame);
+					x = imageLocation == LZCameraWatermarkLocationRightBottom ? margin : (CGRectGetMaxX(imageLayer.frame) + spacing);
+				}
+				CGSize textSize = watermarkText.size;
+				
+				w = textMaxWidth;
+				h = ceil(textSize.height);
+				y = margin;
+				textLayer.frame = CGRectMake(x, y, w, h);
+			}
+				break;
+			default: {
+				
+				CGFloat textMaxWidth = 0.0f;
+				if (imageLayer && imageLocation == LZCameraWatermarkLocationCenter) {
+					textMaxWidth = videoSize.width - 2 * margin - spacing - CGRectGetWidth(imageLayer.frame);
+				} else {
+					textMaxWidth = videoSize.width - 2 * margin;
+				}
+				CGSize textSize = watermarkText.size;
+				
+				w = textMaxWidth;
+				h = ceil(textSize.height);
+				x = (videoSize.width - w - 2 * margin) * 0.5f;
+				y = (videoSize.height - h) * 0.5f;
+				
+				if (imageLayer && imageLocation == LZCameraWatermarkLocationCenter) {
+				
+					CGRect imgFrame = imageLayer.frame;
+					CGFloat imgAndImgW = (CGRectGetWidth(imageLayer.frame) + spacing + w);
+					CGFloat imgX = (videoSize.width - imgAndImgW - 2 * margin) * 0.5f;
+					imgFrame.origin.x = imgX;
+					imageLayer.frame = imgFrame;
+					x = CGRectGetMaxX(imageLayer.frame) + spacing;
+				}
+				textLayer.frame = CGRectMake(x, y, w, h);
+			}
+				break;
+		}
+		switch (textLocation) {
+			case LZCameraWatermarkLocationLeftTop:
+				textLayer.alignmentMode = kCAAlignmentLeft;
+				break;
+			case LZCameraWatermarkLocationLeftBottom:
+				textLayer.alignmentMode = kCAAlignmentLeft;
+				break;
+			case LZCameraWatermarkLocationRightBottom:
+				textLayer.alignmentMode = kCAAlignmentRight;
+				break;
+			case LZCameraWatermarkLocationRightTop:
+				textLayer.alignmentMode = kCAAlignmentRight;
+				break;
+			default:
+				textLayer.alignmentMode = kCAAlignmentCenter;
+				break;
+		}
+	}
+	
+	CALayer *videoLayer = [CALayer layer];
+	videoLayer.frame = (CGRect){CGPointZero, videoSize};
+	CALayer *parentLayer = [CALayer layer];
+	parentLayer.frame = (CGRect){CGPointZero, videoSize};
+	[parentLayer addSublayer:videoLayer];
+	[parentLayer addSublayer:overlayLayer];
+	
+	AVVideoCompositionCoreAnimationTool *animalTool =
+	[AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer
+																								 inLayer:parentLayer];
+	videoComposition.animationTool = animalTool;
+	return videoComposition;
 }
 
 @end

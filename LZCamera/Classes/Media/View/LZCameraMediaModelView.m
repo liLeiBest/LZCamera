@@ -127,8 +127,17 @@
     Float64 curSeconds = CMTimeGetSeconds(durationTime);
     self.captureContainerProgressView.progressValue = curSeconds / self.maxDuration;
 	
-	NSString *timeString = [NSString stringWithFormat:@"%.1f秒", curSeconds];
-	self.durationLabel.text = timeString;
+	UIViewAnimationOptions options =
+	UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+	[UIView animateWithDuration:0.5f
+						  delay:.0
+						options:options
+					 animations:^{
+						 
+						 NSString *timeString = [NSString stringWithFormat:@"%.1f秒", curSeconds];
+						 self.durationLabel.text = timeString;
+					 } completion:^(BOOL finished) {
+					 }];
 }
 
 // MARK: - UI Action
