@@ -179,10 +179,10 @@
 	UIImage *clipImage = [self imageInBundle:@"editor_video_clip"];
 	leftClipImgView.image = clipImage;
 	leftClipImgView.userInteractionEnabled = NO;
-	leftClipImgView.touchExtendInset = UIEdgeInsetsMake(10, 10, 10, 0);
+	leftClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, -10, -10, 0);
 	rightClipImgView.image = clipImage;
 	rightClipImgView.userInteractionEnabled = NO;
-	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(10, 0, 10, 10);
+	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, 0, -10, -10);
 	
 	thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
 	thumbnailCollectionView.layer.borderWidth = 2.5f;
