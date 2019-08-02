@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *videoURL;
 /** 播放区间，默认完整播放 */
 @property (assign, nonatomic) CMTimeRange timeRange;
+/** 音量 ,0.0~1.0 */
+@property (assign, nonatomic) CGFloat volume;
 /** 播放器视图 */
 @property (strong, nonatomic, readonly) AVPlayerLayer *playerLayer;
 /** 播放结束回调 */

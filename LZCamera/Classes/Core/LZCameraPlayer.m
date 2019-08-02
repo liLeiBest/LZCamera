@@ -65,6 +65,12 @@
 	[self.playerLayer.player pause];
 }
 
+- (void)setVolume:(CGFloat)volume {
+	_volume = volume;
+	
+	self.playerLayer.player.volume = volume;
+}
+
 // AMRK: - Private
 - (void)setupUI {
 	

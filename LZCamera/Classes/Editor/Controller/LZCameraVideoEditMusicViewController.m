@@ -14,7 +14,7 @@
 /** 背景音音量 */
 static CGFloat BGMVolume = 1.0f;
 /** 原音音量 */
-static CGFloat VoiceVolume = 0.5f;
+static CGFloat VoiceVolume = 1.0f;
 /** 监听资源导出进度的 Key */
 static NSString * const AssetProgressKeyPath = @"progress";
 @interface LZCameraVideoEditMusicViewController ()
@@ -88,11 +88,12 @@ static NSString * const AssetProgressKeyPath = @"progress";
 	[self stopPlay];
 	[self.musicView updateEditEnable:NO];
 	[self cancelExport];
+	NSURL *musicFileURL = [self fetchBGMURL];
 	self.exportSession =
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
-						 audioPathURL:[self fetchBGMURL]
-						originalAudio:NO
+						 audioPathURL:musicFileURL
+						originalAudio:nil == musicFileURL ? YES : NO
 					   originalVolume:VoiceVolume
 						  audioVolume:BGMVolume
 						   presetName:AVAssetExportPresetMediumQuality
@@ -266,6 +267,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 
 - (void)startPlay {
 	
+	self.videoPlayer.volume = nil == self.musicModel ? 1.0 : 0.0f;
 	[self.videoPlayer play];
 	[self.BGMPlayer play];
 }
