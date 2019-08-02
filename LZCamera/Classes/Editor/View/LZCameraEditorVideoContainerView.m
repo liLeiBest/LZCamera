@@ -7,6 +7,7 @@
 
 #import "LZCameraEditorVideoContainerView.h"
 #import "LZCameraEditorVideoThumbnailCell.h"
+#import "UIImageView+LZTouchRect.h"
 
 @interface LZCameraEditorVideoContainerView()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout> {
 	
@@ -178,8 +179,10 @@
 	UIImage *clipImage = [self imageInBundle:@"editor_video_clip"];
 	leftClipImgView.image = clipImage;
 	leftClipImgView.userInteractionEnabled = NO;
+	leftClipImgView.touchExtendInset = UIEdgeInsetsMake(5, 5, 5, 5);
 	rightClipImgView.image = clipImage;
 	rightClipImgView.userInteractionEnabled = NO;
+	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(5, 5, 5, 5);
 	
 	thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
 	thumbnailCollectionView.layer.borderWidth = 2.5f;

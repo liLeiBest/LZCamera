@@ -92,7 +92,7 @@ static NSString * const AssetProgressKeyPath = @"progress";
 	[LZCameraToolkit mixAudioForAsset:self.videoURL
 							timeRange:self.timeRange
 						 audioPathURL:[self fetchBGMURL]
-						originalAudio:YES
+						originalAudio:NO
 					   originalVolume:VoiceVolume
 						  audioVolume:BGMVolume
 						   presetName:AVAssetExportPresetMediumQuality

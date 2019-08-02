@@ -874,9 +874,6 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		}
 	}
 	if (textLayer) {
-		
-		NSStringDrawingOptions options =
-		NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine;
 		switch (textLocation) {
 			case LZCameraWatermarkLocationLeftTop:
 			case LZCameraWatermarkLocationRightTop: {

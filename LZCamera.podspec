@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LZCamera'
-  s.version          = '0.4.2'
+  s.version          = '0.4.2.1'
   s.summary          = '基于 AVFoundation 实现的摄像机功能'
   s.description      = <<-DESC
   基于 AVFoundation 实现的摄像机功能，共有三部分内容：
@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Editor' do |editor|
-	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}', 'LZCamera/Classes/Editor/Controller/*.storyboard'
+	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}'#, 'LZCamera/Classes/Editor/Controller/*.storyboard'
 	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
 	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
 	  editor.dependency 'LZCamera/Core'
