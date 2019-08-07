@@ -48,6 +48,21 @@
 	[self setupUI];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+	
+	CGPoint childP = [self convertPoint:point toView:leftClipImgView];
+	if ([leftClipImgView pointInside:childP withEvent:event]) {
+		return leftClipImgView;
+	}
+	
+	childP = [self convertPoint:point toView:rightClipImgView];
+	if ([rightClipImgView pointInside:childP withEvent:event]) {
+		return rightClipImgView;
+	}
+	
+	return nil;
+}
+
 // MARK: - Public
 - (void)updateVideoThumbnails:(NSArray *)thumbnails
 					 complete:(BOOL)complete{
@@ -179,10 +194,10 @@
 	UIImage *clipImage = [self imageInBundle:@"editor_video_clip"];
 	leftClipImgView.image = clipImage;
 	leftClipImgView.userInteractionEnabled = NO;
-	leftClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, -10, -10, 0);
+	leftClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, -20, -10, -1);
 	rightClipImgView.image = clipImage;
 	rightClipImgView.userInteractionEnabled = NO;
-	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, 0, -10, -10);
+	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, -1, -10, -20);
 	
 	thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
 	thumbnailCollectionView.layer.borderWidth = 2.5f;

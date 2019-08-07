@@ -28,7 +28,7 @@
                                 <rect key="frame" x="0.0" y="752" width="414" height="110"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r0I-t1-vWL">
-                                        <rect key="frame" x="20" y="10" width="374" height="60"/>
+                                        <rect key="frame" x="30" y="10" width="354" height="60"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Uev-kt-QOh"/>
@@ -69,14 +69,14 @@
                                         </connections>
                                     </collectionView>
                                     <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-9e-5ge">
-                                        <rect key="frame" x="18" y="12.5" width="2" height="55"/>
+                                        <rect key="frame" x="28" y="12.5" width="2" height="55"/>
                                         <color key="backgroundColor" red="0.99607843137254903" green="0.99215686274509807" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="8WJ-9k-Nf0"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8uu-Ey-a3b" userLabel="leftClipView">
-                                        <rect key="frame" x="10" y="10" width="10" height="60"/>
+                                        <rect key="frame" x="20" y="10" width="10" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRw-bK-U3J">
                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="2.5"/>
@@ -85,7 +85,7 @@
                                                     <constraint firstAttribute="height" constant="2.5" id="XaK-9R-Gi5"/>
                                                 </constraints>
                                             </view>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="een-q2-thH">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="een-q2-thH">
                                                 <rect key="frame" x="0.0" y="2.5" width="10" height="55"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -120,7 +120,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRx-Id-lnZ" userLabel="rightClipView">
-                                        <rect key="frame" x="394" y="10" width="10" height="60"/>
+                                        <rect key="frame" x="384" y="10" width="10" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM1-Lw-6er">
                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="2.5"/>
@@ -129,7 +129,7 @@
                                                     <constraint firstAttribute="height" constant="2.5" id="BDb-sg-VhS"/>
                                                 </constraints>
                                             </view>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eL8-SI-gK0">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eL8-SI-gK0">
                                                 <rect key="frame" x="0.0" y="2.5" width="10" height="55"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
@@ -174,19 +174,19 @@
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="sRx-Id-lnZ" secondAttribute="trailing" constant="10" id="0NN-ur-ngf"/>
-                                    <constraint firstItem="r0I-t1-vWL" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="20" id="45M-UJ-Tcg"/>
+                                    <constraint firstAttribute="trailing" secondItem="sRx-Id-lnZ" secondAttribute="trailing" constant="20" id="0NN-ur-ngf"/>
+                                    <constraint firstItem="r0I-t1-vWL" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="30" id="45M-UJ-Tcg"/>
                                     <constraint firstItem="sRx-Id-lnZ" firstAttribute="top" secondItem="r0I-t1-vWL" secondAttribute="top" id="8ft-fa-88w"/>
                                     <constraint firstAttribute="bottom" secondItem="1ff-PU-RaX" secondAttribute="bottom" constant="10" id="9Wc-N5-gj0"/>
                                     <constraint firstItem="fUE-9e-5ge" firstAttribute="top" secondItem="een-q2-thH" secondAttribute="top" id="Plp-a7-5CM"/>
                                     <constraint firstItem="fUE-9e-5ge" firstAttribute="trailing" secondItem="8uu-Ey-a3b" secondAttribute="trailing" id="Sgi-r5-hbk"/>
                                     <constraint firstItem="r0I-t1-vWL" firstAttribute="top" secondItem="7Cw-N0-jme" secondAttribute="top" constant="10" id="X2V-1f-EMq"/>
                                     <constraint firstItem="1ff-PU-RaX" firstAttribute="top" secondItem="r0I-t1-vWL" secondAttribute="bottom" constant="10" id="ZDb-64-TyK"/>
-                                    <constraint firstItem="8uu-Ey-a3b" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="10" id="ftU-Ey-nF8"/>
+                                    <constraint firstItem="8uu-Ey-a3b" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="20" id="ftU-Ey-nF8"/>
                                     <constraint firstAttribute="trailing" secondItem="1ff-PU-RaX" secondAttribute="trailing" constant="10" id="gTA-JL-Ecl"/>
                                     <constraint firstItem="r0I-t1-vWL" firstAttribute="top" secondItem="8uu-Ey-a3b" secondAttribute="top" id="iKp-Nd-cAJ"/>
                                     <constraint firstItem="r0I-t1-vWL" firstAttribute="bottom" secondItem="8uu-Ey-a3b" secondAttribute="bottom" id="jsP-za-zeI"/>
-                                    <constraint firstAttribute="trailing" secondItem="r0I-t1-vWL" secondAttribute="trailing" constant="20" id="m0v-sT-cKV"/>
+                                    <constraint firstAttribute="trailing" secondItem="r0I-t1-vWL" secondAttribute="trailing" constant="30" id="m0v-sT-cKV"/>
                                     <constraint firstItem="1ff-PU-RaX" firstAttribute="leading" secondItem="7Cw-N0-jme" secondAttribute="leading" constant="10" id="pAH-Kj-vcc"/>
                                     <constraint firstItem="sRx-Id-lnZ" firstAttribute="bottom" secondItem="r0I-t1-vWL" secondAttribute="bottom" id="zMS-If-tsR"/>
                                     <constraint firstItem="fUE-9e-5ge" firstAttribute="bottom" secondItem="een-q2-thH" secondAttribute="bottom" id="zN2-7X-uG3"/>
