@@ -434,7 +434,7 @@
 	NSURL *destURL = [LZCameraToolkit generateUniqueAssetFileURL:LZCameraAssetTypeMov];
 	NSFileManager *fileM = [NSFileManager defaultManager];
 	NSError *error = nil;
-	[fileM moveItemAtURL:videoURL toURL:destURL error:&error];
+	[fileM copyItemAtURL:videoURL toURL:destURL error:&error];
 	if (nil == error) {
 		
 		self.videoURL = destURL;

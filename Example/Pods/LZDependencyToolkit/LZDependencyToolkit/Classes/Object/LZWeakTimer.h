@@ -14,6 +14,12 @@ typedef void (^LZTimeEventHandler)(void);
 @interface LZWeakTimer : NSObject
 
 /**
+ 允许的误差
+ */
+@property (atomic, assign) NSTimeInterval tolerance;
+
+
+/**
  实例
 
  @param timeInterval 时间间隔
@@ -40,12 +46,6 @@ typedef void (^LZTimeEventHandler)(void);
 									   repeats:(BOOL)repeats
 								 dispatchQueue:(dispatch_queue_t)dispatchQueue
 								  eventHandler:(LZTimeEventHandler)eventHandler;
-
-
-/**
- 允许的误差
- */
-@property (atomic, assign) NSTimeInterval tolerance;
 
 /**
  启动定时器

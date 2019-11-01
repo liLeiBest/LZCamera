@@ -1,25 +1,25 @@
 PODS:
-  - LZCamera (0.4.2.3):
-    - LZCamera/CodeCapture (= 0.4.2.3)
-    - LZCamera/Core (= 0.4.2.3)
-    - LZCamera/Editor (= 0.4.2.3)
-    - LZCamera/MediaCapture (= 0.4.2.3)
-  - LZCamera/CodeCapture (0.4.2.3):
+  - LZCamera (0.4.3):
+    - LZCamera/CodeCapture (= 0.4.3)
+    - LZCamera/Core (= 0.4.3)
+    - LZCamera/Editor (= 0.4.3)
+    - LZCamera/MediaCapture (= 0.4.3)
+  - LZCamera/CodeCapture (0.4.3):
     - LZCamera/Core
-  - LZCamera/Core (0.4.2.3)
-  - LZCamera/Editor (0.4.2.3):
+  - LZCamera/Core (0.4.3)
+  - LZCamera/Editor (0.4.3):
     - LZCamera/Core
     - LZDependencyToolkit/Object
-  - LZCamera/MediaCapture (0.4.2.3):
+  - LZCamera/MediaCapture (0.4.3):
     - LZCamera/Core
     - LZCamera/Editor
-  - LZDependencyToolkit/Object (1.2.7.1)
+  - LZDependencyToolkit/Object (1.3.0)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - LZDependencyToolkit
 
 EXTERNAL SOURCES:
@@ -27,9 +27,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: db6bcd0cd571118f5703e197ee9ba5f38594db0b
-  LZDependencyToolkit: 79992648a6b51b9d18e0a94bc15dc8c1f7499fca
+  LZCamera: 3155666f4439ae3b5302d7396cc1bef01071cee8
+  LZDependencyToolkit: d8ecf84bf53ddac80df37e16c0bbec26941dcef3
 
 PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.8.3
