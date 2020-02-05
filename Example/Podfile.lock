@@ -13,7 +13,7 @@ PODS:
   - LZCamera/MediaCapture (0.4.3):
     - LZCamera/Core
     - LZCamera/Editor
-  - LZDependencyToolkit/Object (1.3.0)
+  - LZDependencyToolkit/Object (1.4.3)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
@@ -28,8 +28,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   LZCamera: 3155666f4439ae3b5302d7396cc1bef01071cee8
-  LZDependencyToolkit: d8ecf84bf53ddac80df37e16c0bbec26941dcef3
+  LZDependencyToolkit: 740565d96e92cdb12f361b180dd41ad1ade5de38
 
 PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4

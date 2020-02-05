@@ -11,6 +11,7 @@
 
 @interface LZCameraEditorVideoContainerView()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout> {
 	
+    IBOutlet UIProgressView *progressView;
 	IBOutlet UICollectionView *thumbnailCollectionView;
 	IBOutlet UIView *leftClipView;
 	IBOutlet NSLayoutConstraint *leftClipViewWidth;
@@ -19,6 +20,7 @@
 	IBOutlet NSLayoutConstraint *rightClipViewWidth;
 	IBOutlet UIImageView *rightClipImgView;
 	IBOutlet UIView *lineView;
+    IBOutlet UILabel *tipLabel;
 }
 
 @property (strong, nonatomic) NSMutableArray *datasource;
@@ -65,8 +67,11 @@
 
 // MARK: - Public
 - (void)updateVideoThumbnails:(NSArray *)thumbnails
+                     progress:(CGFloat)progress
 					 complete:(BOOL)complete{
 	
+    [self updateThumbnailProgress:progress];
+    
 	if (complete) {
 		
 		self.startTime = kCMTimeZero;
@@ -77,6 +82,8 @@
 		
 		leftClipImgView.userInteractionEnabled = YES;
 		rightClipImgView.userInteractionEnabled = YES;
+        
+        tipLabel.text = @"拖动剪辑框可裁剪视频";
 	}
 	
 	if (thumbnails && thumbnails.count) {
@@ -132,6 +139,9 @@
 // MARK: - UI Action
 - (IBAction)leftClipViewPanGesture:(UIPanGestureRecognizer *)sender {
 	
+    if (NO == sender.view.userInteractionEnabled) {
+        return;
+    }
 	CGPoint point = [sender translationInView:thumbnailCollectionView];
 	static CGFloat baseWidth = 10.0f;
 	leftClipViewWidth.constant = baseWidth + point.x;
@@ -158,6 +168,9 @@
 
 - (IBAction)rightClipViewPanGesture:(UIPanGestureRecognizer *)sender {
 	
+    if (NO == sender.view.userInteractionEnabled) {
+        return;
+    }
 	CGPoint point = [sender translationInView:thumbnailCollectionView];
 	static CGFloat baseWidth = 10.0f;
 	if (point.x < 0) {
@@ -189,7 +202,11 @@
 // MARK: - Private
 - (void)setupUI {
 	
+    progressView.progress = 0.0f;
+    
 	thumbnailCollectionView.scrollEnabled = NO;
+    thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
+    thumbnailCollectionView.layer.borderWidth = 2.5f;
 	
 	UIImage *clipImage = [self imageInBundle:@"editor_video_clip"];
 	leftClipImgView.image = clipImage;
@@ -199,8 +216,28 @@
 	rightClipImgView.userInteractionEnabled = NO;
 	rightClipImgView.touchExtendInset = UIEdgeInsetsMake(-10, -1, -10, -20);
 	
-	thumbnailCollectionView.layer.borderColor = [[UIColor colorWithRed:128.0f/255.0f green:198.0f/255.0f blue:5.0f/255.0f alpha:1.0f] CGColor];
-	thumbnailCollectionView.layer.borderWidth = 2.5f;
+    tipLabel.text = @"视频加载中……";
+}
+
+- (void)updateThumbnailProgress:(CGFloat)progress {
+    
+    LZCameraLog(@"视频缩略图进度:%f", progress);
+    UIViewAnimationOptions options =
+    UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveLinear;
+    [UIView animateWithDuration:0.5f
+                          delay:.0
+                        options:options
+                     animations:^{
+                         
+                         BOOL animated = progress > 0;
+                         [self->progressView setProgress:progress animated:animated];
+                     } completion:^(BOOL finished) {
+                     }];
+    if (1 <= progress) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self->progressView setProgress:0.0 animated:NO];
+        });
+    }
 }
 
 - (void)preview {

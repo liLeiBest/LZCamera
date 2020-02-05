@@ -159,16 +159,15 @@
 										   interval:interval
 											maxSize:CGSizeMake(60, 0)
 									progressHandler:^(NSArray<UIImage *> * _Nullable thumbnails, CGFloat progress) {
-										
-										typeof(weakSelf) strongSelf = weakSelf;
-										[strongSelf.videoClipView updateVideoThumbnails:thumbnails complete:NO];
-									}
-								  completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
-									  
-									  typeof(weakSelf) strongSelf = weakSelf;
-									  [strongSelf.videoClipView updateVideoThumbnails:nil complete:YES];
-									  [strongSelf.videoPlayer play];
-								  }];
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf.videoClipView updateVideoThumbnails:thumbnails progress:progress complete:NO];
+    } completionHandler:^(NSArray<UIImage *> * _Nullable thumbnails) {
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf.videoClipView updateVideoThumbnails:nil progress:1.0f complete:YES];
+        [strongSelf.videoPlayer play];
+    }];
 }
 
 @end

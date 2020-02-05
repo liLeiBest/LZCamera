@@ -23,9 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
  更新缩略图
 
  @param thumbnails NSArray
+ @param progress 进度
  @param complete 是否完成
  */
 - (void)updateVideoThumbnails:(NSArray * _Nullable)thumbnails
+                     progress:(CGFloat)progress
 					 complete:(BOOL)complete;
 
 /**
