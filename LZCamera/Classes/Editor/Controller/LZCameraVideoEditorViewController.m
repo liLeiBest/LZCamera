@@ -154,7 +154,7 @@
 
 - (void)fetchVideoThumbnails {
 	
-	CMTimeValue interval= 1.0f;
+	CMTimeValue interval= [self thumbnailInterval];
 	__weak typeof(self) weakSelf = self;
 	[LZCameraToolkit thumbnailBySecondForVideoAsset:self.editVideoURL
 										   interval:interval
@@ -169,6 +169,16 @@
         [strongSelf.videoClipView updateVideoThumbnails:nil progress:1.0f complete:YES];
         [strongSelf.videoPlayer play];
     }];
+}
+
+- (CMTimeValue)thumbnailInterval {
+    
+    AVAsset *asset = [AVAsset assetWithURL:self.videoURL];
+    CMTime duration = asset.duration;
+    Float64 seconds = CMTimeGetSeconds(duration);
+    CMTimeValue maxCount = 20;
+    CMTimeValue interval = ceil(seconds / maxCount);
+    return interval;
 }
 
 @end

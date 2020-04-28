@@ -88,17 +88,10 @@
 	
 	if (thumbnails && thumbnails.count) {
 		
-		if (0 == self.videoMaximumDuration) {
-			
-			self.widthPerUnit = thumbnailCollectionView.frame.size.width / thumbnails.count;
-			self.secondPerUnit = self.duration.value / self.duration.timescale / thumbnails.count;
-		} else {
-			
-			CGFloat perUnitWidth = thumbnailCollectionView.frame.size.width / self.videoMaximumDuration;
-			CGFloat scale = thumbnails.count > self.videoMaximumDuration ? 1.0 : self.videoMaximumDuration / thumbnails.count;
-			self.widthPerUnit = perUnitWidth * scale;
-			self.secondPerUnit = 1.0f;
-		}
+        CGFloat perUnitWidth = thumbnailCollectionView.frame.size.width / self.videoMaximumDuration;
+        CGFloat scale = thumbnails.count > self.videoMaximumDuration ? 1.0 : self.videoMaximumDuration / thumbnails.count;
+        self.widthPerUnit = perUnitWidth * scale;
+        self.secondPerUnit = self.duration.value / self.duration.timescale / thumbnails.count;
 		
 		[self.datasource removeAllObjects];
 		[self.datasource addObjectsFromArray:thumbnails];
