@@ -89,7 +89,8 @@
 	
 	self.editVideoURL = self.videoURL;
 	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
-	self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+    CMTime defaultTime = CMTimeMakeWithSeconds(self.videoMaximumDuration, asset.duration.timescale);
+	self.timeRange = CMTimeRangeMake(kCMTimeZero, defaultTime);
 	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.editVideoURL];
 	[self buildPlayer];
 	[self fetchVideoThumbnails];
