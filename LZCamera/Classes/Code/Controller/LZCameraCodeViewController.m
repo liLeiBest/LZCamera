@@ -34,7 +34,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor blackColor];
     [self setupCameraCodeController];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.codePreview detectCodes:@[]];
+    [self.cameraCodeController startSession];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -50,8 +58,13 @@
     }
 }
 
-- (void)dealloc {
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     [self.cameraCodeController stopSession];
+}
+
+- (void)dealloc {
     LZCameraLog();
 }
 
@@ -75,9 +88,7 @@
     self.cameraCodeController = [LZCameraCodeController cameraController];
     NSError *error;
     if ([self.cameraCodeController setupSession:&error]) {
-        
         self.codePreview.captureSesstion = self.cameraCodeController.captureSession;
-        [self.cameraCodeController startSession];
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
@@ -93,9 +104,7 @@
             
             NSArray *codes = [strongSelf fetchMachineCode:metadataObjects];
             strongSelf.detectMachineCodeHandler(codes, error, ^{
-                
                 [strongSelf.cameraCodeController stopSession];
-                [strongSelf dismissViewControllerAnimated:YES completion:nil];
             });
         }
     };

@@ -67,13 +67,17 @@
                        AVMetadataObjectTypeQRCode,
                        AVMetadataObjectTypeAztecCode,
                        AVMetadataObjectTypeUPCECode];
+    __weak typeof(self) weakSelf = self;
+    __weak typeof(ctr) weakVC = ctr;
     [ctr detectCodeTyps:types completionHandler:^(NSArray<NSString *> *codeArray, NSError *error, void (^CompleteHandler)(void)) {
-        
+        typeof(weakSelf) strongSelf = weakSelf;
         NSString *codeString = [codeArray lastObject];
-        self.messageLabel.text = codeString;
+        strongSelf.messageLabel.text = codeString;
+        NSLog(@"码上内容:%@", codeString);
         if (CompleteHandler) {
             CompleteHandler();
         }
+        [weakVC.navigationController popViewControllerAnimated:YES];
     }];
     [self.navigationController pushViewController:ctr animated:YES];
 }
