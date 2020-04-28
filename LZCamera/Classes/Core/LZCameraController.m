@@ -144,7 +144,7 @@ static const NSString * LZCameraAdjustingExposureContext;
 
 - (void)stopSession {
     
-    LZCameraQueueBlock(^{
+    LZMainQueueBlock(^{
         if ([self.captureSession isRunning]) {
             [self.captureSession stopRunning];
         }
@@ -563,10 +563,12 @@ static const NSString * LZCameraAdjustingExposureContext;
 }
 
 - (void)stopVideoRecording {
-	
-    if ([self isVideoRecording]) {
-        [self.videoFileOutput stopRecording];
-    }
+    
+	LZMainQueueBlock(^{
+        if ([self isVideoRecording]) {
+            [self.videoFileOutput stopRecording];
+        }
+    })
 }
 
 - (BOOL)isVideoRecording {
