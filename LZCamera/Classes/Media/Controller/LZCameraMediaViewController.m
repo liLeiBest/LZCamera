@@ -408,6 +408,59 @@
     [self presentViewController:alertCtr animated:YES completion:nil];
 }
 
+- (void)photoAuthorizationJudge:(void (^)(BOOL authorized, NSError * __nullable error))handler {
+    
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusAuthorized) {
+        if (handler) {
+            handler(YES, nil);
+        }
+    } else {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            switch (status) {
+                case PHAuthorizationStatusAuthorized: {
+                    if (handler) {
+                        handler(YES, nil);
+                    }
+                }
+                    break;
+                case PHAuthorizationStatusNotDetermined:
+                    break;
+                case PHAuthorizationStatusRestricted: {
+                    if (handler) {
+                        NSError *error =
+                        [NSError errorWithDomain:LZCameraErrorDomain
+                                            code:LZCameraErrorAuthorization
+                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                        handler(NO, error);
+                    }
+                }
+                    break;
+                case PHAuthorizationStatusDenied: {
+                    if (handler) {
+                        NSError *error =
+                        [NSError errorWithDomain:LZCameraErrorDomain
+                                            code:LZCameraErrorAuthorization
+                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
+                        handler(NO, error);
+                    }
+                }
+                    break;
+                default:
+                    if (handler) {
+                        NSError *error =
+                        [NSError errorWithDomain:LZCameraErrorDomain
+                                            code:LZCameraErrorAuthorization
+                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                        handler(NO, error);
+                    }
+                    break;
+            }
+        }
+         ];
+    }
+}
+
 - (void)saveVideoFromAssetURL:(NSURL *)assetURL
                        toURL:(NSURL *)fileURL
            completionCallback:(void (^)(NSError * __nullable error))handler{
@@ -430,27 +483,43 @@
     }];
 #endif
     
-    PHFetchResult *fetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[assetURL] options:nil];
-    PHAsset *asset = fetchResult.firstObject;
-    NSArray *assetResources = [PHAssetResource assetResourcesForAsset:asset];
-    PHAssetResource *resource = nil;
-    for (PHAssetResource *assetRes in assetResources) {
-        if (@available(iOS 9.1, *)) {
-            if (assetRes.type == PHAssetResourceTypePairedVideo
-                || assetRes.type == PHAssetResourceTypeVideo) {
-                resource = assetRes;
-                break;
+    [self photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
+        if (YES == authorized) {
+            
+            PHFetchResult *fetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[assetURL] options:nil];
+            PHAsset *asset = fetchResult.firstObject;
+            if (nil == asset) {
+                NSError *error = [NSError errorWithDomain:LZCameraErrorDomain code:LZCameraErrorInvalideFileOutputURL userInfo:@{NSLocalizedDescriptionKey : @"Video do not exist!"}];
+                if (handler) {
+                    handler(error);
+                }
+                return;
             }
+            NSArray *assetResources = [PHAssetResource assetResourcesForAsset:asset];
+            PHAssetResource *resource = nil;
+            for (PHAssetResource *assetRes in assetResources) {
+                if (@available(iOS 9.1, *)) {
+                    if (assetRes.type == PHAssetResourceTypePairedVideo
+                        || assetRes.type == PHAssetResourceTypeVideo) {
+                        resource = assetRes;
+                        break;
+                    }
+                } else {
+                    if (assetRes.type == PHAssetResourceTypeVideo) {
+                        resource = assetRes;
+                        break;
+                    }
+                }
+            }
+            [[PHAssetResourceManager defaultManager] writeDataForAssetResource:resource toFile:fileURL options:nil completionHandler: ^(NSError * _Nullable error) {
+                if (handler) {
+                    handler(error);
+                }
+            }];
         } else {
-            if (assetRes.type == PHAssetResourceTypeVideo) {
-                resource = assetRes;
-                break;
+            if (handler) {
+                handler(error);
             }
-        }
-    }
-    [[PHAssetResourceManager defaultManager] writeDataForAssetResource:resource toFile:fileURL options:nil completionHandler: ^(NSError * _Nullable error) {
-        if (handler) {
-            handler(error);
         }
     }];
 }
@@ -521,15 +590,17 @@
                 videoURL = [info objectForKey:UIImagePickerControllerPHAsset];
             }
         }
-        [self saveVideoFromAssetURL:videoURL toURL:destURL completionCallback:^(NSError * _Nullable error) {
-            if (nil == error) {
-                [self showVideoEditCtr:destURL];
-            } else {
-                [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                }];
-            }
-        }];
+        if (nil != videoURL) {
+            [self saveVideoFromAssetURL:videoURL toURL:destURL completionCallback:^(NSError * _Nullable error) {
+                if (nil == error) {
+                    [self showVideoEditCtr:destURL];
+                } else {
+                    [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                }
+            }];
+        }
     }
 }
 
