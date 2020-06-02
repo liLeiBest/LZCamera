@@ -13,6 +13,8 @@
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraVideoEditorViewController.h"
 #import <CoreServices/CoreServices.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -406,6 +408,73 @@
     [self presentViewController:alertCtr animated:YES completion:nil];
 }
 
+- (void)saveVideoFromAssetURL:(NSURL *)assetURL
+                       toURL:(NSURL *)fileURL
+           completionCallback:(void (^)(NSError * __nullable error))handler{
+#if 0
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+        
+        ALAssetRepresentation *representation = asset.defaultRepresentation;
+        Byte *buffer = (Byte*)malloc(representation.size);
+        NSUInteger buffered = [representation getBytes:buffer fromOffset:0.0 length:representation.size error:nil];
+        NSData *data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+        [data writeToURL:fileURL atomically:YES];
+        if (handler) {
+            handler(nil);
+        }
+    } failureBlock:^(NSError *error) {
+        if (handler) {
+            handler(error);
+        }
+    }];
+#endif
+    
+    PHFetchResult *fetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[assetURL] options:nil];
+    PHAsset *asset = fetchResult.firstObject;
+    NSArray *assetResources = [PHAssetResource assetResourcesForAsset:asset];
+    PHAssetResource *resource = nil;
+    for (PHAssetResource *assetRes in assetResources) {
+        if (@available(iOS 9.1, *)) {
+            if (assetRes.type == PHAssetResourceTypePairedVideo
+                || assetRes.type == PHAssetResourceTypeVideo) {
+                resource = assetRes;
+                break;
+            }
+        } else {
+            if (assetRes.type == PHAssetResourceTypeVideo) {
+                resource = assetRes;
+                break;
+            }
+        }
+    }
+    [[PHAssetResourceManager defaultManager] writeDataForAssetResource:resource toFile:fileURL options:nil completionHandler: ^(NSError * _Nullable error) {
+        if (handler) {
+            handler(error);
+        }
+    }];
+}
+
+- (void)showVideoEditCtr:(NSURL *)videoURL {
+    
+    self.videoURL = videoURL;
+    LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
+    ctr.videoURL = videoURL;
+    ctr.videoMaximumDuration = 60.0f;
+    __weak typeof(self) weakSelf = self;
+    ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.CameraVideoCompletionHandler) {
+            
+            UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
+            strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
+        }
+    };
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
 // MARK: - Observer
 - (void)cameraDone {
 	
@@ -429,31 +498,39 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> *)info {
 	
 	[picker dismissViewControllerAnimated:YES completion:nil];
+    NSURL *destURL = [LZCameraToolkit generateUniqueAssetFileURL:LZCameraAssetTypeMov];
+    
 	NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
-	
-	NSURL *destURL = [LZCameraToolkit generateUniqueAssetFileURL:LZCameraAssetTypeMov];
-	NSFileManager *fileM = [NSFileManager defaultManager];
-	NSError *error = nil;
-	[fileM copyItemAtURL:videoURL toURL:destURL error:&error];
-	if (nil == error) {
-		
-		self.videoURL = destURL;
-		LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
-		ctr.videoURL = destURL;
-		ctr.videoMaximumDuration = 60.0f;
-		__weak typeof(self) weakSelf = self;
-		ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-			
-			typeof(weakSelf) strongSelf = weakSelf;
-			if (strongSelf.CameraVideoCompletionHandler) {
-				
-				UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
-				strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
-			}
-		};
-		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-		[self presentViewController:nav animated:YES completion:nil];
-	}
+    if (videoURL) {
+        
+        NSError *error = nil;
+        NSFileManager *fileM = [NSFileManager defaultManager];
+        BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
+        if (YES == success && nil == error) {
+            [self showVideoEditCtr:destURL];
+        } else {
+            [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }];
+        }
+    } else {
+        
+        videoURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        if (nil == videoURL) {
+            if (@available(iOS 11, *)) {
+                videoURL = [info objectForKey:UIImagePickerControllerPHAsset];
+            }
+        }
+        [self saveVideoFromAssetURL:videoURL toURL:destURL completionCallback:^(NSError * _Nullable error) {
+            if (nil == error) {
+                [self showVideoEditCtr:destURL];
+            } else {
+                [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+            }
+        }];
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
