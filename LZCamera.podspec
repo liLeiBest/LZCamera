@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'LZCamera'
-  s.version          = '0.5.0'
+  s.version          = '0.5.1'
   s.summary          = '基于 AVFoundation 实现的摄像机功能'
   s.description      = <<-DESC
   基于 AVFoundation 实现的摄像机功能，共有三部分内容：
