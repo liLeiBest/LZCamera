@@ -368,7 +368,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	
 	if (directoryPath) {
 		
-		NSString *filePath = [directoryPath stringByAppendingPathComponent:@"lacamera_movie"];
+		NSString *filePath = [directoryPath stringByAppendingPathComponent:@"lzcamera_movie"];
 		NSString *format = nil;
 		switch (assetType) {
 			case LZCameraAssetTypeMov:

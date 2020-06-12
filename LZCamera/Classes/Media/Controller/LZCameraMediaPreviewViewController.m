@@ -76,19 +76,7 @@
 }
 
 - (IBAction)editDidClick:(id)sender {
-	
-	LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
-	ctr.videoURL = self.previewVideoURL;
-	ctr.videoMaximumDuration = 60.0f;
-	__weak typeof(self) weakSelf = self;
-	ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-		
-		typeof(weakSelf) strongSelf = weakSelf;
-		strongSelf.editVideoURL = editedVideoURL;
-	};
-	
-	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-	[self presentViewController:nav animated:YES completion:nil];
+    [self showVideoEditCtr];
 }
 
 - (IBAction)sureDidClick:(id)sender {
@@ -98,20 +86,7 @@
 			[LZCameraToolkit saveVideoToAblum:self.editVideoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
 			}];
 		}
-		LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
-		ctr.videoURL = self.previewVideoURL;
-		ctr.timeRange = kCMTimeRangeZero;
-		__weak typeof(self) weakSelf = self;
-		ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-			
-			typeof(weakSelf) strongSelf = weakSelf;
-			strongSelf.editVideoURL = editedVideoURL;
-			if (self.TapToSureHandler) {
-				self.TapToSureHandler(nil, self.editVideoURL);
-			}
-		};
-		UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-		[self presentViewController:nav animated:YES completion:nil];
+        [self showMusicEditCtr];
 	} else if (self.editImage) {
 		if (self.autoSaveToAlbum) {
 			[LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
@@ -171,6 +146,42 @@
     NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
     UIImage *image = [UIImage imageNamed:imageName inBundle:bundle compatibleWithTraitCollection:nil];
     return image;
+}
+
+- (void)showVideoEditCtr {
+    
+    LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
+    ctr.videoURL = self.editVideoURL;
+    ctr.videoMaximumDuration = 60.0f;
+    __weak typeof(self) weakSelf = self;
+    ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.editVideoURL = editedVideoURL;
+        if (strongSelf.TapToSureHandler) {
+            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL);
+        }
+    };
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)showMusicEditCtr {
+    
+    LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
+    ctr.videoURL = self.editVideoURL;
+    ctr.timeRange = kCMTimeRangeZero;
+    __weak typeof(self) weakSelf = self;
+    ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.editVideoURL = editedVideoURL;
+        if (strongSelf.TapToSureHandler) {
+            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL);
+        }
+    };
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 @end

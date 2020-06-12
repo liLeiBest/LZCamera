@@ -13,7 +13,6 @@
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraVideoEditorViewController.h"
 #import <CoreServices/CoreServices.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 
 @interface LZCameraMediaViewController ()<LZCameraControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
@@ -464,24 +463,6 @@
 - (void)saveVideoFromAssetURL:(NSURL *)assetURL
                        toURL:(NSURL *)fileURL
            completionCallback:(void (^)(NSError * __nullable error))handler{
-#if 0
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    [library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-        
-        ALAssetRepresentation *representation = asset.defaultRepresentation;
-        Byte *buffer = (Byte*)malloc(representation.size);
-        NSUInteger buffered = [representation getBytes:buffer fromOffset:0.0 length:representation.size error:nil];
-        NSData *data = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
-        [data writeToURL:fileURL atomically:YES];
-        if (handler) {
-            handler(nil);
-        }
-    } failureBlock:^(NSError *error) {
-        if (handler) {
-            handler(error);
-        }
-    }];
-#endif
     
     [self photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
         if (YES == authorized) {
