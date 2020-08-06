@@ -1,6 +1,6 @@
 {
   "name": "LZCamera",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "summary": "基于 AVFoundation 实现的摄像机功能",
   "description": "基于 AVFoundation 实现的摄像机功能，共有三部分内容：\n1.核心功能实现部分。\n2.基于 Core 模块实现多媒体捕捉功能，包括：静态图片、短视频、长视频。\n3.基于 Core 模块实现机器码识别功能，机器码类型支持自定义。",
   "homepage": "https://github.com/liLeiBest",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/liLeiBest/LZCamera.git",
-    "tag": "0.5.1"
+    "tag": "0.6.0"
   },
   "platforms": {
     "ios": "9.0"
