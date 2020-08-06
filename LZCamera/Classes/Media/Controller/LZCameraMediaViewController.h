@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL autoSaveToAlbum;
 
 /** 拍摄图片完成回调 */
-@property (copy, nonatomic) void(^CameraImageCompletionHandler)(UIImage *stillImage);
+@property (copy, nonatomic) void(^CameraImageCompletionHandler)(UIImage *stillImage, PHAsset * _Nullable asset);
 /** 拍摄视频完成回调 */
 @property (copy, nonatomic) void(^CameraVideoCompletionHandler)(UIImage *thumbnailImage, NSURL *videoURL);
 

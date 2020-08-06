@@ -49,21 +49,23 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				[PHAssetChangeRequest creationRequestForAssetFromImage:image];
 				placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
 			} completionHandler:^(BOOL success, NSError * _Nullable error) {
-				
 				if (NO == success) {
-					if (handler) {
-						handler(nil, error);
-						return ;
-					}
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(nil, error);
+                        }
+                    });
+                    return ;
 				}
-				
 				NSError *err = nil;
 				PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
 				if (nil == assetCollection) {
-					if (handler) {
-						handler(nil, err);
-						return ;
-					}
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(nil, err);
+                        }
+                    });
+                    return;
 				}
 				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholderAsset.localIdentifier];
 				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
@@ -72,9 +74,11 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 					[PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
 					[collectionChangeRequest addAssets:@[asset]];
 				} completionHandler:^(BOOL success, NSError * _Nullable error) {
-					if (handler) {
-						handler(asset, error);
-					}
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(asset, error);
+                        }
+                    });
 				}];
 			}];
 		}
@@ -118,20 +122,23 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
 				placeholder = assetRequest.placeholderForCreatedAsset;
 			} completionHandler:^(BOOL success, NSError * _Nullable error) {
-				
 				if (NO == success) {
-					if (handler) {
-						handler(nil, error);
-						return ;
-					}
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(nil, error);
+                        }
+                    });
+                    return ;
 				}
-				
 				NSError *err = nil;
 				PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
 				if (nil == assetCollection) {
-					if (handler) {
-						handler(nil, err);
-					}
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(nil, err);
+                        }
+                        return;
+                    });
 				}
 				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholder.localIdentifier];
 				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
@@ -140,9 +147,11 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 					[PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
 					[collectionChangeRequest addAssets:@[asset]];
 				} completionHandler:^(BOOL success, NSError * _Nullable error) {
-					if (handler) {
-						handler(asset ,error);
-					}
+					dispatch_async(dispatch_get_main_queue(), ^{
+                        if (handler) {
+                            handler(asset ,error);
+                        }
+                    });
 				}];
 			}];
 		}

@@ -84,8 +84,7 @@
         ctr.previewVideoURL = self.videoURL;
 		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
         __weak typeof(self) weakSelf = self;
-		ctr.TapToSureHandler = ^(UIImage * _Nullable editedImage, NSURL * _Nullable editedVideoURL) {
-			
+        ctr.TapToSureHandler = ^(UIImage * _Nullable editedImage, NSURL * _Nullable editedVideoURL, PHAsset * _Nullable asset) {
             typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf.videoURL) {
                 if (strongSelf.CameraVideoCompletionHandler) {
@@ -95,7 +94,7 @@
                 }
             } else if (strongSelf.stillImage) {
                 if (strongSelf.CameraImageCompletionHandler) {
-                    strongSelf.CameraImageCompletionHandler(editedImage);
+                    strongSelf.CameraImageCompletionHandler(editedImage, asset);
                 }
             }
         };

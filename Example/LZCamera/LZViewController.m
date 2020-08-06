@@ -106,8 +106,7 @@
 	ctr.showFlashModeInStatusBar = NO;
 	ctr.maxShortVideoDuration = 60.0f;
     __weak typeof(self) weakSelf = self;
-    ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage) {
-        
+    ctr.CameraImageCompletionHandler = ^(UIImage * _Nonnull stillImage, PHAsset * _Nullable asset) {
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.previewImgView.image = stillImage;
         NSString *size = [LZCameraToolkit sizeForImage:stillImage];

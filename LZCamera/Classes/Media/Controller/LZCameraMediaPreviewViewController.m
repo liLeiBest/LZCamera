@@ -90,12 +90,12 @@
 	} else if (self.editImage) {
 		if (self.autoSaveToAlbum) {
 			[LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+                if (self.TapToSureHandler) {
+                    self.TapToSureHandler(self.editImage, nil, asset);
+                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
 			}];
 		}
-		if (self.TapToSureHandler) {
-			self.TapToSureHandler(self.editImage, nil);
-		}
-		[[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
 	}
 }
 
@@ -159,7 +159,7 @@
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.editVideoURL = editedVideoURL;
         if (strongSelf.TapToSureHandler) {
-            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL);
+            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL, nil);
         }
     };
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
@@ -177,7 +177,7 @@
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.editVideoURL = editedVideoURL;
         if (strongSelf.TapToSureHandler) {
-            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL);
+            strongSelf.TapToSureHandler(nil, strongSelf.editVideoURL, nil);
         }
     };
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
