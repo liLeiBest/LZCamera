@@ -76,7 +76,6 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
     if ([segue.identifier isEqualToString:@"LZCameraPreviewIdentifier"]) {
         
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
@@ -105,8 +104,7 @@
 + (instancetype)instance {
     
 	NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController"
-                                                         bundle:bundle];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController" bundle:bundle];
     return storyboard.instantiateInitialViewController;
 }
 
@@ -135,7 +133,6 @@
     }
 	__weak typeof(self) weakSelf = self;
     [self.cameraController videoRecordedDurationWithProgress:^(CMTime duration) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.videoDuration = duration;
         [strongSelf.mediaStatusView updateDurationTime:duration];
@@ -143,15 +140,11 @@
             [strongSelf.mediaModelView updateDurationTime:duration];
         }
     }];
-    
     if (self.detectFaces) {
-        
         [self.cameraController captureMetaDataObjectWithTypes:@[AVMetadataObjectTypeFace] completionHandler:^(NSArray<AVMetadataObject *> * _Nullable metadataObjects, NSError * _Nullable error) {
-            
             typeof(weakSelf) strongSelf = weakSelf;
             NSMutableArray *faces = [NSMutableArray array];
             for (AVMetadataMachineReadableCodeObject *objct in metadataObjects) {
-                
                 if ([objct isKindOfClass:[AVMetadataFaceObject class]]) {
                     
                     AVMetadataFaceObject *face = (AVMetadataFaceObject *)objct;
@@ -160,16 +153,13 @@
                     [faces addObject:face];
                 }
             }
-            
             [strongSelf.mediaPreviewView detectFaces:faces];
         }];
     }
 }
 
 - (void)setupView {
-    
     __weak typeof(self) weakSelf = self;
-    
     // 预览视图
     self.mediaPreviewView.singleTapToFocusEnable = self.cameraController.cameraSupportTapToFocus;
     self.mediaPreviewView.doubleTapToExposeEnable = self.cameraController.cameraSupportTapToExpose;
@@ -183,7 +173,6 @@
         [weakSelf.cameraController resetFocusAndExposureMode];
     };
     self.mediaPreviewView.PinchToZoomHandler = ^(BOOL complete, BOOL magnify, CGFloat rampZoomValue) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         if (magnify) {
              [strongSelf.cameraController rampZoomValue:1.0f];
@@ -194,7 +183,6 @@
             [strongSelf.cameraController cancelRampingZoom];
         }
     };
-
     // 状态视图
     self.mediaStatusView.hidden = !self.showStatusBar;
     [self controlFlashModelVisulState];
@@ -204,23 +192,19 @@
 		[weakSelf dismissViewControllerAnimated:YES completion:nil];
 	};
     self.mediaStatusView.TapToFlashModelHandler = ^(NSUInteger model) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.cameraController.flashMode = model;
         strongSelf.cameraController.torchMode = model;
     };
     self.mediaStatusView.TapToSwitchCameraHandler = ^{
-        
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController switchCameras];
         [strongSelf controlFlashModelVisulState];
     };
-    
     // 拍摄视图
 	self.mediaModelView.maxDuration = self.maxShortVideoDuration;
     self.mediaModelView.captureModel = self.captureModel;
 	self.mediaModelView.TapToAlbumVideoCallback = ^{
-		
 		typeof(weakSelf) strongSelf = weakSelf;
 		[strongSelf chooseVideoFromAlbum];
 	};
@@ -229,21 +213,21 @@
         lzPlaySound(@"media_capture_image.wav", @"LZCameraMedia");
         typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf.cameraController captureStillImage:^(UIImage * _Nonnull stillImage, NSError * _Nullable error) {
-            
             if (stillImage) {
                 
                 strongSelf.stillImage = stillImage;
                 strongSelf.videoURL = nil;
-                [strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:stillImage];
+                NSString *segueIdentifier = @"LZCameraPreviewIdentifier";
+                if ([strongSelf shouldPerformSegueWithIdentifier:segueIdentifier sender:nil]) {
+                    [strongSelf performSegueWithIdentifier:segueIdentifier sender:nil];
+                }
             }
             ComplteHandler();
         }];
     };
     self.mediaModelView.TapToCaptureVideoCallback = ^(BOOL began, BOOL end, void (^ _Nonnull ComplteHandler)(void)) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         if (began) {
-			
 			if (NO == strongSelf.captureTipLabel.hidden) {
 				[strongSelf hideCaptureTip];
 			}
@@ -251,12 +235,11 @@
             [strongSelf.mediaStatusView updateSwitchCameraVisualState:LZControlVisualStateOff];
             [strongSelf.cameraController startVideoRecording:^(NSURL * _Nonnull videoURL, NSError * _Nullable error) {
 				
-				LZCameraLog(@"录制视频完成:%@", error);
                 [strongSelf controlFlashModelVisulState];
                 [strongSelf controlSwitchCameraVisualState];
                 [strongSelf.mediaStatusView updateDurationTime:kCMTimeZero];
-				
                 if (error) {
+                    LZCameraLog(@"录制视频完成:%@", error);
                     [strongSelf alertMessage:error.localizedDescription handler:nil];
                 } else {
                    
@@ -266,7 +249,10 @@
 						
 						strongSelf.stillImage = nil;
                         strongSelf.videoURL = videoURL;
-						[strongSelf performSegueWithIdentifier:@"LZCameraPreviewIdentifier" sender:videoURL];
+                        NSString *segueIdentifier = @"LZCameraPreviewIdentifier";
+                        if ([strongSelf shouldPerformSegueWithIdentifier:segueIdentifier sender:nil]) {
+                            [strongSelf performSegueWithIdentifier:segueIdentifier sender:nil];
+                        }
                     } else {
                         [strongSelf showCaputreTip:@"视频时间太短"];
                     }
@@ -317,7 +303,6 @@
     
     LZControlVisualState state = LZControlVisualStateOff;
     if (self.showFlashModeInStatusBar) {
-        
         if ([self.cameraController cameraHasFlash] || [self.cameraController cameraHasTorch]) {
             state = LZControlVisualStateOn;
         }
@@ -329,7 +314,6 @@
     
     LZControlVisualState state = LZControlVisualStateOff;
     if (self.showSwitchCameraInStatusBar) {
-        
         if ([self.cameraController canSwitchCameras]) {
             state = LZControlVisualStateOn;
         }
@@ -364,12 +348,10 @@
 }
 
 - (void)showCaputreTip:(NSString *)tipMessage {
-    
     if (!tipMessage || tipMessage.length == 0) {
 		[self hideCaptureTip];
         return;
     }
-    
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowBlurRadius = 10.0f;
     shadow.shadowOffset = CGSizeMake(0, 0);
@@ -389,7 +371,6 @@
 }
 
 - (void)registerObserver {
-	
 	[[NSNotificationCenter defaultCenter]
 	 addObserver:self selector:@selector(cameraDone) name:LZCameraObserver_Complete object:nil];
 }
@@ -462,7 +443,6 @@
 - (void)saveVideoFromAssetURL:(NSURL *)assetURL
                        toURL:(NSURL *)fileURL
            completionCallback:(void (^)(NSError * __nullable error))handler{
-    
     [self photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
         if (YES == authorized) {
             
@@ -512,7 +492,6 @@
     ctr.videoMaximumDuration = 60.0f;
     __weak typeof(self) weakSelf = self;
     ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf.CameraVideoCompletionHandler) {
             

@@ -129,7 +129,6 @@
 }
 
 - (void)buildPlayer {
-	
 	if (self.videoPlayer) {
 		
 		[self.videoPlayer pause];
@@ -155,7 +154,6 @@
     ctr.videoMaximumDuration = 60.0f;
     __weak typeof(self) weakSelf = self;
     ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.editVideoURL = editedVideoURL;
         if (strongSelf.TapToSureHandler) {
@@ -173,7 +171,6 @@
     ctr.timeRange = kCMTimeRangeZero;
     __weak typeof(self) weakSelf = self;
     ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-        
         typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.editVideoURL = editedVideoURL;
         if (strongSelf.TapToSureHandler) {
