@@ -21,13 +21,17 @@ Pod::Spec.new do |s|
   s.public_header_files = 'LZCamera/Classes/LZCamera.h'
 
   s.subspec 'Core' do |core|
-	core.source_files        = 'LZCamera/Classes/Core/**/*.{h,m}'#, 'LZCamera/Classes/Core/*.storyboard'
+	core.source_files        = 'LZCamera/Classes/Core/**/*.{h,m}',
+#    'LZCamera/Classes/Core/*.storyboard',
+    ''
     core.public_header_files = 'LZCamera/Classes/Core/**/*.h'
-	#core.resource            = 'LZCamera/Classes/core/Resources/LZCameraCore.bundle'
+#    core.resource            = 'LZCamera/Classes/core/Resources/LZCameraCore.bundle'
   end
 
   s.subspec 'MediaCapture' do |media|
-	  media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}'#, 'LZCamera/Classes/Media/Controller/*.storyboard'
+	  media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}',
+#      'LZCamera/Classes/Media/Controller/*.storyboard',
+      ''
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'
     media.dependency 'LZCamera/Core'
@@ -42,7 +46,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Editor' do |editor|
-	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}'#, 'LZCamera/Classes/Editor/Controller/*.storyboard'
+	  editor.source_files        = 'LZCamera/Classes/Editor/**/*.{h,m}',
+#      'LZCamera/Classes/Editor/Controller/*.storyboard',
+      ''
 	  editor.public_header_files = 'LZCamera/Classes/Editor/**/*.h'
 	  editor.resource            = 'LZCamera/Classes/Editor/Resources/LZCameraEditor.bundle'
 	  editor.dependency 'LZCamera/Core'
