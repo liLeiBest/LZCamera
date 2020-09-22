@@ -41,7 +41,7 @@
 								 NSForegroundColorAttributeName : [UIColor whiteColor],
 								 };
 	NSAttributedString *attributedString =
-	[[NSAttributedString alloc] initWithString:@"猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁猜猜我是谁" attributes:attrubutes];
+	[[NSAttributedString alloc] initWithString:@"猜猜我是谁" attributes:attrubutes];
 	UIImage *image = [UIImage imageNamed:@"editor_origin_music"
 								inBundle:[NSBundle mainBundle]
 		   compatibleWithTraitCollection:nil];
