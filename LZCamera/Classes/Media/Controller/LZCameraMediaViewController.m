@@ -11,6 +11,7 @@
 #import "LZCameraMediaModelView.h"
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
+#import "LZCameraMediaVideoPickerViewController.h"
 #import "LZCameraVideoEditorViewController.h"
 #import <CoreServices/CoreServices.h>
 #import <Photos/Photos.h>
@@ -75,6 +76,14 @@
     LZCameraLog();
 }
 
+- (UIModalPresentationStyle)modalPresentationStyle {
+    return UIModalPresentationFullScreen;
+}
+
+- (UIModalTransitionStyle)modalTransitionStyle {
+    return UIModalTransitionStyleCoverVertical;
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"LZCameraPreviewIdentifier"]) {
         
@@ -104,7 +113,8 @@
 + (instancetype)instance {
     
 	NSBundle *bundle = LZCameraNSBundle(@"LZCameraMedia");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController" bundle:bundle];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LZCameraMediaViewController"
+                                                         bundle:bundle];
     return storyboard.instantiateInitialViewController;
 }
 
@@ -271,7 +281,7 @@
 	UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	if ([self cameraSupportMedia:mediaType sourceType:sourceType]) {
 		
-		UIImagePickerController *pickCtr = [[UIImagePickerController alloc] init];
+		LZCameraMediaVideoPickerViewController *pickCtr = [[LZCameraMediaVideoPickerViewController alloc] init];
 		pickCtr.sourceType = sourceType;
 		pickCtr.mediaTypes = @[mediaType];
 		pickCtr.allowsEditing = NO;
@@ -500,6 +510,8 @@
         }
     };
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:nav animated:YES completion:nil];
 }
 

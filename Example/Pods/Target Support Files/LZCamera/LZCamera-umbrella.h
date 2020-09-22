@@ -36,6 +36,7 @@
 #import "UIImageView+LZTouchRect.h"
 #import "LZCameraMediaDefine.h"
 #import "LZCameraMediaPreviewViewController.h"
+#import "LZCameraMediaVideoPickerViewController.h"
 #import "LZCameraMediaViewController.h"
 #import "LZCameraMedia.h"
 #import "LZCameraCaptureFlashControl.h"

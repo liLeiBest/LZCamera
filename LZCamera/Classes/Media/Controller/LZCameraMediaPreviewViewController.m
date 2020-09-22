@@ -67,6 +67,14 @@
     LZCameraLog();
 }
 
+- (UIModalPresentationStyle)modalPresentationStyle {
+    return UIModalPresentationFullScreen;
+}
+
+- (UIModalTransitionStyle)modalTransitionStyle {
+    return UIModalTransitionStyleCoverVertical;
+}
+
 // MARK: - UI Action
 - (IBAction)cancelDidClick:(id)sender {
 	
@@ -161,6 +169,8 @@
         }
     };
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:nav animated:YES completion:nil];
 }
 
@@ -178,6 +188,8 @@
         }
     };
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
+    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:nav animated:YES completion:nil];
 }
 

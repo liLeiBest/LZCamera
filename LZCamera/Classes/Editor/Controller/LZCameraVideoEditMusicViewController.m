@@ -63,6 +63,14 @@ static NSString * const AssetProgressKeyPath = @"progress";
 	LZCameraLog();
 }
 
+- (UIModalPresentationStyle)modalPresentationStyle {
+    return UIModalPresentationFullScreen;
+}
+
+- (UIModalTransitionStyle)modalTransitionStyle {
+    return UIModalTransitionStyleCoverVertical;
+}
+
 // MARK: - Public
 + (instancetype)instance {
 	
