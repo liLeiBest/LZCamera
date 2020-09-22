@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  机器码检测
 
- @param codeTypes 机器码类型
+ @param codeTypes 机器码类型，默认 @[AVMetadataObjectTypeQRCode]
  @param completionHandler 完成回调
  */
 - (void)detectCodeTyps:(NSArray<AVMetadataObjectType> *)codeTypes

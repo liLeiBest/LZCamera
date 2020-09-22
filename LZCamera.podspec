@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'MediaCapture' do |media|
 	  media.source_files        = 'LZCamera/Classes/Media/**/*.{h,m}',
-#      'LZCamera/Classes/Media/Controller/*.storyboard',
+      'LZCamera/Classes/Media/Controller/*.storyboard',
       ''
     media.public_header_files = 'LZCamera/Classes/Media/**/*.h'
     media.resource            = 'LZCamera/Classes/Media/Resources/LZCameraMedia.bundle'

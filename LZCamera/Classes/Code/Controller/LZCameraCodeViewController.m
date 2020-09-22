@@ -29,6 +29,7 @@
     LZCameraCodePreviewView *codeView = [[LZCameraCodePreviewView alloc] init];
     self.view = codeView;
     self.codePreview = codeView;
+    self.machineCodeTypes = @[AVMetadataObjectTypeQRCode];
 }
 
 - (void)viewDidLoad {
