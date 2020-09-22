@@ -42,7 +42,6 @@
       "name": "MediaCapture",
       "source_files": [
         "LZCamera/Classes/Media/**/*.{h,m}",
-        "LZCamera/Classes/Media/Controller/*.storyboard",
         ""
       ],
       "public_header_files": "LZCamera/Classes/Media/**/*.h",
