@@ -1,16 +1,16 @@
 PODS:
-  - LZCamera (0.6.1):
-    - LZCamera/CodeCapture (= 0.6.1)
-    - LZCamera/Core (= 0.6.1)
-    - LZCamera/Editor (= 0.6.1)
-    - LZCamera/MediaCapture (= 0.6.1)
-  - LZCamera/CodeCapture (0.6.1):
+  - LZCamera (0.6.2):
+    - LZCamera/CodeCapture (= 0.6.2)
+    - LZCamera/Core (= 0.6.2)
+    - LZCamera/Editor (= 0.6.2)
+    - LZCamera/MediaCapture (= 0.6.2)
+  - LZCamera/CodeCapture (0.6.2):
     - LZCamera/Core
-  - LZCamera/Core (0.6.1)
-  - LZCamera/Editor (0.6.1):
+  - LZCamera/Core (0.6.2)
+  - LZCamera/Editor (0.6.2):
     - LZCamera/Core
     - LZDependencyToolkit/Object
-  - LZCamera/MediaCapture (0.6.1):
+  - LZCamera/MediaCapture (0.6.2):
     - LZCamera/Core
     - LZCamera/Editor
   - LZDependencyToolkit/Object (1.9.6)
@@ -27,7 +27,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: da4a1279c5b881b221d20a981342a7028c8604e9
+  LZCamera: 1f289237143ea9f4424ddcd9fade23b3494dd453
   LZDependencyToolkit: cf31d80fe49993cf82f65a74c0d31767ecb28a6f
 
 PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
