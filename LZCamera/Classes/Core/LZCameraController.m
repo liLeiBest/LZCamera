@@ -9,8 +9,14 @@
 #import "LZCameraToolkit.h"
 
 #define LZMainQueue dispatch_get_main_queue()
-#define LZMainQueueBlock(block) \
-dispatch_async(LZMainQueue, block);
+#define LZMainQueueBlock(block) { \
+    if ([NSThread isMainThread]) { \
+        void(^exBlock)(void) = block; \
+        exBlock(); \
+    } else { \
+            dispatch_async(LZMainQueue, block); \
+    } \
+}
 #define LZCameraQueueBlock(block) \
 dispatch_async(cameraQueue, block);
 
