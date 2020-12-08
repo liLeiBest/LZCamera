@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gn0-AP-QoC">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gn0-AP-QoC">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment version="2304" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -43,7 +41,7 @@
                                             <constraint firstAttribute="width" secondItem="hQx-vp-OnU" secondAttribute="height" multiplier="1:1" id="v9Z-SJ-Wo2"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yGB-cu-Iwa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yGB-cu-Iwa">
                                         <rect key="frame" x="20" y="0.0" width="40" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -100,7 +98,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qP2-Na-mYg">
                                         <rect key="frame" x="147.66666666666666" y="49.333333333333371" width="80" height="80"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uI2-Dr-d06" customClass="LZCameraCaptureLongVideoButton">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uI2-Dr-d06" customClass="LZCameraCaptureLongVideoButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -227,6 +225,7 @@
                                 </connections>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="x8J-Lq-K3L"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -243,14 +242,13 @@
                             <constraint firstItem="zu4-BA-WmL" firstAttribute="top" secondItem="x8J-Lq-K3L" secondAttribute="top" id="igH-yk-zux"/>
                             <constraint firstItem="x8J-Lq-K3L" firstAttribute="trailing" secondItem="5hF-bt-HOB" secondAttribute="trailing" id="nNu-XC-EH5"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="x8J-Lq-K3L"/>
                     </view>
                     <connections>
                         <outlet property="captureTipLabel" destination="Sow-ac-W7f" id="Wc3-Xz-s9H"/>
                         <outlet property="mediaModelView" destination="5hF-bt-HOB" id="h8a-dN-nss"/>
                         <outlet property="mediaPreviewView" destination="vOB-aX-V0u" id="lbp-U5-9Sb"/>
                         <outlet property="mediaStatusView" destination="zu4-BA-WmL" id="u1u-fE-tIC"/>
-                        <segue destination="3v3-mA-wkR" kind="presentation" identifier="LZCameraPreviewIdentifier" animates="NO" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="Uw5-sI-e0V"/>
+                        <segue destination="3v3-mA-wkR" kind="presentation" identifier="LZCameraPreviewIdentifier" animates="NO" modalPresentationStyle="automatic" modalTransitionStyle="coverVertical" id="Uw5-sI-e0V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="knc-r3-Zdx" userLabel="First Responder" sceneMemberID="firstResponder"/>

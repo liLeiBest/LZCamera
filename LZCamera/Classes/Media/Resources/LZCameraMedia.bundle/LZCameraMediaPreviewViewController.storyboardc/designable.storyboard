@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QCA-SG-j0Y">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QCA-SG-j0Y">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -62,6 +63,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="hpK-du-ihY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="hpK-du-ihY" firstAttribute="trailing" secondItem="n12-Yc-cwG" secondAttribute="trailing" id="3ww-8L-9SJ"/>
@@ -72,7 +74,6 @@
                             <constraint firstAttribute="bottom" secondItem="n12-Yc-cwG" secondAttribute="bottom" id="wUQ-P6-v7X"/>
                             <constraint firstItem="hpK-du-ihY" firstAttribute="trailing" secondItem="e89-Og-CsI" secondAttribute="trailing" id="xi5-EN-Aw5"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="hpK-du-ihY"/>
                     </view>
                     <connections>
                         <outlet property="cancelBtn" destination="ysw-pW-cCv" id="Kdy-wj-ysz"/>
