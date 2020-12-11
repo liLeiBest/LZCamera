@@ -490,7 +490,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 		[PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:appName];
 		collectionId = collectionChangeRequest.placeholderForCreatedAssetCollection.localIdentifier;
 	} error:error];
-	if (error) {
+    if (nil == collectionId) {
 		LZCameraLog(@"创建相册失败：%@", appName);
 		return nil;
 	}
