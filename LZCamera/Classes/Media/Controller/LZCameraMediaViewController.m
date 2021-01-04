@@ -276,15 +276,16 @@
 }
 
 - (void)chooseVideoFromAlbum {
-	
+    
 	NSString *mediaType = (NSString *)kUTTypeMovie;
 	UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	if ([self cameraSupportMedia:mediaType sourceType:sourceType]) {
-		
+//        UTTypeMovie
 		LZCameraMediaVideoPickerViewController *pickCtr = [[LZCameraMediaVideoPickerViewController alloc] init];
 		pickCtr.sourceType = sourceType;
 		pickCtr.mediaTypes = @[mediaType];
-		pickCtr.allowsEditing = NO;
+        pickCtr.videoMaximumDuration = self.maxShortVideoDuration;
+		pickCtr.allowsEditing = YES;
 		pickCtr.delegate = self;
 		[self presentViewController:pickCtr animated:YES completion:nil];
 	}
@@ -545,12 +546,18 @@
         
         NSError *error = nil;
         NSFileManager *fileM = [NSFileManager defaultManager];
-        BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
-        if (YES == success && nil == error) {
-            [self showVideoEditCtr:destURL];
+        if ([fileM fileExistsAtPath:videoURL.absoluteString]) {
+            
+            BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
+            if (YES == success && nil == error) {
+                [self showVideoEditCtr:destURL];
+            } else {
+                [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+            }
         } else {
-            [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-                [self dismissViewControllerAnimated:YES completion:nil];
+            [self alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
             }];
         }
     } else {
