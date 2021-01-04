@@ -280,12 +280,11 @@
 	NSString *mediaType = (NSString *)kUTTypeMovie;
 	UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
 	if ([self cameraSupportMedia:mediaType sourceType:sourceType]) {
-//        UTTypeMovie
+        
 		LZCameraMediaVideoPickerViewController *pickCtr = [[LZCameraMediaVideoPickerViewController alloc] init];
 		pickCtr.sourceType = sourceType;
 		pickCtr.mediaTypes = @[mediaType];
-        pickCtr.videoMaximumDuration = self.maxShortVideoDuration;
-		pickCtr.allowsEditing = YES;
+		pickCtr.allowsEditing = NO;
 		pickCtr.delegate = self;
 		[self presentViewController:pickCtr animated:YES completion:nil];
 	}
