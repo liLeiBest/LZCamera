@@ -49,14 +49,21 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				[PHAssetChangeRequest creationRequestForAssetFromImage:image];
 				placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
 			} completionHandler:^(BOOL success, NSError * _Nullable error) {
-				if (NO == success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (NO == success) {
                         if (handler) {
                             handler(nil, error);
                         }
-                    });
-                    return ;
-				}
+                        return ;
+                    } else {
+                        
+                        PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholderAsset.localIdentifier];
+                        if (handler) {
+                            handler(asset, nil);
+                        }
+                    }
+                });
+                return;
 				NSError *err = nil;
 				PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
 				if (nil == assetCollection) {
