@@ -173,8 +173,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 	imageGenerator.maximumSize = [UIScreen mainScreen].bounds.size;
 	imageGenerator.appliesPreferredTrackTransform = YES;
 	imageGenerator.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
-	
-	CGImageRef imageRef = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    NSError *error = nil;
+	CGImageRef imageRef = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:&error];
+    if (nil == imageRef) {
+        LZCameraLog(@"获取视频缩略图失败:%@", error.localizedDescription);
+        return nil;
+    }
 	UIImage *image = [UIImage imageWithCGImage:imageRef];
 	CGImageRelease(imageRef);
 	return image;

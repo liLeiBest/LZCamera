@@ -284,7 +284,7 @@
 		LZCameraMediaVideoPickerViewController *pickCtr = [[LZCameraMediaVideoPickerViewController alloc] init];
 		pickCtr.sourceType = sourceType;
 		pickCtr.mediaTypes = @[mediaType];
-		pickCtr.allowsEditing = NO;
+		pickCtr.allowsEditing = YES;
 		pickCtr.delegate = self;
 		[self presentViewController:pickCtr animated:YES completion:nil];
 	}
@@ -545,18 +545,20 @@
         
         NSError *error = nil;
         NSFileManager *fileM = [NSFileManager defaultManager];
-        if ([fileM fileExistsAtPath:videoURL.absoluteString]) {
+        BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
+        BOOL exist = [fileM fileExistsAtPath:destURL.relativePath];
+        if (success && exist) {
             
-            BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
-            if (YES == success && nil == error) {
+            UIImage *thumbImg = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:destURL];
+            if (thumbImg) {
                 [self showVideoEditCtr:destURL];
             } else {
-                [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                [self alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
                 }];
             }
         } else {
-            [self alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
+            [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
+                [self dismissViewControllerAnimated:YES completion:nil];
             }];
         }
     } else {
