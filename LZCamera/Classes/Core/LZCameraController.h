@@ -97,6 +97,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)setupSessionInputs:(NSError **)error;
 
 /**
+ 更新会话输入
+
+ @param videoInput AVCaptureDeviceInput
+ @return BOOL
+ */
+- (BOOL)updateSessionVideoInput:(AVCaptureDeviceInput *)videoInput;
+
+/**
  设置会话输出
  
  @param error NSError

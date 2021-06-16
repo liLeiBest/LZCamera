@@ -87,7 +87,7 @@ static const NSString * LZCameraAdjustingExposureContext;
 
 + (instancetype)cameraControllerWithConfig:(LZCameraConfig *)config {
     
-    LZCameraController *cameraController = [LZCameraController cameraController];
+    LZCameraController *cameraController = [self cameraController];
     cameraController.cameraConfig = config;
     return cameraController;
 }
@@ -165,22 +165,7 @@ static const NSString * LZCameraAdjustingExposureContext;
     
     AVCaptureDevice *videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:error];
-    if (videoDeviceInput) {
-        if ([self.captureSession canAddInput:videoDeviceInput]) {
-            
-            [self.captureSession addInput:videoDeviceInput];
-            self.activeMediaInput = videoDeviceInput;
-            [self regiesterObserverForVideoZoom];
-        } else {
-            
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Failed to add video input."};
-            *error = [NSError errorWithDomain:LZCameraErrorDomain
-                                         code:LZCameraErrorFailedToAddInput
-                                     userInfo:userInfo];
-            return NO;
-        }
-    } else {
-        
+    if (NO == [self updateSessionVideoInput:videoDeviceInput]) {
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Failed to add audio input."};
         *error = [NSError errorWithDomain:LZCameraErrorDomain
                                      code:LZCameraErrorFailedToAddInput
@@ -208,8 +193,27 @@ static const NSString * LZCameraAdjustingExposureContext;
                                  userInfo:userInfo];
         return NO;
     }
-    
     return YES;
+}
+
+- (BOOL)updateSessionVideoInput:(AVCaptureDeviceInput *)videoInput {
+    
+    BOOL flag = YES;
+    [self.captureSession beginConfiguration];
+    [self.captureSession removeInput:self.activeMediaInput];
+    if ([self.captureSession canAddInput:videoInput]) {
+        
+        [self.captureSession addInput:videoInput];
+        self.activeMediaInput = videoInput;
+    } else if ([self.captureSession canAddInput:self.activeMediaInput]) {
+        
+        [self.captureSession addInput:self.activeMediaInput];
+    } else {
+        flag = NO;
+    }
+    [self.captureSession commitConfiguration];
+    [self regiesterObserverForVideoZoom];
+    return flag;
 }
 
 - (BOOL)setupSessionOutputs:(NSError **)error {
@@ -282,19 +286,7 @@ static const NSString * LZCameraAdjustingExposureContext;
         
         [self removeObserverForVideoZoom];
         CGFloat zoomValue = [self currentVideoZoomValue];
-        
-        [self.captureSession beginConfiguration];
-        [self.captureSession removeInput:self.activeMediaInput];
-        if ([self.captureSession canAddInput:videoDeviceInput]) {
-            
-            [self.captureSession addInput:videoDeviceInput];
-            self.activeMediaInput = videoDeviceInput;
-        } else {
-            [self.captureSession addInput:self.activeMediaInput];
-        }
-        [self.captureSession commitConfiguration];
-        
-        [self regiesterObserverForVideoZoom];
+        [self updateSessionVideoInput:videoDeviceInput];
         [self setZoomValue:zoomValue];
         if (self.captureMetaDataCompletionHandler) {
             self.captureMetaDataCompletionHandler(nil, nil);

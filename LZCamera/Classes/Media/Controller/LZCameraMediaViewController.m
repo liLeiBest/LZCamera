@@ -13,6 +13,7 @@
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraMediaVideoPickerViewController.h"
 #import "LZCameraVideoEditorViewController.h"
+#import "LZCameraMediaController.h"
 #import <CoreServices/CoreServices.h>
 #import <Photos/Photos.h>
 
@@ -23,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet LZCameraMediaModelView *mediaModelView;
 @property (weak, nonatomic) IBOutlet UILabel *captureTipLabel;
 
-@property (strong, nonatomic) LZCameraController *cameraController;
+@property (strong, nonatomic) LZCameraMediaController *cameraController;
 @property (strong, nonatomic) UIImage *stillImage;
 @property (strong, nonatomic) NSURL *videoURL;
 @property (assign, nonatomic) CMTime videoDuration;
@@ -129,7 +130,10 @@
         cameraConfig.maxVideoRecordedDuration = CMTimeMake(self.maxShortVideoDuration, 1);
     }
 	cameraConfig.minVideoFreeDiskSpaceLimit = 150000000; // 150M
-    self.cameraController = [LZCameraController cameraControllerWithConfig:cameraConfig];
+    self.cameraController = [LZCameraMediaController cameraControllerWithConfig:cameraConfig];
+    if (LZCameraCaptureModeStillImage == self.captureModel) {
+        self.cameraController.takePhoto = YES;
+    }
     self.cameraController.delegate = self;
     NSError *error;
     if ([self.cameraController setupSession:&error]) {

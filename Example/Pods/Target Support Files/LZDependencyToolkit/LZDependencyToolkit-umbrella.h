@@ -11,7 +11,12 @@
 #endif
 
 #import "LZObject.h"
+#import "LZProxy.h"
+#import "LZPermanentThread.h"
+#import "LZThread.h"
 #import "LZWeakTimer.h"
+#import "LZModalPresentationTranslucentTransitioning.h"
+#import "LZTransitioning.h"
 
 FOUNDATION_EXPORT double LZDependencyToolkitVersionNumber;
 FOUNDATION_EXPORT const unsigned char LZDependencyToolkitVersionString[];
