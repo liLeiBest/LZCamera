@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaVideoPickerViewController : UIImagePickerController
 
+/// 移除遮罩
+- (void)removeCover;
+
 @end
 
 NS_ASSUME_NONNULL_END

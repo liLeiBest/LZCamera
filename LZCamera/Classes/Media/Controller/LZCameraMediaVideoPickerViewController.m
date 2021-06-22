@@ -9,6 +9,8 @@
 
 @interface LZCameraMediaVideoPickerViewController ()
 
+@property (nonatomic, weak) UIView *cover;
+
 @end
 
 @implementation LZCameraMediaVideoPickerViewController
@@ -18,6 +20,12 @@
     [super viewDidLoad];
     
     [self setupUI];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    self.cover.frame = self.view.bounds;
 }
 
 - (void)dealloc {
@@ -32,9 +40,22 @@
     return UIModalTransitionStyleCoverVertical;
 }
 
+// MARK: - Public
+- (void)removeCover {
+    [UIView animateWithDuration:0.25 animations:^{
+        self.cover.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        [self.cover removeFromSuperview];
+    }];
+}
+
 // MARK: - Private
 - (void)setupUI {
     
+    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
+    view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:view];
+    self.cover = view;
 }
 
 @end

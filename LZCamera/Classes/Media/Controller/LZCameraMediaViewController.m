@@ -290,7 +290,29 @@
 		pickCtr.mediaTypes = @[mediaType];
 		pickCtr.allowsEditing = YES;
 		pickCtr.delegate = self;
-		[self presentViewController:pickCtr animated:YES completion:nil];
+        __weak typeof(pickCtr) weakPickCtr = pickCtr;
+        __weak typeof(self) weakSelf = self;
+        [self presentViewController:pickCtr animated:YES completion:^{
+            [weakSelf photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
+                if (NO == authorized) {
+                    
+                    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+                    NSString *message = [NSString stringWithFormat:@"请在iPhone的“设置-隐私”选项中，允许%@访问您的照片。", appName];
+                    UIAlertController *alertCtr =
+                    [UIAlertController alertControllerWithTitle:@"提示"
+                                                        message:message
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+                    [alertCtr addAction:[UIAlertAction actionWithTitle:@"确定"
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * _Nonnull action) {
+                        [weakPickCtr dismissViewControllerAnimated:YES completion:nil];
+                    }]];
+                    [weakPickCtr presentViewController:alertCtr animated:YES completion:nil];
+                } else {
+                    [weakPickCtr removeCover];
+                }
+            }];
+        }];
 	}
 }
 
@@ -410,47 +432,49 @@
         }
     } else {
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            switch (status) {
-                case PHAuthorizationStatusAuthorized: {
-                    if (handler) {
-                        handler(YES, nil);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                switch (status) {
+                    case PHAuthorizationStatusAuthorized: {
+                        if (handler) {
+                            handler(YES, nil);
+                        }
                     }
+                        break;
+                    case PHAuthorizationStatusNotDetermined:
+                        break;
+                    case PHAuthorizationStatusRestricted: {
+                        if (handler) {
+                            NSError *error =
+                            [NSError errorWithDomain:LZCameraErrorDomain
+                                                code:LZCameraErrorAuthorization
+                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                            handler(NO, error);
+                        }
+                    }
+                        break;
+                    case PHAuthorizationStatusDenied: {
+                        if (handler) {
+                            NSError *error =
+                            [NSError errorWithDomain:LZCameraErrorDomain
+                                                code:LZCameraErrorAuthorization
+                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
+                            handler(NO, error);
+                        }
+                    }
+                        break;
+                    default: {
+                        if (handler) {
+                            NSError *error =
+                            [NSError errorWithDomain:LZCameraErrorDomain
+                                                code:LZCameraErrorAuthorization
+                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                            handler(NO, error);
+                        }
+                    }
+                        break;
                 }
-                    break;
-                case PHAuthorizationStatusNotDetermined:
-                    break;
-                case PHAuthorizationStatusRestricted: {
-                    if (handler) {
-                        NSError *error =
-                        [NSError errorWithDomain:LZCameraErrorDomain
-                                            code:LZCameraErrorAuthorization
-                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
-                        handler(NO, error);
-                    }
-                }
-                    break;
-                case PHAuthorizationStatusDenied: {
-                    if (handler) {
-                        NSError *error =
-                        [NSError errorWithDomain:LZCameraErrorDomain
-                                            code:LZCameraErrorAuthorization
-                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
-                        handler(NO, error);
-                    }
-                }
-                    break;
-                default:
-                    if (handler) {
-                        NSError *error =
-                        [NSError errorWithDomain:LZCameraErrorDomain
-                                            code:LZCameraErrorAuthorization
-                                        userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
-                        handler(NO, error);
-                    }
-                    break;
-            }
-        }
-         ];
+            });
+        }];
     }
 }
 
