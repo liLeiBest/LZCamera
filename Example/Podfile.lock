@@ -1,27 +1,27 @@
 PODS:
-  - LZCamera (0.8.4):
-    - LZCamera/CodeCapture (= 0.8.4)
-    - LZCamera/Core (= 0.8.4)
-    - LZCamera/Editor (= 0.8.4)
-    - LZCamera/MediaCapture (= 0.8.4)
-  - LZCamera/CodeCapture (0.8.4):
+  - LZCamera (0.8.5):
+    - LZCamera/CodeCapture (= 0.8.5)
+    - LZCamera/Core (= 0.8.5)
+    - LZCamera/Editor (= 0.8.5)
+    - LZCamera/MediaCapture (= 0.8.5)
+  - LZCamera/CodeCapture (0.8.5):
     - LZCamera/Core
-  - LZCamera/Core (0.8.4)
-  - LZCamera/Editor (0.8.4):
+  - LZCamera/Core (0.8.5)
+  - LZCamera/Editor (0.8.5):
     - LZCamera/Core
     - LZDependencyToolkit/Object
-  - LZCamera/MediaCapture (0.8.4):
+  - LZCamera/MediaCapture (0.8.5):
     - LZCamera/Core
     - LZCamera/Editor
-  - LZDependencyToolkit/Object (2.4.3):
-    - LZDependencyToolkit/Object/Proxy (= 2.4.3)
-    - LZDependencyToolkit/Object/Thread (= 2.4.3)
-    - LZDependencyToolkit/Object/Timer (= 2.4.3)
-    - LZDependencyToolkit/Object/Transitioning (= 2.4.3)
-  - LZDependencyToolkit/Object/Proxy (2.4.3)
-  - LZDependencyToolkit/Object/Thread (2.4.3)
-  - LZDependencyToolkit/Object/Timer (2.4.3)
-  - LZDependencyToolkit/Object/Transitioning (2.4.3)
+  - LZDependencyToolkit/Object (2.4.6):
+    - LZDependencyToolkit/Object/Proxy (= 2.4.6)
+    - LZDependencyToolkit/Object/Thread (= 2.4.6)
+    - LZDependencyToolkit/Object/Timer (= 2.4.6)
+    - LZDependencyToolkit/Object/Transitioning (= 2.4.6)
+  - LZDependencyToolkit/Object/Proxy (2.4.6)
+  - LZDependencyToolkit/Object/Thread (2.4.6)
+  - LZDependencyToolkit/Object/Timer (2.4.6)
+  - LZDependencyToolkit/Object/Transitioning (2.4.6)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
@@ -35,8 +35,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: 4935368186ff96702c10df22eff8de991aa3bdf2
-  LZDependencyToolkit: c23ba26d6fcb7e18ed7e64d1473b9ffcbd9f0481
+  LZCamera: d571839cfdb6a7fad9b8a44542e0e3526ecbcc74
+  LZDependencyToolkit: 07163e248bfb2e5d3af596c57ecce685bffd5db5
 
 PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
 
