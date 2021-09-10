@@ -24,12 +24,18 @@
 @implementation LZCameraCodeViewController
 
 // MARK: - Initialization
+- (instancetype)init {
+    if (self = [super init]) {
+        self.machineCodeTypes = @[AVMetadataObjectTypeQRCode];
+    }
+    return self;
+}
+
 - (void)loadView {
     
     LZCameraCodePreviewView *codeView = [[LZCameraCodePreviewView alloc] init];
     self.view = codeView;
     self.codePreview = codeView;
-    self.machineCodeTypes = @[AVMetadataObjectTypeQRCode];
 }
 
 - (void)viewDidLoad {
