@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oy2-yg-3rK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="oy2-yg-3rK">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,22 +17,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XRJ-jD-dVG">
-                                <rect key="frame" x="0.0" y="44" width="414" height="705"/>
+                                <rect key="frame" x="0.0" y="50" width="414" height="697"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zuG-np-pGw">
-                                <rect key="frame" x="0.0" y="749" width="414" height="147"/>
+                                <rect key="frame" x="0.0" y="747" width="414" height="149"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Cw-N0-jme" customClass="LZCameraEditorVideoContainerView">
-                                <rect key="frame" x="0.0" y="749" width="414" height="113"/>
+                                <rect key="frame" x="0.0" y="747" width="414" height="115"/>
                                 <subviews>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="FcH-59-oz1">
-                                        <rect key="frame" x="0.0" y="1" width="414" height="2"/>
+                                        <rect key="frame" x="0.0" y="1" width="414" height="4"/>
                                         <color key="progressTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="trackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </progressView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r0I-t1-vWL">
-                                        <rect key="frame" x="30" y="13" width="354" height="60"/>
+                                        <rect key="frame" x="30" y="15" width="354" height="60"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="Uev-kt-QOh"/>
@@ -73,14 +73,14 @@
                                         </connections>
                                     </collectionView>
                                     <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fUE-9e-5ge">
-                                        <rect key="frame" x="28" y="15.5" width="2" height="55"/>
+                                        <rect key="frame" x="28" y="17.5" width="2" height="55"/>
                                         <color key="backgroundColor" red="0.99607843137254903" green="0.99215686274509807" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="2" id="8WJ-9k-Nf0"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8uu-Ey-a3b" userLabel="leftClipView">
-                                        <rect key="frame" x="20" y="13" width="10" height="60"/>
+                                        <rect key="frame" x="20" y="15" width="10" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRw-bK-U3J">
                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="2.5"/>
@@ -124,7 +124,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRx-Id-lnZ" userLabel="rightClipView">
-                                        <rect key="frame" x="384" y="13" width="10" height="60"/>
+                                        <rect key="frame" x="384" y="15" width="10" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM1-Lw-6er">
                                                 <rect key="frame" x="0.0" y="0.0" width="10" height="2.5"/>
@@ -168,7 +168,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="拖动剪辑框可裁剪视频" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ff-PU-RaX">
-                                        <rect key="frame" x="10" y="83" width="394" height="20"/>
+                                        <rect key="frame" x="10" y="85" width="394" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="lbL-62-Ybz"/>
                                         </constraints>
@@ -212,6 +212,7 @@
                                 </connections>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="rat-0g-fLD"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rat-0g-fLD" firstAttribute="bottom" secondItem="7Cw-N0-jme" secondAttribute="bottom" id="0XL-dj-CS4"/>
@@ -224,9 +225,8 @@
                             <constraint firstItem="zuG-np-pGw" firstAttribute="top" secondItem="XRJ-jD-dVG" secondAttribute="bottom" id="iDj-72-uHn"/>
                             <constraint firstItem="rat-0g-fLD" firstAttribute="trailing" secondItem="7Cw-N0-jme" secondAttribute="trailing" id="jHr-gd-56e"/>
                             <constraint firstItem="7Cw-N0-jme" firstAttribute="top" secondItem="zuG-np-pGw" secondAttribute="top" id="mRK-7k-Uyh"/>
-                            <constraint firstItem="XRJ-jD-dVG" firstAttribute="top" secondItem="rat-0g-fLD" secondAttribute="top" id="zQa-Pr-Uhp"/>
+                            <constraint firstItem="XRJ-jD-dVG" firstAttribute="top" secondItem="rat-0g-fLD" secondAttribute="top" constant="6" id="zQa-Pr-Uhp"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="rat-0g-fLD"/>
                     </view>
                     <connections>
                         <outlet property="previewImgView" destination="XRJ-jD-dVG" id="jjs-at-ELG"/>

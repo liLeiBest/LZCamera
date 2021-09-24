@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3hi-wX-lFW">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3hi-wX-lFW">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,29 +17,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YBo-hl-Eob">
-                                <rect key="frame" x="0.0" y="44" width="414" height="715"/>
+                                <rect key="frame" x="0.0" y="50" width="414" height="707"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCw-GK-a9k">
-                                <rect key="frame" x="10" y="721" width="394" height="18"/>
+                                <rect key="frame" x="10" y="719" width="394" height="18"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                 <color key="textColor" red="0.81176470590000005" green="0.79215686269999996" blue="0.77647058820000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6X6-P8-JOH">
-                                <rect key="frame" x="0.0" y="759" width="414" height="137"/>
+                                <rect key="frame" x="0.0" y="757" width="414" height="139"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yYo-YF-TW9" customClass="LZCameraEditorVideoMusicContainerView">
-                                <rect key="frame" x="0.0" y="759" width="414" height="103"/>
+                                <rect key="frame" x="0.0" y="757" width="414" height="105"/>
                                 <subviews>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hcf-LE-Aig">
-                                        <rect key="frame" x="0.0" y="1" width="414" height="2"/>
+                                        <rect key="frame" x="0.0" y="1" width="414" height="4"/>
                                         <color key="progressTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="trackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </progressView>
                                     <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKj-DS-gNg">
-                                        <rect key="frame" x="10" y="13" width="40" height="80"/>
+                                        <rect key="frame" x="10" y="15" width="40" height="80"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="9Kk-mg-8YT"/>
@@ -51,7 +49,7 @@
                                         </connections>
                                     </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="VYh-2W-kTH">
-                                        <rect key="frame" x="60" y="13" width="354" height="80"/>
+                                        <rect key="frame" x="60" y="15" width="354" height="80"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="80" id="dqp-Ye-6sZ"/>
                                         </constraints>
@@ -134,9 +132,10 @@
                                 </connections>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Gdt-bX-jVn"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="YBo-hl-Eob" firstAttribute="top" secondItem="Gdt-bX-jVn" secondAttribute="top" id="8hu-fh-a9r"/>
+                            <constraint firstItem="YBo-hl-Eob" firstAttribute="top" secondItem="Gdt-bX-jVn" secondAttribute="top" constant="6" id="8hu-fh-a9r"/>
                             <constraint firstItem="Gdt-bX-jVn" firstAttribute="trailing" secondItem="6X6-P8-JOH" secondAttribute="trailing" id="CGL-uH-7Kq"/>
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="leading" secondItem="Gdt-bX-jVn" secondAttribute="leading" id="CNe-WA-V11"/>
                             <constraint firstItem="yYo-YF-TW9" firstAttribute="bottom" secondItem="Gdt-bX-jVn" secondAttribute="bottom" id="JhB-Mf-GLc"/>
@@ -151,7 +150,6 @@
                             <constraint firstItem="6X6-P8-JOH" firstAttribute="top" secondItem="YBo-hl-Eob" secondAttribute="bottom" id="u1p-Ki-yy1"/>
                             <constraint firstItem="6X6-P8-JOH" firstAttribute="top" secondItem="aCw-GK-a9k" secondAttribute="bottom" constant="20" id="yTs-Ng-OXK"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Gdt-bX-jVn"/>
                     </view>
                     <connections>
                         <outlet property="musicView" destination="yYo-YF-TW9" id="4tv-dX-7pC"/>

@@ -109,7 +109,7 @@
 	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
 	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
 	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResize;
+	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 }
 
 // MARK: - Observer
