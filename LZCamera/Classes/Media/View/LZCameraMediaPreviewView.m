@@ -29,18 +29,20 @@
 
 @implementation LZCameraMediaPreviewView
 
-// MARK: - Initiazalition
+// MARK: - Initialization
 - (instancetype)initWithFrame:(CGRect)frame {
-    
     if (self = [super initWithFrame:frame]) {
+        
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self setupView];
     }
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    
     if (self = [super initWithCoder:aDecoder]) {
+        
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self setupView];
     }
     return self;

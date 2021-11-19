@@ -27,9 +27,20 @@
     return _codeLayers;
 }
 
+// MARK: - Initialization
 - (instancetype)initWithFrame:(CGRect)frame {
-    
     if (self = [super initWithFrame:frame]) {
+        
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        [self setupScanViw];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        
+        self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [self setupScanViw];
     }
     return self;
