@@ -1,33 +1,33 @@
 PODS:
-  - LZCamera (0.8.7):
-    - LZCamera/CodeCapture (= 0.8.7)
-    - LZCamera/Core (= 0.8.7)
-    - LZCamera/Editor (= 0.8.7)
-    - LZCamera/MediaCapture (= 0.8.7)
-  - LZCamera/CodeCapture (0.8.7):
+  - LZCamera (0.8.8):
+    - LZCamera/CodeCapture (= 0.8.8)
+    - LZCamera/Core (= 0.8.8)
+    - LZCamera/Editor (= 0.8.8)
+    - LZCamera/MediaCapture (= 0.8.8)
+  - LZCamera/CodeCapture (0.8.8):
     - LZCamera/Core
-  - LZCamera/Core (0.8.7)
-  - LZCamera/Editor (0.8.7):
+  - LZCamera/Core (0.8.8)
+  - LZCamera/Editor (0.8.8):
     - LZCamera/Core
     - LZDependencyToolkit/Object
-  - LZCamera/MediaCapture (0.8.7):
+  - LZCamera/MediaCapture (0.8.8):
     - LZCamera/Core
     - LZCamera/Editor
-  - LZDependencyToolkit/Object (2.5.2):
-    - LZDependencyToolkit/Object/Proxy (= 2.5.2)
-    - LZDependencyToolkit/Object/Thread (= 2.5.2)
-    - LZDependencyToolkit/Object/Timer (= 2.5.2)
-    - LZDependencyToolkit/Object/Transitioning (= 2.5.2)
-  - LZDependencyToolkit/Object/Proxy (2.5.2)
-  - LZDependencyToolkit/Object/Thread (2.5.2)
-  - LZDependencyToolkit/Object/Timer (2.5.2)
-  - LZDependencyToolkit/Object/Transitioning (2.5.2)
+  - LZDependencyToolkit/Object (2.5.7):
+    - LZDependencyToolkit/Object/Proxy (= 2.5.7)
+    - LZDependencyToolkit/Object/Thread (= 2.5.7)
+    - LZDependencyToolkit/Object/Timer (= 2.5.7)
+    - LZDependencyToolkit/Object/Transitioning (= 2.5.7)
+  - LZDependencyToolkit/Object/Proxy (2.5.7)
+  - LZDependencyToolkit/Object/Thread (2.5.7)
+  - LZDependencyToolkit/Object/Timer (2.5.7)
+  - LZDependencyToolkit/Object/Transitioning (2.5.7)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - LZDependencyToolkit
 
 EXTERNAL SOURCES:
@@ -35,9 +35,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  LZCamera: 14884f02a9c8a0103e51dc40655864ff7e2877ca
-  LZDependencyToolkit: 7ce920f21b9c973e913dcb18f14cee941c470350
+  LZCamera: 2bf23edde6ba05dd6a9b2d98f74e5705a495a175
+  LZDependencyToolkit: d30f96f9e8df914ba7a89d129f112f2dcd8f2107
 
-PODFILE CHECKSUM: 0b6433d916642f9ba6e825bf760ecf1dd5384bbb
+PODFILE CHECKSUM: 6143986c2135454c8219ec03812929a861e48b04
 
 COCOAPODS: 1.10.1
