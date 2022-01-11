@@ -60,6 +60,12 @@
 	[self registerObserver];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.cameraController startSession];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -71,6 +77,12 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    [self.cameraController stopSession];
 }
 
 - (void)dealloc {
@@ -141,7 +153,6 @@
         self.cameraController.flashMode = AVCaptureFlashModeAuto;
         self.cameraController.torchMode = AVCaptureTorchModeAuto;
         [self.mediaPreviewView setCaptureSesstion:self.cameraController.captureSession];
-        [self.cameraController startSession];
     } else {
         LZCameraLog(@"CameraController config error: %@", [error localizedDescription]);
     }
@@ -562,7 +573,6 @@
 // MARK: - Observer
 - (void)cameraDone {
 	
-	[self.cameraController stopSession];
 	[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[LZCameraToolkit deleteFile:self.videoURL];
