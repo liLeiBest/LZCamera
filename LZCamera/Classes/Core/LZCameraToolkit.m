@@ -13,47 +13,51 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 @implementation LZCameraToolkit
 
 // MARK: - Public
-+ (void)saveImageToAblum:(UIImage *)image
-	   completionHandler:(void (^ _Nullable)(PHAsset * _Nullable, NSError * _Nullable))handler {
-	
++ (void)photoAuthorizationJudge:(void (^)(BOOL authorized, PHAuthorizationStatus status, NSError * __nullable error))handler {
+    
     PHAuthorizationStatus status = PHAuthorizationStatusRestricted;
     if (@available(iOS 14, *)) {
         status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
     } else {
         status = [PHPhotoLibrary authorizationStatus];
     }
-	switch (status) {
-		case PHAuthorizationStatusDenied: {
-			if (handler) {
-				
-				NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"};
-				NSError *error = [NSError errorWithDomain:LZCameraErrorDomain
-													 code:LZCameraErrorAuthorization
-												 userInfo:userInfo];
-				handler(nil, error);
-			}
-		}
-			break;
-		case PHAuthorizationStatusRestricted: {
-			if (handler) {
-				
-				NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"};
-				NSError *error = [NSError errorWithDomain:LZCameraErrorDomain
-													 code:LZCameraErrorAuthorization
-												 userInfo:userInfo];
-				handler(nil, error);
-			}
-		}
-			break;
-		default: {
-			
-			__block PHObjectPlaceholder *placeholderAsset = nil;
-			[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-				 
-				PHAssetChangeRequest *assetChangeRequest =
-				[PHAssetChangeRequest creationRequestForAssetFromImage:image];
-				placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
-			} completionHandler:^(BOOL success, NSError * _Nullable error) {
+    if (status == PHAuthorizationStatusAuthorized) {
+        if (handler) {
+            handler(YES, status, nil);
+        }
+    } else {
+        if (@available(iOS 14, *)) {
+            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+                [self handlePHAuthorizationStatus:status handler:^(BOOL authorized, NSError * _Nullable error) {
+                    if (handler) {
+                        handler(NO, status, error);
+                    }
+                }];
+            }];
+        } else {
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                [self handlePHAuthorizationStatus:status handler:^(BOOL authorized, NSError * _Nullable error) {
+                    if (handler) {
+                        handler(NO, status, error);
+                    }
+                }];
+            }];
+        }
+    }
+}
+
++ (void)saveImageToAblum:(UIImage *)image
+	   completionHandler:(void (^ _Nullable)(PHAsset * _Nullable, NSError * _Nullable))handler {
+    [self photoAuthorizationJudge:^(BOOL authorized, PHAuthorizationStatus status, NSError * _Nullable error) {
+        if (YES == authorized) {
+            
+            __block PHObjectPlaceholder *placeholderAsset = nil;
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                 
+                PHAssetChangeRequest *assetChangeRequest =
+                [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+                placeholderAsset = assetChangeRequest.placeholderForCreatedAsset;
+            } completionHandler:^(BOOL success, NSError * _Nullable error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (NO == success) {
                         if (handler) {
@@ -69,111 +73,88 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
                     }
                 });
                 return;
-				NSError *err = nil;
-				PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
-				if (nil == assetCollection) {
+                NSError *err = nil;
+                PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
+                if (nil == assetCollection) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (handler) {
                             handler(nil, err);
                         }
                     });
                     return;
-				}
-				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholderAsset.localIdentifier];
-				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-					
-					PHAssetCollectionChangeRequest *collectionChangeRequest =
-					[PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
-					[collectionChangeRequest addAssets:@[asset]];
-				} completionHandler:^(BOOL success, NSError * _Nullable error) {
+                }
+                PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholderAsset.localIdentifier];
+                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                    
+                    PHAssetCollectionChangeRequest *collectionChangeRequest =
+                    [PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
+                    [collectionChangeRequest addAssets:@[asset]];
+                } completionHandler:^(BOOL success, NSError * _Nullable error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (handler) {
                             handler(asset, error);
                         }
                     });
-				}];
-			}];
-		}
-			break;
-	}
+                }];
+            }];
+        } else {
+            if (handler) {
+                handler(nil, error);
+            }
+        }
+    }];
 }
 
 + (void)saveVideoToAblum:(NSURL *)url
 	   completionHandler:(LZCameraSaveAlbumCompletionHandler)handler {
-	
-    PHAuthorizationStatus status = PHAuthorizationStatusRestricted;
-    if (@available(iOS 14, *)) {
-        status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
-    } else {
-        status = [PHPhotoLibrary authorizationStatus];
-    }
-	switch (status) {
-		case PHAuthorizationStatusDenied: {
-			if (handler) {
-				
-				NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"};
-				NSError *error = [NSError errorWithDomain:LZCameraErrorDomain
-													 code:LZCameraErrorAuthorization
-												 userInfo:userInfo];
-				handler(nil, error);
-			}
-		}
-			break;
-		case PHAuthorizationStatusRestricted: {
-			if (handler) {
-				
-				NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"};
-				NSError *error = [NSError errorWithDomain:LZCameraErrorDomain
-													 code:LZCameraErrorAuthorization
-												 userInfo:userInfo];
-				handler(nil, error);
-			}
-		}
-			break;
-		default: {
-			
-			__block PHObjectPlaceholder *placeholder = nil;
-			[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-				
-				PHAssetChangeRequest *assetRequest =
-				[PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
-				placeholder = assetRequest.placeholderForCreatedAsset;
-			} completionHandler:^(BOOL success, NSError * _Nullable error) {
-				if (NO == success) {
+    [self photoAuthorizationJudge:^(BOOL authorized, PHAuthorizationStatus status, NSError * _Nullable error) {
+        if (YES == authorized) {
+            
+            __block PHObjectPlaceholder *placeholder = nil;
+            [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                
+                PHAssetChangeRequest *assetRequest =
+                [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+                placeholder = assetRequest.placeholderForCreatedAsset;
+            } completionHandler:^(BOOL success, NSError * _Nullable error) {
+                if (NO == success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (handler) {
                             handler(nil, error);
                         }
                     });
                     return ;
-				}
-				NSError *err = nil;
-				PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
-				if (nil == assetCollection) {
+                }
+                NSError *err = nil;
+                PHAssetCollection *assetCollection = [self fetchDestinationCollection:&err];
+                if (nil == assetCollection) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (handler) {
                             handler(nil, err);
                         }
                         return;
                     });
-				}
-				PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholder.localIdentifier];
-				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-					
-					PHAssetCollectionChangeRequest *collectionChangeRequest =
-					[PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
-					[collectionChangeRequest addAssets:@[asset]];
-				} completionHandler:^(BOOL success, NSError * _Nullable error) {
-					dispatch_async(dispatch_get_main_queue(), ^{
+                }
+                PHAsset *asset = [self fetchAssetWithlocalIdentifier:placeholder.localIdentifier];
+                [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+                    
+                    PHAssetCollectionChangeRequest *collectionChangeRequest =
+                    [PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
+                    [collectionChangeRequest addAssets:@[asset]];
+                } completionHandler:^(BOOL success, NSError * _Nullable error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
                         if (handler) {
                             handler(asset ,error);
                         }
                     });
-				}];
-			}];
-		}
-			break;
-	}
+                }];
+            }];
+        } else {
+            if (handler) {
+                handler(nil, error);
+            }
+        }
+    }];
 }
 
 + (UIImage *)thumbnailAtFirstFrameForVideoAtURL:(NSURL *)videoURL {
@@ -475,6 +456,51 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 }
 
 // MARK: - Private
++ (void)handlePHAuthorizationStatus:(PHAuthorizationStatus)status
+                            handler:(void (^)(BOOL authorized, NSError * __nullable error))handler {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (status) {
+            case PHAuthorizationStatusAuthorized: {
+                if (handler) {
+                    handler(YES, nil);
+                }
+            }
+                break;
+            case PHAuthorizationStatusNotDetermined:
+                break;
+            case PHAuthorizationStatusRestricted: {
+                if (handler) {
+                    NSError *error =
+                    [NSError errorWithDomain:LZCameraErrorDomain
+                                        code:LZCameraErrorAuthorization
+                                    userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                    handler(NO, error);
+                }
+            }
+                break;
+            case PHAuthorizationStatusDenied: {
+                if (handler) {
+                    NSError *error =
+                    [NSError errorWithDomain:LZCameraErrorDomain
+                                        code:LZCameraErrorAuthorization
+                                    userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
+                    handler(NO, error);
+                }
+            }
+                break;
+            case PHAuthorizationStatusLimited: {
+                if (handler) {
+                    handler(YES, nil);
+                }
+            }
+                break;
+            default: {
+            }
+                break;
+        }
+    });
+}
+
 + (PHAsset *)fetchAssetWithlocalIdentifier:(NSString *)localIdentifier {
 	
 	if(localIdentifier == nil){

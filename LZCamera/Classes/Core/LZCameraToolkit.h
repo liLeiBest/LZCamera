@@ -17,6 +17,13 @@ typedef void (^LZCameraSaveAlbumCompletionHandler)(PHAsset * _Nullable asset, NS
 @interface LZCameraToolkit : NSObject
 
 /**
+ 相册权限判断
+ 
+ @param handler 完成回调
+ */
++ (void)photoAuthorizationJudge:(void (^)(BOOL authorized, PHAuthorizationStatus status, NSError * __nullable error))handler;
+
+/**
  保存图片到相册
  
  @param image 图片
