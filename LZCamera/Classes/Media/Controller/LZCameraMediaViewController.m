@@ -425,57 +425,73 @@
 
 - (void)photoAuthorizationJudge:(void (^)(BOOL authorized, NSError * __nullable error))handler {
     
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    PHAuthorizationStatus status = PHAuthorizationStatusRestricted;
+    if (@available(iOS 14, *)) {
+        status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+    } else {
+        status = [PHPhotoLibrary authorizationStatus];
+    }
     if (status == PHAuthorizationStatusAuthorized) {
         if (handler) {
             handler(YES, nil);
         }
     } else {
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                switch (status) {
-                    case PHAuthorizationStatusAuthorized: {
-                        if (handler) {
-                            handler(YES, nil);
-                        }
-                    }
-                        break;
-                    case PHAuthorizationStatusNotDetermined:
-                        break;
-                    case PHAuthorizationStatusRestricted: {
-                        if (handler) {
-                            NSError *error =
-                            [NSError errorWithDomain:LZCameraErrorDomain
-                                                code:LZCameraErrorAuthorization
-                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
-                            handler(NO, error);
-                        }
-                    }
-                        break;
-                    case PHAuthorizationStatusDenied: {
-                        if (handler) {
-                            NSError *error =
-                            [NSError errorWithDomain:LZCameraErrorDomain
-                                                code:LZCameraErrorAuthorization
-                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
-                            handler(NO, error);
-                        }
-                    }
-                        break;
-                    default: {
-                        if (handler) {
-                            NSError *error =
-                            [NSError errorWithDomain:LZCameraErrorDomain
-                                                code:LZCameraErrorAuthorization
-                                            userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
-                            handler(NO, error);
-                        }
-                    }
-                        break;
-                }
-            });
-        }];
+        if (@available(iOS 14, *)) {
+            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+                [self handlePHAuthorizationStatus:status handler:handler];
+            }];
+        } else {
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                [self handlePHAuthorizationStatus:status handler:handler];
+            }];
+        }
     }
+}
+
+- (void)handlePHAuthorizationStatus:(PHAuthorizationStatus)status
+                            handler:(void (^)(BOOL authorized, NSError * __nullable error))handler {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (status) {
+            case PHAuthorizationStatusAuthorized: {
+                if (handler) {
+                    handler(YES, nil);
+                }
+            }
+                break;
+            case PHAuthorizationStatusNotDetermined:
+                break;
+            case PHAuthorizationStatusRestricted: {
+                if (handler) {
+                    NSError *error =
+                    [NSError errorWithDomain:LZCameraErrorDomain
+                                        code:LZCameraErrorAuthorization
+                                    userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                    handler(NO, error);
+                }
+            }
+                break;
+            case PHAuthorizationStatusDenied: {
+                if (handler) {
+                    NSError *error =
+                    [NSError errorWithDomain:LZCameraErrorDomain
+                                        code:LZCameraErrorAuthorization
+                                    userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusDenied"}];
+                    handler(NO, error);
+                }
+            }
+                break;
+            default: {
+                if (handler) {
+                    NSError *error =
+                    [NSError errorWithDomain:LZCameraErrorDomain
+                                        code:LZCameraErrorAuthorization
+                                    userInfo:@{NSLocalizedDescriptionKey: @"PHAuthorizationStatusRestricted"}];
+                    handler(NO, error);
+                }
+            }
+                break;
+        }
+    });
 }
 
 - (void)saveVideoFromAssetURL:(NSURL *)assetURL

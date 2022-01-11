@@ -16,7 +16,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 + (void)saveImageToAblum:(UIImage *)image
 	   completionHandler:(void (^ _Nullable)(PHAsset * _Nullable, NSError * _Nullable))handler {
 	
-	PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    PHAuthorizationStatus status = PHAuthorizationStatusRestricted;
+    if (@available(iOS 14, *)) {
+        status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+    } else {
+        status = [PHPhotoLibrary authorizationStatus];
+    }
 	switch (status) {
 		case PHAuthorizationStatusDenied: {
 			if (handler) {
@@ -96,7 +101,12 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 + (void)saveVideoToAblum:(NSURL *)url
 	   completionHandler:(LZCameraSaveAlbumCompletionHandler)handler {
 	
-	PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    PHAuthorizationStatus status = PHAuthorizationStatusRestricted;
+    if (@available(iOS 14, *)) {
+        status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+    } else {
+        status = [PHPhotoLibrary authorizationStatus];
+    }
 	switch (status) {
 		case PHAuthorizationStatusDenied: {
 			if (handler) {
