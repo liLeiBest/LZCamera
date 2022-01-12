@@ -12,12 +12,9 @@
 #import "LZCameraCore.h"
 #import "LZCameraMediaPreviewViewController.h"
 #import "LZCameraMediaVideoPickerViewController.h"
-#import "LZCameraVideoEditorViewController.h"
 #import "LZCameraMediaController.h"
-#import <CoreServices/CoreServices.h>
-#import <Photos/Photos.h>
 
-@interface LZCameraMediaViewController ()<LZCameraControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface LZCameraMediaViewController ()<LZCameraControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet LZCameraMediaPreviewView *mediaPreviewView;
 @property (weak, nonatomic) IBOutlet LZCameraMediaStatusView *mediaStatusView;
@@ -54,19 +51,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self chooseVideoFromAlbum];
-//    [self configCameraController];
+    [self configCameraController];
     [self setupView];
     [self configCaptureTipView];
 	[self registerObserver];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [self.cameraController startSession];
+    [self.cameraController startSession];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -85,7 +79,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-//    [self.cameraController stopSession];
+    [self.cameraController stopSession];
 }
 
 - (void)dealloc {
@@ -114,7 +108,12 @@
                 if (strongSelf.CameraVideoCompletionHandler) {
 					
 					UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
-                    strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
+                    if (thumbnailImage) {
+                        strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
+                    } else {
+                        [strongSelf alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
+                        }];
+                    }
                 }
             } else if (strongSelf.stillImage) {
                 if (strongSelf.CameraImageCompletionHandler) {
@@ -295,58 +294,26 @@
 
 - (void)chooseVideoFromAlbum {
     
-	NSString *mediaType = (NSString *)kUTTypeMovie;
-	UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-	if ([self cameraSupportMedia:mediaType sourceType:sourceType]) {
-        
-		LZCameraMediaVideoPickerViewController *pickCtr = [[LZCameraMediaVideoPickerViewController alloc] init];
-		pickCtr.sourceType = sourceType;
-		pickCtr.mediaTypes = @[mediaType];
-		pickCtr.allowsEditing = YES;
-		pickCtr.delegate = self;
-        __weak typeof(pickCtr) weakPickCtr = pickCtr;
-        __weak typeof(self) weakSelf = self;
-        [self presentViewController:pickCtr animated:YES completion:^{
-            [weakSelf photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
-                if (NO == authorized) {
-                    
-                    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-                    NSString *message = [NSString stringWithFormat:@"请在iPhone的“设置-隐私”选项中，允许%@访问您的照片。", appName];
-                    UIAlertController *alertCtr =
-                    [UIAlertController alertControllerWithTitle:@"提示"
-                                                        message:message
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-                    [alertCtr addAction:[UIAlertAction actionWithTitle:@"确定"
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * _Nonnull action) {
-                        [weakPickCtr dismissViewControllerAnimated:YES completion:nil];
-                    }]];
-                    [weakPickCtr presentViewController:alertCtr animated:YES completion:nil];
-                } else {
-                    [weakPickCtr removeCover];
-                }
-            }];
-        }];
-	}
-}
-
-- (BOOL)cameraSupportMedia:(NSString*)paramMediaType
-				sourceType:(UIImagePickerControllerSourceType)paramSourceType {
-	
-	__block BOOL result=NO;
-	if ([paramMediaType length]==0) {
-		NSLog(@"Media type is empty.");
-		return NO;
-	}
-	NSArray*availableMediaTypes=[UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
-	[availableMediaTypes enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-		NSString *mediaType = (NSString *)obj;
-		if ([mediaType isEqualToString:paramMediaType]){
-			result = YES;
-			*stop= YES;
-		}
-	}];
-	return result;
+    LZCameraMediaVideoPickerViewController *ctr = [LZCameraMediaVideoPickerViewController instance];
+    __weak typeof(self) weakSelf = self;
+    ctr.pickCompleteCallback = ^(NSURL * _Nonnull URL) {
+        typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.videoURL = URL;
+    };
+    ctr.editCompleteCallback = ^(NSURL * _Nonnull URL) {
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.CameraVideoCompletionHandler) {
+            
+            UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:URL];
+            if (thumbnailImage) {
+                strongSelf.CameraVideoCompletionHandler(thumbnailImage, URL);
+            } else {
+                [strongSelf alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
+                }];
+            }
+        }
+    };
+    [self presentViewController:ctr animated:YES completion:nil];
 }
 
 - (void)controlFlashModelVisulState {
@@ -437,80 +404,6 @@
     [self presentViewController:alertCtr animated:YES completion:nil];
 }
 
-- (void)photoAuthorizationJudge:(void (^)(BOOL authorized, NSError * __nullable error))handler {
-    
-    [LZCameraToolkit photoAuthorizationJudge:^(BOOL authorized, PHAuthorizationStatus status, NSError * _Nullable error) {
-        if (handler) {
-            handler(authorized, error);
-        }
-    }];
-}
-
-- (void)saveVideoFromAssetURL:(NSURL *)assetURL
-                       toURL:(NSURL *)fileURL
-           completionCallback:(void (^)(NSError * __nullable error))handler{
-    [self photoAuthorizationJudge:^(BOOL authorized, NSError * _Nullable error) {
-        if (YES == authorized) {
-            
-            PHFetchResult *fetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[assetURL] options:nil];
-            PHAsset *asset = fetchResult.firstObject;
-            if (nil == asset) {
-                NSError *error = [NSError errorWithDomain:LZCameraErrorDomain code:LZCameraErrorInvalideFileOutputURL userInfo:@{NSLocalizedDescriptionKey : @"Video do not exist!"}];
-                if (handler) {
-                    handler(error);
-                }
-                return;
-            }
-            NSArray *assetResources = [PHAssetResource assetResourcesForAsset:asset];
-            PHAssetResource *resource = nil;
-            for (PHAssetResource *assetRes in assetResources) {
-                if (@available(iOS 9.1, *)) {
-                    if (assetRes.type == PHAssetResourceTypePairedVideo
-                        || assetRes.type == PHAssetResourceTypeVideo) {
-                        resource = assetRes;
-                        break;
-                    }
-                } else {
-                    if (assetRes.type == PHAssetResourceTypeVideo) {
-                        resource = assetRes;
-                        break;
-                    }
-                }
-            }
-            [[PHAssetResourceManager defaultManager] writeDataForAssetResource:resource toFile:fileURL options:nil completionHandler: ^(NSError * _Nullable error) {
-                if (handler) {
-                    handler(error);
-                }
-            }];
-        } else {
-            if (handler) {
-                handler(error);
-            }
-        }
-    }];
-}
-
-- (void)showVideoEditCtr:(NSURL *)videoURL {
-    
-    self.videoURL = videoURL;
-    LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
-    ctr.videoURL = videoURL;
-    ctr.videoMaximumDuration = 60.0f;
-    __weak typeof(self) weakSelf = self;
-    ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
-        typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf.CameraVideoCompletionHandler) {
-            
-            UIImage *thumbnailImage = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:editedVideoURL];
-            strongSelf.CameraVideoCompletionHandler(thumbnailImage, editedVideoURL);
-        }
-    };
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:nav animated:YES completion:nil];
-}
-
 // MARK: - Observer
 - (void)cameraDone {
 	
@@ -527,60 +420,6 @@
 
 - (void)photosAlbumWriteFailedWithError:(NSError *)error {
     [self alertMessage:error.localizedDescription handler:nil];
-}
-
-// MARK: <UIImagePickerControllerDelegate>
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey, id> *)info {
-	
-	[picker dismissViewControllerAnimated:YES completion:nil];
-    NSURL *destURL = [LZCameraToolkit generateUniqueAssetFileURL:LZCameraAssetTypeMov];
-    
-	NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
-    if (videoURL) {
-        
-        NSError *error = nil;
-        NSFileManager *fileM = [NSFileManager defaultManager];
-        BOOL success = [fileM copyItemAtURL:videoURL toURL:destURL error:&error];
-        BOOL exist = [fileM fileExistsAtPath:destURL.relativePath];
-        if (success && exist) {
-            
-            UIImage *thumbImg = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:destURL];
-            if (thumbImg) {
-                [self showVideoEditCtr:destURL];
-            } else {
-                [self alertMessage:@"不受支持的视频格式" handler:^(UIAlertAction *action) {
-                }];
-            }
-        } else {
-            [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }];
-        }
-    } else {
-        
-        videoURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-        if (nil == videoURL) {
-            if (@available(iOS 11, *)) {
-                videoURL = [info objectForKey:UIImagePickerControllerPHAsset];
-            }
-        }
-        if (nil != videoURL) {
-            [self saveVideoFromAssetURL:videoURL toURL:destURL completionCallback:^(NSError * _Nullable error) {
-                if (nil == error) {
-                    [self showVideoEditCtr:destURL];
-                } else {
-                    [self alertMessage:error.localizedDescription handler:^(UIAlertAction *action) {
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }];
-                }
-            }];
-        }
-    }
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[picker dismissViewControllerAnimated:YES completion:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

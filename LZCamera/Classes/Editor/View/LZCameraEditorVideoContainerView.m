@@ -234,7 +234,6 @@
 }
 
 - (void)preview {
-	
 	if (self.TapPreviewClipCallback) {
 		
 		CMTimeRange timeRange = [self playTimeRange];

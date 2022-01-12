@@ -9,5 +9,6 @@
 #define LZCameraMedia_h
 
 #import "LZCameraMediaViewController.h"
+#import "LZCameraMediaVideoPickerViewController.h"
 
 #endif /* LZCameraMedia_h */

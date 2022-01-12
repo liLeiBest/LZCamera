@@ -15,6 +15,7 @@ NSString * const LZEditVideoThumbnailCellID = @"LZCameraEditorVideoThumbnailCell
 	[super awakeFromNib];
 	
 	self.imgView.backgroundColor = [UIColor orangeColor];
+    self.imgView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
 @end

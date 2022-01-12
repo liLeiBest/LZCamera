@@ -11,8 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaVideoPickerViewController : UIImagePickerController
 
-/// 移除遮罩
-- (void)removeCover;
+/// 选择完成回调
+@property (nonatomic, copy) void (^pickCompleteCallback)(NSURL *URL);
+/// 编辑完成回调
+@property (nonatomic, copy) void (^editCompleteCallback)(NSURL *URL);
+
+
+/**
+ 实例
+
+ @return LZCameraMediaVideoPickerViewController
+ */
++ (instancetype)instance;
 
 @end
 
