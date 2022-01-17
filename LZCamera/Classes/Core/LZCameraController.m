@@ -719,6 +719,7 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                 }
 			} else {
 				[LZCameraToolkit deleteFile:self.videoFileOutputURL];
+                [LZCameraToolkit deleteFile:self.videoFileOutputURL.URLByDeletingLastPathComponent];
 			}
         } else {
             
@@ -742,6 +743,7 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                 }
                 [self callBackVideoOnMainQueue:[self.videoFileOutputURL copy] error:error];
 				[LZCameraToolkit deleteFile:self.videoFileOutputURL];
+                [LZCameraToolkit deleteFile:self.videoFileOutputURL.URLByDeletingLastPathComponent];
             }
         }
 	} else {

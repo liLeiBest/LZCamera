@@ -578,6 +578,7 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
 				if (NO == success) {
 					LZCameraLog(@"Export Asset Failed:%@", exportSession.error);
 					[self deleteFile:fileURL];
+                    [self deleteFile:fileURL.URLByDeletingLastPathComponent];
 				}
 				completionHandler(fileURL, success, exportSession.error);
 			});

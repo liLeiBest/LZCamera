@@ -33,6 +33,8 @@ static NSString * const AssetProgressKeyPath = @"progress";
 @property (strong, nonatomic) LZCameraEditorMusicModel *musicModel;
 /** 导出会话 */
 @property (strong, nonatomic) AVAssetExportSession *exportSession;
+/* 上次导出的文件地址 **/
+@property (strong, nonatomic) NSURL *lastOutputFileURL;
 /** 计时器 */
 @property (strong, nonatomic) LZWeakTimer *timer;
 
@@ -106,20 +108,24 @@ static NSString * const AssetProgressKeyPath = @"progress";
 						  audioVolume:BGMVolume
 						   presetName:AVAssetExportPresetMediumQuality
 					completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
-						
-						self.navigationItem.rightBarButtonItem.enabled = YES;
-						[self.timer invalidate];
-						[self.musicView updateEditProgress:1.0f];
-						[self.musicView updateEditEnable:YES];
-						if (success) {
-							if (self.VideoEditCallback) {
-								self.VideoEditCallback(outputFileURL);
-							}
-							[[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
-						} else {
-							[self showEditTip:@"编辑失败，请重试"];
-						}
-					}];
+        if (self.lastOutputFileURL) {
+            [LZCameraToolkit deleteFile:self.lastOutputFileURL];
+            [LZCameraToolkit deleteFile:self.lastOutputFileURL.URLByDeletingLastPathComponent];
+        }
+        self.lastOutputFileURL = outputFileURL;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        [self.timer invalidate];
+        [self.musicView updateEditProgress:1.0f];
+        [self.musicView updateEditEnable:YES];
+        if (success) {
+            if (self.VideoEditCallback) {
+                self.VideoEditCallback(outputFileURL);
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
+        } else {
+            [self showEditTip:@"编辑失败，请重试"];
+        }
+    }];
 	[self scheduledTimer];
 }
 
@@ -204,25 +210,29 @@ static NSString * const AssetProgressKeyPath = @"progress";
 						 type:LZCameraAssetTypeM4A
 					 timeRane:CMTimeRangeMake(kCMTimeZero, self.timeRange.duration)
 			completionHandler:^(NSURL * _Nullable outputFileURL, BOOL success) {
-
-				[self.musicView updateEditEnable:YES];
-				if (success) {
-					
-					[self.timer invalidate];
-					[self.musicView updateEditProgress:1.0f];
-					NSError *error;
-					self.BGMPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:outputFileURL error:&error];
-					if (error == nil) {
-
-						self.BGMPlayer.numberOfLoops = -1;
-						self.BGMPlayer.volume = BGMVolume;
-						[self.BGMPlayer prepareToPlay];
-						[self startPlay];
-					}
-				} else {
-					[self.musicView updateEditProgress:0.0f];
-				}
-			}];
+        if (self.lastOutputFileURL) {
+            [LZCameraToolkit deleteFile:self.lastOutputFileURL];
+            [LZCameraToolkit deleteFile:self.lastOutputFileURL.URLByDeletingLastPathComponent];
+        }
+        self.lastOutputFileURL = outputFileURL;
+        [self.musicView updateEditEnable:YES];
+        if (success) {
+            
+            [self.timer invalidate];
+            [self.musicView updateEditProgress:1.0f];
+            NSError *error;
+            self.BGMPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:outputFileURL error:&error];
+            if (error == nil) {
+                
+                self.BGMPlayer.numberOfLoops = -1;
+                self.BGMPlayer.volume = BGMVolume;
+                [self.BGMPlayer prepareToPlay];
+                [self startPlay];
+            }
+        } else {
+            [self.musicView updateEditProgress:0.0f];
+        }
+    }];
 	[self scheduledTimer];
 }
 
