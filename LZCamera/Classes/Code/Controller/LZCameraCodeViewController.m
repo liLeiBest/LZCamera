@@ -82,8 +82,10 @@
 
 - (void)detectCodeTyps:(NSArray<AVMetadataObjectType> *)codeTypes
      completionHandler:(nonnull LZCameraDetectMachineCodeHandler)completionHandler {
+    
     self.machineCodeTypes = codeTypes;
     self.detectMachineCodeHandler = completionHandler;
+    [self setupCameraCodeController];
 }
 
 // MARK: - Private
