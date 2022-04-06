@@ -63,7 +63,7 @@
 }
 
 - (UIModalTransitionStyle)modalTransitionStyle {
-    return UIModalTransitionStyleCoverVertical;
+    return UIModalTransitionStyleCrossDissolve;
 }
 
 // MARK: - Public
@@ -153,7 +153,7 @@
     ctr.videoMaximumDuration = 60.0f;
     ctr.VideoEditCallback = self.editCompleteCallback;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
-    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.presentingViewController presentViewController:nav animated:YES completion:nil];
 }
