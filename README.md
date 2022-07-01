@@ -1,6 +1,6 @@
 # LZCamera
 
-[![CI Status](https://img.shields.io/travis/lilei_hapy@163.com/LZCamera.svg?style=flat)](https://travis-ci.org/lilei_hapy@163.com/LZCamera)
+[![CI Status](https://img.shields.io/travis/lilei0502@139.com/LZCamera.svg?style=flat)](https://travis-ci.org/lilei0502@139.com/LZCamera)
 [![Version](https://img.shields.io/cocoapods/v/LZCamera.svg?style=flat)](https://cocoapods.org/pods/LZCamera)
 [![License](https://img.shields.io/cocoapods/l/LZCamera.svg?style=flat)](https://cocoapods.org/pods/LZCamera)
 [![Platform](https://img.shields.io/cocoapods/p/LZCamera.svg?style=flat)](https://cocoapods.org/pods/LZCamera)
