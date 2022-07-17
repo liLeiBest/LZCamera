@@ -83,11 +83,29 @@
 
 - (void)nextDidClick {
 	
-	LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
-	ctr.videoURL = self.editVideoURL;
-	ctr.timeRange = self.timeRange;
-	ctr.VideoEditCallback = self.VideoEditCallback;
-	[self.navigationController pushViewController:ctr animated:YES];
+    Float64 curSenconds = CMTimeGetSeconds(self.timeRange.duration);
+    if (curSenconds > self.videoMaximumDuration) {
+        
+        NSString *message = [NSString stringWithFormat:@"当前视频时长大于允许的最大限制，继续操作将默认截取当前区间的前%.1f秒视频", self.videoMaximumDuration];
+        UIAlertController *alertCtr = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+        [alertCtr addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+        }]];
+        [alertCtr addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            CMTimeScale timescale = self.timeRange.start.timescale;
+            self.timeRange = CMTimeRangeMake(self.timeRange.start, CMTimeMake(self.videoMaximumDuration * timescale, timescale));
+            [self nextDidClick];
+        }]];
+        [self presentViewController:alertCtr animated:YES completion:nil];
+    } else {
+        
+        LZCameraVideoEditMusicViewController *ctr = [LZCameraVideoEditMusicViewController instance];
+        ctr.videoURL = self.editVideoURL;
+        ctr.timeRange = self.timeRange;
+        ctr.VideoEditCallback = self.VideoEditCallback;
+        [self.navigationController pushViewController:ctr animated:YES];
+    }
 }
 
 // MAKR: - Private
@@ -97,11 +115,7 @@
 	
 	self.editVideoURL = self.videoURL;
 	AVAsset *asset = [AVAsset assetWithURL:self.editVideoURL];
-    CMTime defaultTime = asset.duration;
-    if (self.videoMaximumDuration < CMTimeGetSeconds(asset.duration)) {
-        defaultTime = CMTimeMakeWithSeconds(self.videoMaximumDuration, asset.duration.timescale);
-    }
-	self.timeRange = CMTimeRangeMake(kCMTimeZero, defaultTime);
+	self.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
 	self.previewImgView.image = [LZCameraToolkit thumbnailAtFirstFrameForVideoAtURL:self.editVideoURL];
 	[self buildPlayer];
 	[self fetchVideoThumbnails];

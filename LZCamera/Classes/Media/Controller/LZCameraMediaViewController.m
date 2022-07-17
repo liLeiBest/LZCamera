@@ -98,6 +98,7 @@
     if ([segue.identifier isEqualToString:@"LZCameraPreviewIdentifier"]) {
         
         LZCameraMediaPreviewViewController *ctr = segue.destinationViewController;
+        ctr.maxShortVideoDuration = self.maxShortVideoDuration;
         ctr.previewImage = self.stillImage;
         ctr.previewVideoURL = self.videoURL;
 		ctr.autoSaveToAlbum = self.autoSaveToAlbum;
@@ -295,6 +296,7 @@
 - (void)chooseVideoFromAlbum {
     
     LZCameraMediaVideoPickerViewController *ctr = [LZCameraMediaVideoPickerViewController instance];
+    ctr.maxShortVideoDuration = self.maxShortVideoDuration;
     __weak typeof(self) weakSelf = self;
     ctr.pickCompleteCallback = ^(NSURL * _Nonnull URL) {
         typeof(weakSelf) strongSelf = weakSelf;

@@ -83,7 +83,7 @@
 		leftClipImgView.userInteractionEnabled = YES;
 		rightClipImgView.userInteractionEnabled = YES;
         
-        tipLabel.text = @"拖动剪辑框可裁剪视频";
+        tipLabel.text = [NSString stringWithFormat:@"拖动剪辑框可裁剪视频(%.1f秒)", CMTimeGetSeconds(self.duration)];
 	}
 	
 	if (thumbnails && thumbnails.count) {
@@ -238,6 +238,7 @@
 		
 		CMTimeRange timeRange = [self playTimeRange];
 		self.TapPreviewClipCallback(timeRange);
+        tipLabel.text = [NSString stringWithFormat:@"拖动剪辑框可裁剪视频(%.1f秒)", CMTimeGetSeconds(timeRange.duration)];
 	}
 }
 

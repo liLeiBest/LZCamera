@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaVideoPickerViewController : UIImagePickerController
 
+/** 短视频最长持续时间，单位：秒 */
+@property (assign, nonatomic) CGFloat maxShortVideoDuration;
 /// 选择完成回调
 @property (nonatomic, copy) void (^pickCompleteCallback)(NSURL *URL);
 /// 编辑完成回调

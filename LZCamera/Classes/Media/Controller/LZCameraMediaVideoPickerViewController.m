@@ -165,7 +165,7 @@
     
     LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
     ctr.videoURL = videoURL;
-    ctr.videoMaximumDuration = 60.0f;
+    ctr.videoMaximumDuration = self.maxShortVideoDuration;
     ctr.VideoEditCallback = self.editCompleteCallback;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctr];
     nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

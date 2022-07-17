@@ -159,7 +159,7 @@
     
     LZCameraVideoEditorViewController *ctr = [LZCameraVideoEditorViewController instance];
     ctr.videoURL = self.editVideoURL;
-    ctr.videoMaximumDuration = 60.0f;
+    ctr.videoMaximumDuration = self.maxShortVideoDuration;
     __weak typeof(self) weakSelf = self;
     ctr.VideoEditCallback = ^(NSURL * _Nonnull editedVideoURL) {
         typeof(weakSelf) strongSelf = weakSelf;

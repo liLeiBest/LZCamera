@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LZCameraMediaPreviewViewController : UIViewController
 
+/** 短视频最长持续时间，单位：秒 */
+@property (assign, nonatomic) CGFloat maxShortVideoDuration;
 /** 预览图片 */
 @property (strong, nonatomic) UIImage *previewImage;
 /** 预览视频地址 */
