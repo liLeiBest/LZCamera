@@ -15,6 +15,8 @@
 @property (nonatomic, weak) UIView *cover;
 @property (nonatomic, weak) id sender;
 
+@property (nonatomic, strong) NSDictionary *barButtonAttrs;
+
 @end
 
 @implementation LZCameraMediaVideoPickerViewController
@@ -56,6 +58,9 @@
 
 - (void)dealloc {
     LZCameraLog();
+    if (@available(iOS 13, *)) {
+        [[UIBarButtonItem appearance] setTitleTextAttributes:self.barButtonAttrs forState:UIControlStateNormal];
+    }
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle {
@@ -88,6 +93,16 @@
     view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:view];
     self.cover = view;
+    if (@available(iOS 13, *)) {
+        
+        UIBarButtonItem *theme = [UIBarButtonItem appearance];
+        NSDictionary *attrs = [theme titleTextAttributesForState:UIControlStateNormal];
+        self.barButtonAttrs = attrs;
+        
+        NSMutableDictionary *attrsM = [NSMutableDictionary dictionaryWithDictionary:attrs];
+        [attrsM setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
+        [theme setTitleTextAttributes:attrsM forState:UIControlStateNormal];
+    }
 }
 
 - (void)albumAuthJudge {
