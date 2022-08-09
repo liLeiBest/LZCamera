@@ -81,6 +81,7 @@
 								inBundle:LZCameraNSBundle(@"LZCameraEditor")
 		   compatibleWithTraitCollection:nil];
 	[originAudioBtn setImage:image forState:UIControlStateNormal];
+    collectionView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)fetchMusic {
