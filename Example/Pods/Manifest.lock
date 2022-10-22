@@ -13,15 +13,15 @@ PODS:
   - LZCamera/MediaCapture (0.9.3):
     - LZCamera/Core
     - LZCamera/Editor
-  - LZDependencyToolkit/Object (2.5.7):
-    - LZDependencyToolkit/Object/Proxy (= 2.5.7)
-    - LZDependencyToolkit/Object/Thread (= 2.5.7)
-    - LZDependencyToolkit/Object/Timer (= 2.5.7)
-    - LZDependencyToolkit/Object/Transitioning (= 2.5.7)
-  - LZDependencyToolkit/Object/Proxy (2.5.7)
-  - LZDependencyToolkit/Object/Thread (2.5.7)
-  - LZDependencyToolkit/Object/Timer (2.5.7)
-  - LZDependencyToolkit/Object/Transitioning (2.5.7)
+  - LZDependencyToolkit/Object (2.6.0):
+    - LZDependencyToolkit/Object/Proxy (= 2.6.0)
+    - LZDependencyToolkit/Object/Thread (= 2.6.0)
+    - LZDependencyToolkit/Object/Timer (= 2.6.0)
+    - LZDependencyToolkit/Object/Transitioning (= 2.6.0)
+  - LZDependencyToolkit/Object/Proxy (2.6.0)
+  - LZDependencyToolkit/Object/Thread (2.6.0)
+  - LZDependencyToolkit/Object/Timer (2.6.0)
+  - LZDependencyToolkit/Object/Transitioning (2.6.0)
 
 DEPENDENCIES:
   - LZCamera (from `../`)
@@ -36,8 +36,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   LZCamera: b0d63c42673a8ea758415332de24049715a79e68
-  LZDependencyToolkit: d30f96f9e8df914ba7a89d129f112f2dcd8f2107
+  LZDependencyToolkit: 25364f8746bbc9e51c6cedb43bba39bd2025be05
 
 PODFILE CHECKSUM: 6143986c2135454c8219ec03812929a861e48b04
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

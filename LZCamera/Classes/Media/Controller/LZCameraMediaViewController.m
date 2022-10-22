@@ -105,6 +105,7 @@
         __weak typeof(self) weakSelf = self;
         ctr.TapToSureHandler = ^(UIImage * _Nullable editedImage, NSURL * _Nullable editedVideoURL, PHAsset * _Nullable asset) {
             typeof(weakSelf) strongSelf = weakSelf;
+            [strongSelf dismissViewControllerAnimated:NO completion:nil];
             if (strongSelf.videoURL) {
                 if (strongSelf.CameraVideoCompletionHandler) {
 					

@@ -84,17 +84,32 @@
 }
 
 - (IBAction)editDidClick:(id)sender {
-    [self showVideoEditCtr];
+    if (self.editVideoURL) {
+        if (self.autoSaveToAlbum) {
+            [LZCameraToolkit saveVideoToAblum:self.editVideoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+            }];
+        }
+        [self showVideoEditCtr];
+    } else if (self.editImage) {
+        if (self.autoSaveToAlbum) {
+            [LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
+                if (self.TapToSureHandler) {
+                    self.TapToSureHandler(self.editImage, nil, asset);
+                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:LZCameraObserver_Complete object:nil];
+            }];
+        }
+    }
 }
 
 - (IBAction)sureDidClick:(id)sender {
-	
 	if (self.editVideoURL) {
 		if (self.autoSaveToAlbum) {
 			[LZCameraToolkit saveVideoToAblum:self.editVideoURL completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
 			}];
 		}
-        [self showMusicEditCtr];
+//        [self showMusicEditCtr];
+        [self showVideoEditCtr];
 	} else if (self.editImage) {
 		if (self.autoSaveToAlbum) {
 			[LZCameraToolkit saveImageToAblum:self.editImage completionHandler:^(PHAsset * _Nullable asset, NSError * _Nullable error) {
