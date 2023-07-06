@@ -27,13 +27,19 @@ static NSString * const LZDirectoryTemplateString = @"lzcamera.XXXXXX";
         }
     } else {
         if (@available(iOS 14, *)) {
-            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
-                [self handlePHAuthorizationStatus:status handler:^(BOOL authorized, NSError * _Nullable error) {
-                    if (handler) {
-                        handler(NO, status, error);
-                    }
+            if (status == PHAuthorizationStatusLimited) {
+                if (handler) {
+                    handler(YES, status, nil);
+                }
+            } else {
+                [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+                    [self handlePHAuthorizationStatus:status handler:^(BOOL authorized, NSError * _Nullable error) {
+                        if (handler) {
+                            handler(NO, status, error);
+                        }
+                    }];
                 }];
-            }];
+            }
         } else {
             [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
                 [self handlePHAuthorizationStatus:status handler:^(BOOL authorized, NSError * _Nullable error) {
