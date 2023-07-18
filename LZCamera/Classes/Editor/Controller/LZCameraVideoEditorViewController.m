@@ -83,7 +83,7 @@
 
 - (void)nextDidClick {
 	
-    Float64 curSenconds = CMTimeGetSeconds(self.timeRange.duration);
+    NSUInteger curSenconds = CMTimeGetSeconds(self.timeRange.duration);
     if (curSenconds > self.videoMaximumDuration) {
         
         NSString *message = [NSString stringWithFormat:@"当前视频时长大于允许的最大限制，继续操作将默认截取当前区间的前%.1f秒视频", self.videoMaximumDuration];
