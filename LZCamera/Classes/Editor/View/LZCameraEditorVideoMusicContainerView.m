@@ -64,10 +64,12 @@
 }
 
 // MARK: - UI Action
-- (IBAction)originalAudioDidClick:(id)sender {
-	
-	if (YES == self.editEnable) {
-		
+- (IBAction)originalAudioDidClick:(id)sender {    
+    if (YES == self.editEnable) {
+        if (NO == originAudioBtn.selected) {
+            // 只作选择音乐和原音切换，不做去掉原音
+            originAudioBtn.selected = !originAudioBtn.selected;
+        }
 		[self handleSelectedMusic:nil];
 		if (self.TapOriginalMusicCallback) {
 			self.TapOriginalMusicCallback();
@@ -77,10 +79,16 @@
 // MARK: - Private
 - (void)setupUI {
 	
-	UIImage *image = [UIImage imageNamed:@"editor_origin_music"
-								inBundle:LZCameraNSBundle(@"LZCameraEditor")
-		   compatibleWithTraitCollection:nil];
-	[originAudioBtn setImage:image forState:UIControlStateNormal];
+	UIImage *normalImage = [UIImage imageNamed:@"editor_origin_music_normal"
+                                      inBundle:LZCameraNSBundle(@"LZCameraEditor")
+                 compatibleWithTraitCollection:nil];
+    UIImage *selectedImage = [UIImage imageNamed:@"editor_origin_music_selected"
+                                        inBundle:LZCameraNSBundle(@"LZCameraEditor")
+                   compatibleWithTraitCollection:nil];
+	[originAudioBtn setImage:normalImage forState:UIControlStateNormal];
+    [originAudioBtn setImage:normalImage forState:UIControlStateHighlighted];
+    [originAudioBtn setImage:selectedImage forState:UIControlStateSelected];
+    originAudioBtn.selected = YES;
     collectionView.backgroundColor = [UIColor clearColor];
 }
 
@@ -138,7 +146,6 @@
 }
 
 - (void)handleSelectedMusic:(LZCameraEditorMusicModel *)musicModel {
-	
 	for (LZCameraEditorMusicModel *model in self.datasource) {
 		if ([model isEqual:musicModel]) {
 			model.selected = YES;
@@ -172,9 +179,9 @@
 // MARK: <UICollectionViewDelegate>
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	
 	if (YES == self.editEnable) {
 		
+        originAudioBtn.selected = NO;
 		LZCameraEditorMusicModel *musicModel = [self.datasource objectAtIndex:indexPath.row];
 		[self handleSelectedMusic:musicModel];
 		if (self.TapMusicCallback) {
